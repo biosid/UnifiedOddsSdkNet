@@ -1,13 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
 using Common.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
@@ -21,9 +14,14 @@ using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
 using Unity;
-using Unity.Extension;
-using Unity.Lifetime;
 using Unity.Resolution;
 
 namespace Sportradar.OddsFeed.SDK.API
@@ -227,7 +225,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="e">The <see cref="ProducerStatusChangeEventArgs"/> instance containing the event data</param>
         private void MarkProducerAsDown(object sender, ProducerStatusChangeEventArgs e)
         {
-            ((IGlobalEventDispatcher) this).DispatchProducerDown(e.GetProducerStatusChange());
+            ((IGlobalEventDispatcher)this).DispatchProducerDown(e.GetProducerStatusChange());
         }
 
         /// <summary>
@@ -304,7 +302,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
             var childContainer = CurrentUnityContainer.CreateChildContainer();
             Func<OddsFeedSession, IEnumerable<string>> func = GetSessionRoutingKeys;
-            var session = (OddsFeedSession) childContainer.Resolve<IOddsFeedSession>(new ParameterOverride("messageInterest", msgInterest), new ParameterOverride("getRoutingKeys", func));
+            var session = (OddsFeedSession)childContainer.Resolve<IOddsFeedSession>(new ParameterOverride("messageInterest", msgInterest), new ParameterOverride("getRoutingKeys", func));
             Sessions.Add(session);
             return session;
         }
@@ -425,7 +423,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </summary>
         public void Close()
         {
-            ((IDisposable) this).Dispose();
+            ((IDisposable)this).Dispose();
         }
 
         /// <summary>
@@ -497,7 +495,7 @@ namespace Sportradar.OddsFeed.SDK.API
 
             try
             {
-                ((ProducerManager) ProducerManager).Lock();
+                ((ProducerManager)ProducerManager).Lock();
 
                 foreach (var session in Sessions)
                 {
@@ -510,7 +508,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 _feedRecoveryManager.ProducerDown += MarkProducerAsDown;
                 _feedRecoveryManager.CloseFeed += OnCloseFeed;
 
-                var interests = Sessions.Select(s => ((OddsFeedSession) s).MessageInterest).ToList();
+                var interests = Sessions.Select(s => ((OddsFeedSession)s).MessageInterest).ToList();
                 _feedRecoveryManager.Open(interests);
             }
             catch (CommunicationException ex)
