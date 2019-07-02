@@ -1,8 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Microsoft.Practices.Unity;
 using Sportradar.OddsFeed.SDK.API.Internal;
+using Unity;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
@@ -23,8 +23,8 @@ namespace Sportradar.OddsFeed.SDK.API
         public ReplayFeed(IOddsFeedConfiguration config)
             : base(config, true)
         {
-            ReplayManager = UnityContainer.Resolve<IReplayManagerV1>();
-            ((ProducerManager) ProducerManager).SetIgnoreRecovery(0);
+            ReplayManager = CurrentUnityContainer.Resolve<IReplayManagerV1>();
+            ((ProducerManager)ProducerManager).SetIgnoreRecovery(0);
         }
     }
 }

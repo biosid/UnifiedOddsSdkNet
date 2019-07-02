@@ -536,56 +536,56 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Utils
                 var match = entity as IMatch;
                 if (match != null)
                 {
-                    _log.Debug(WriteMatchData(match));
+                    Console.WriteLine(WriteMatchData(match));
                     return;
                 }
 
                 var stage = entity as IStage;
                 if (stage != null)
                 {
-                    _log.Debug(WriteStageData(stage));
+                    Console.WriteLine(WriteStageData(stage));
                     return;
                 }
 
                 var basicTournament = entity as IBasicTournament;
                 if (basicTournament != null)
                 {
-                    _log.Debug(WriteBasicTournamentData(basicTournament));
+                    Console.WriteLine(WriteBasicTournamentData(basicTournament));
                     return;
                 }
 
                 var tournament = entity as ITournament;
                 if (tournament != null)
                 {
-                    _log.Debug(WriteTournamentData(tournament));
+                    Console.WriteLine(WriteTournamentData(tournament));
                     return;
                 }
 
                 var season = entity as ISeason;
                 if (season != null)
                 {
-                    _log.Debug(WriteSeasonData(season));
+                    Console.WriteLine(WriteSeasonData(season));
                     return;
                 }
 
                 var draw = entity as IDraw;
                 if (draw != null)
                 {
-                    _log.Debug(WriteDrawData(draw));
+                    Console.WriteLine(WriteDrawData(draw));
                     return;
                 }
 
                 var lottery = entity as ILottery;
                 if (lottery != null)
                 {
-                    _log.Debug(WriteLotteryData(lottery));
+                    Console.WriteLine(WriteLotteryData(lottery));
                     return;
                 }
 
                 // If non of the above, just write the ISportEvent properties
                 var builder = new StringBuilder();
                 AddEntityData(entity, builder);
-                _log.Debug(builder);
+                Console.WriteLine(builder);
             }
             catch (FeedSdkException)
             {

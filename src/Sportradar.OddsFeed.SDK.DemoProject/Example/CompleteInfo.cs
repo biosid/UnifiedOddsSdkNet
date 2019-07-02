@@ -39,13 +39,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         public void Run(MessageInterest messageInterest, CultureInfo culture)
         {
             Console.WriteLine(string.Empty);
-            _log.Info("Running the OddsFeed SDK Complete example");
+            Console.WriteLine("Running the OddsFeed SDK Complete example");
 
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
             var oddsFeed = new Feed(configuration);
             AttachToFeedEvents(oddsFeed);
 
-            _log.Info("Creating IOddsFeedSessions");
+            Console.WriteLine("Creating IOddsFeedSessions");
 
             var session = oddsFeed.CreateBuilder()
                    .SetMessageInterest(messageInterest)
@@ -56,14 +56,14 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             var marketWriter = new MarketWriter(_log, _taskProcessor, _culture);
             var sportEntityWriter = new SportEntityWriter(_taskProcessor, _culture);
 
-            _log.Info("Creating entity specific dispatchers");
+            Console.WriteLine("Creating entity specific dispatchers");
             var matchDispatcher = session.CreateSportSpecificMessageDispatcher<IMatch>();
             var stageDispatcher = session.CreateSportSpecificMessageDispatcher<IStage>();
             var tournamentDispatcher = session.CreateSportSpecificMessageDispatcher<ITournament>();
             var basicTournamentDispatcher = session.CreateSportSpecificMessageDispatcher<IBasicTournament>();
             var seasonDispatcher = session.CreateSportSpecificMessageDispatcher<ISeason>();
 
-            _log.Info("Creating event processors");
+            Console.WriteLine("Creating event processors");
             var defaultEventsProcessor = new EntityProcessor(session, sportEntityWriter);
             var matchEventsProcessor = new SpecificEntityProcessor<IMatch>(_log, matchDispatcher, sportEntityWriter, marketWriter);
             var stageEventsProcessor = new SpecificEntityProcessor<IStage>(_log, stageDispatcher, sportEntityWriter, marketWriter);
@@ -71,7 +71,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             var basicTournamentEventsProcessor = new SpecificEntityProcessor<IBasicTournament>(_log, basicTournamentDispatcher, sportEntityWriter, marketWriter);
             var seasonEventsProcessor = new SpecificEntityProcessor<ISeason>(_log, seasonDispatcher, sportEntityWriter, marketWriter);
 
-            _log.Info("Opening event processors");
+            Console.WriteLine("Opening event processors");
             defaultEventsProcessor.Open();
             matchEventsProcessor.Open();
             stageEventsProcessor.Open();
@@ -79,20 +79,20 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             basicTournamentEventsProcessor.Open();
             seasonEventsProcessor.Open();
 
-            _log.Info("Opening the feed instance");
+            Console.WriteLine("Opening the feed instance");
 
             oddsFeed.Open();
 
-            _log.Info("Example successfully started. Hit <enter> to quit");
+            Console.WriteLine("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
             Console.ReadLine();
 
-            _log.Info("Closing / disposing the feed");
+            Console.WriteLine("Closing / disposing the feed");
             oddsFeed.Close();
 
             DetachFromFeedEvents(oddsFeed);
 
-            _log.Info("Closing event processors");
+            Console.WriteLine("Closing event processors");
             defaultEventsProcessor.Close();
             matchEventsProcessor.Close();
             stageEventsProcessor.Close();
@@ -100,11 +100,11 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             basicTournamentEventsProcessor.Close();
             seasonEventsProcessor.Close();
 
-            _log.Info("Waiting for asynchronous operations to complete");
+            Console.WriteLine("Waiting for asynchronous operations to complete");
             var waitResult = _taskProcessor.WaitForTasks();
-            _log.Info($"Waiting for tasks completed. Result:{waitResult}");
+            Console.WriteLine($"Waiting for tasks completed. Result:{waitResult}");
 
-            _log.Info("Stopped");
+            Console.WriteLine("Stopped");
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(oddsFeed != null);
 
-            _log.Info("Attaching to feed events");
+            Console.WriteLine("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
             oddsFeed.ProducerDown += OnProducerDown;
             oddsFeed.Disconnected += OnDisconnected;
@@ -130,7 +130,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(oddsFeed != null);
 
-            _log.Info("Detaching from feed events");
+            Console.WriteLine("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
             oddsFeed.ProducerDown -= OnProducerDown;
             oddsFeed.Disconnected -= OnDisconnected;
@@ -174,7 +174,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
         {
-            _log.Info($"Producer {e.GetProducerStatusChange().Producer} is up");
+            Console.WriteLine($"Producer {e.GetProducerStatusChange().Producer} is up");
         }
     }
 }

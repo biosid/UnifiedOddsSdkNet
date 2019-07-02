@@ -30,9 +30,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
     internal class VariantDescriptionListCache : SdkCache, IVariantDescriptionCache, IDisposable, IHealthStatusProvider
     {
         /// <summary>
-        /// A <see cref="ObjectCache"/> used to store variant descriptions
+        /// A <see cref="MemoryCache"/> used to store variant descriptions
         /// </summary>
-        private readonly ObjectCache _cache;
+        private readonly MemoryCache _cache;
 
         /// <summary>
         /// The <see cref="IDataRouterManager"/> used to obtain data via REST request
@@ -82,13 +82,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         /// <summary>
         /// Initializes a new instance of the <see cref="InvariantMarketDescriptionCache"/> class
         /// </summary>
-        /// <param name="cache">A <see cref="ObjectCache"/> used to store market descriptors</param>
+        /// <param name="cache">A <see cref="MemoryCache"/> used to store market descriptors</param>
         /// <param name="dataRouterManager">A <see cref="IDataRouterManager"/> used to fetch data</param>
         /// <param name="mappingValidatorFactory">A <see cref="IMappingValidatorFactory"/> used to construct <see cref="IMappingValidator"/> instances for market mappings</param>
         /// <param name="timer">The <see cref="ITimer"/> instance used to periodically fetch market descriptors</param>
         /// <param name="prefetchLanguages">A <see cref="IReadOnlyCollection{CultureInfo}"/> specifying the languages for which the data should be pre-fetched</param>
         /// <param name="cacheManager">A <see cref="ICacheManager"/> used to interact among caches</param>
-        public VariantDescriptionListCache(ObjectCache cache,
+        public VariantDescriptionListCache(MemoryCache cache,
                                        IDataRouterManager dataRouterManager,
                                        IMappingValidatorFactory mappingValidatorFactory,
                                        ITimer timer,

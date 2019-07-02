@@ -31,41 +31,41 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         public void Run(MessageInterest messageInterest, CultureInfo culture)
         {
-            _log.Info("Running the OddsFeed SDK Display Markets Names example");
+            Console.WriteLine("Running the OddsFeed SDK Display Markets Names example");
 
-            _log.Info("Retrieving configuration from application configuration file");
+            Console.WriteLine("Retrieving configuration from application configuration file");
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
 
-            _log.Info("Creating Feed instance");
+            Console.WriteLine("Creating Feed instance");
             var oddsFeed = new Feed(configuration);
 
-            _log.Info("Creating IOddsFeedSession");
+            Console.WriteLine("Creating IOddsFeedSession");
             var session = oddsFeed.CreateBuilder()
                 .SetMessageInterest(messageInterest)
                 .Build();
 
             _marketMappingsWriter = new MarketMappingsWriter(_log, _taskProcessor, culture);
 
-            _log.Info("Attaching to feed events");
+            Console.WriteLine("Attaching to feed events");
             AttachToFeedEvents(oddsFeed);
             AttachToSessionEvents(session);
 
-            _log.Info("Opening the feed instance");
+            Console.WriteLine("Opening the feed instance");
             oddsFeed.Open();
-            _log.Info("Example successfully started. Hit <enter> to quit");
+            Console.WriteLine("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
             Console.ReadLine();
 
-            _log.Info("Closing / disposing the feed");
+            Console.WriteLine("Closing / disposing the feed");
             oddsFeed.Close();
 
             DetachFromFeedEvents(oddsFeed);
             DetachFromSessionEvents(session);
 
-            _log.Info("Waiting for asynchronous operations to complete");
+            Console.WriteLine("Waiting for asynchronous operations to complete");
             var waitResult = _taskProcessor.WaitForTasks();
-            _log.Info($"Waiting for tasks completed. Result:{waitResult}");
-            _log.Info("Stopped");
+            Console.WriteLine($"Waiting for tasks completed. Result:{waitResult}");
+            Console.WriteLine("Stopped");
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(oddsFeed != null);
 
-            _log.Info("Attaching to feed events");
+            Console.WriteLine("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
             oddsFeed.ProducerDown += OnProducerDown;
             oddsFeed.Disconnected += OnDisconnected;
@@ -91,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(oddsFeed != null);
 
-            _log.Info("Detaching from feed events");
+            Console.WriteLine("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
             oddsFeed.ProducerDown -= OnProducerDown;
             oddsFeed.Disconnected -= OnDisconnected;
@@ -106,7 +106,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(session != null);
 
-            _log.Info("Attaching to session events");
+            Console.WriteLine("Attaching to session events");
             session.OnUnparsableMessageReceived += SessionOnUnparsableMessageReceived;
             session.OnBetCancel += SessionOnBetCancel;
             session.OnBetSettlement += SessionOnBetSettlement;
@@ -125,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(session != null);
 
-            _log.Info("Detaching from session events");
+            Console.WriteLine("Detaching from session events");
             session.OnUnparsableMessageReceived -= SessionOnUnparsableMessageReceived;
             session.OnBetCancel -= SessionOnBetCancel;
             session.OnBetSettlement -= SessionOnBetSettlement;
@@ -185,7 +185,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void SessionOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.Info($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+            Console.WriteLine($"{unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
         }
 
         /// <summary>
@@ -225,12 +225,12 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
         {
-            _log.Info($"Producer {e.GetProducerStatusChange().Producer} is up");
+            Console.WriteLine($"Producer {e.GetProducerStatusChange().Producer} is up");
         }
 
         private void WriteSportEntity(string msgType, ISportEvent message)
         {
-            _log.Info($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}");
+            Console.WriteLine($"{msgType.Replace("`1", string.Empty)} message for eventId {message.Id}");
         }
     }
 }

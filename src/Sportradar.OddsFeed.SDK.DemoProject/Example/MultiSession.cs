@@ -25,13 +25,13 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         public void Run()
         {
-            _log.Info("Running the OddsFeed SDK Multi-Session example");
+           Console.WriteLine("Running the OddsFeed SDK Multi-Session example");
 
             var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
             var oddsFeed = new Feed(configuration);
             AttachToFeedEvents(oddsFeed);
 
-            _log.Info("Creating IOddsFeedSessions");
+           Console.WriteLine("Creating IOddsFeedSessions");
 
              var sessionHigh = oddsFeed.CreateBuilder()
                     .SetMessageInterest(MessageInterest.HighPriorityMessages)
@@ -40,25 +40,25 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
                     .SetMessageInterest(MessageInterest.LowPriorityMessages)
                     .Build();
 
-            _log.Info("Attaching to events for session with message interest 'HighPriorityMessages'");
+           Console.WriteLine("Attaching to events for session with message interest 'HighPriorityMessages'");
             AttachToSessionHighEvents(sessionHigh);
-            _log.Info("Attaching to events for session with message interest 'LowPriorityMessages'");
+           Console.WriteLine("Attaching to events for session with message interest 'LowPriorityMessages'");
             AttachToSessionLowEvents(sessionLow);
 
-            _log.Info("Opening the feed instance");
+           Console.WriteLine("Opening the feed instance");
             oddsFeed.Open();
-            _log.Info("Example successfully started. Hit <enter> to quit");
+           Console.WriteLine("Example successfully started. Hit <enter> to quit");
             Console.WriteLine(string.Empty);
             Console.ReadLine();
 
-            _log.Info("Closing / disposing the feed");
+           Console.WriteLine("Closing / disposing the feed");
             oddsFeed.Close();
 
             DetachFromFeedEvents(oddsFeed);
             DetachFromSessionHighEvents(sessionHigh);
             DetachFromSessionLowEvents(sessionLow);
 
-            _log.Info("Stopped");
+           Console.WriteLine("Stopped");
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(oddsFeed != null);
 
-            _log.Info("Attaching to feed events");
+           Console.WriteLine("Attaching to feed events");
             oddsFeed.ProducerUp += OnProducerUp;
             oddsFeed.ProducerDown += OnProducerDown;
             oddsFeed.Disconnected += OnDisconnected;
@@ -84,7 +84,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(oddsFeed != null);
 
-            _log.Info("Detaching from feed events");
+           Console.WriteLine("Detaching from feed events");
             oddsFeed.ProducerUp -= OnProducerUp;
             oddsFeed.ProducerDown -= OnProducerDown;
             oddsFeed.Disconnected -= OnDisconnected;
@@ -99,7 +99,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(session != null);
 
-            _log.Info("Attaching to session (high) events");
+           Console.WriteLine("Attaching to session (high) events");
             session.OnUnparsableMessageReceived += SessionHighOnUnparsableMessageReceived;
             session.OnBetCancel += SessionHighOnBetCancel;
             session.OnBetSettlement += SessionHighOnBetSettlement;
@@ -118,7 +118,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(session != null);
 
-            _log.Info("Detaching from session (high) events");
+           Console.WriteLine("Detaching from session (high) events");
             session.OnUnparsableMessageReceived -= SessionHighOnUnparsableMessageReceived;
             session.OnBetCancel -= SessionHighOnBetCancel;
             session.OnBetSettlement -= SessionHighOnBetSettlement;
@@ -137,7 +137,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(session != null);
 
-            _log.Info("Attaching to session (low) events");
+           Console.WriteLine("Attaching to session (low) events");
             session.OnUnparsableMessageReceived += SessionLowOnUnparsableMessageReceived;
             session.OnBetCancel += SessionLowOnBetCancel;
             session.OnBetSettlement += SessionLowOnBetSettlement;
@@ -156,7 +156,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         {
             Contract.Requires(session != null);
 
-            _log.Info("Detaching from session (low) events");
+           Console.WriteLine("Detaching from session (low) events");
             session.OnUnparsableMessageReceived -= SessionLowOnUnparsableMessageReceived;
             session.OnBetCancel -= SessionLowOnBetCancel;
             session.OnBetSettlement -= SessionLowOnBetSettlement;
@@ -211,7 +211,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void SessionHighOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.Info($"PREMATCH: {unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+           Console.WriteLine($"PREMATCH: {unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
         }
 
         private void SessionLowOnRollbackBetSettlement(object sender, RollbackBetSettlementEventArgs<ISportEvent> rollbackBetSettlementEventArgs)
@@ -258,7 +258,7 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
 
         private void SessionLowOnUnparsableMessageReceived(object sender, UnparsableMessageEventArgs unparsableMessageEventArgs)
         {
-            _log.Info($"PREMATCH: {unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
+           Console.WriteLine($"PREMATCH: {unparsableMessageEventArgs.MessageType.GetType()} message came for event {unparsableMessageEventArgs.EventId}.");
         }
 
         /// <summary>
@@ -298,17 +298,17 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
         /// <param name="e">The event arguments</param>
         private void OnProducerUp(object sender, ProducerStatusChangeEventArgs e)
         {
-            _log.Info($"Producer {e.GetProducerStatusChange().Producer} is up");
+           Console.WriteLine($"Producer {e.GetProducerStatusChange().Producer} is up");
         }
 
         private void WriteHighSportEntity(string msgType, ISportEvent message)
         {
-            _log.Debug($"HIGH: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
+            Console.WriteLine($"HIGH: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
         }
 
         private void WriteLowSportEntity(string msgType, ISportEvent message)
         {
-            _log.Debug($"LOW: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
+            Console.WriteLine($"LOW: {msgType.Replace("`1", string.Empty)} message for eventId: {message.Id}");
         }
     }
 }

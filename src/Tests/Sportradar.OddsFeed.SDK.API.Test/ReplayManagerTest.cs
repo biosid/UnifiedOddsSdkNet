@@ -1,20 +1,21 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Net.Http;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sportradar.OddsFeed.SDK.API.Internal.Replay;
 using Sportradar.OddsFeed.SDK.Common.Internal.Log;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
+using System.Net.Http;
 
 namespace Sportradar.OddsFeed.SDK.API.Test
 {
     [TestClass]
     public class ReplayManagerTest
     {
-        private HttpDataRestful _httpDataRestful;
+        private IDataRestful _httpDataRestful;
         private IReplayManager _replayManager;
 
         [TestInitialize]
@@ -31,7 +32,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                 15
             };
 
-            _httpDataRestful = LogProxyFactory.Create<HttpDataRestful>(args);
+            _httpDataRestful = LogProxyFactory.Create<IDataRestful>(args);
 
             object[] args2 =
             {
@@ -39,7 +40,7 @@ namespace Sportradar.OddsFeed.SDK.API.Test
                 _httpDataRestful,
                 0
             };
-            _replayManager = LogProxyFactory.Create<ReplayManager>(args2);
+            _replayManager = LogProxyFactory.Create<IReplayManager>(args2);
         }
 
         [TestMethod]

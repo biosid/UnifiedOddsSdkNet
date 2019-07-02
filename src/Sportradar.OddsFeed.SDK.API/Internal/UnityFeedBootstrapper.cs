@@ -1,17 +1,8 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.Caching;
 using Common.Logging;
 using Metrics;
-using Microsoft.Practices.Unity;
 using RabbitMQ.Client;
 using Sportradar.OddsFeed.SDK.API.Internal.Replay;
 using Sportradar.OddsFeed.SDK.Common;
@@ -34,6 +25,18 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Linq;
+using System.Net.Http;
+using System.Runtime.Caching;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
+using Unity.Resolution;
 using cashout = Sportradar.OddsFeed.SDK.Messages.REST.cashout;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
@@ -94,14 +97,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             container.RegisterType<IDataProvider<BookmakerDetailsDTO>, BookmakerDetailsProvider>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
-                    "{0}/v1/users/whoami.xml",
+                   "{0}/v1/users/whoami.xml",
                     new ResolvedParameter<IDataFetcher>(),
                     new ResolvedParameter<IDeserializer<bookmaker_details>>(),
                     new ResolvedParameter<ISingleTypeMapperFactory<bookmaker_details, BookmakerDetailsDTO>>()));
 
             //container.RegisterInstance(LogProxyFactory.Create<BookmakerDetailsFetcher>(m => m.Name.Contains("Async"), LoggerType.ClientInteraction, true, container.Resolve<IDataProvider<BookmakerDetailsDTO>>()), new ContainerControlledLifetimeManager());
 
-            var config = new OddsFeedConfigurationInternal(userConfig, container.Resolve<BookmakerDetailsProvider>());
+            var config = new OddsFeedConfigurationInternal(userConfig, container.Resolve<BookmakerDetailsProvider>(new ParameterOverride("bookmakerDetailsUriFormat", "{0}/v1/users/whoami.xml")));
 
             container.RegisterInstance(config.ExceptionHandlingStrategy, new ContainerControlledLifetimeManager());
             container.RegisterInstance<IOddsFeedConfiguration>(config, new ContainerControlledLifetimeManager());
@@ -136,9 +139,12 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ISequenceGenerator>(),
                     config));
 
-            container.RegisterType<IRecoveryRequestIssuer>(
-                new ContainerControlledLifetimeManager(),
-                new InjectionFactory(c => c.Resolve<IEventRecoveryRequestIssuer>()));
+            container.RegisterFactory<IRecoveryRequestIssuer>(c =>
+                c.Resolve<IEventRecoveryRequestIssuer>(), new ContainerControlledLifetimeManager());
+
+            /*  container.RegisterType<IRecoveryRequestIssuer>(
+                  new ContainerControlledLifetimeManager(),
+                  new InjectionFactory(c => ));*/
 
             container.RegisterType<ISportDataProvider, SportDataProvider>(
                 new ContainerControlledLifetimeManager(),
@@ -483,7 +489,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
             // invariant market descriptions provider
             container.RegisterType<IDeserializer<market_descriptions>, Deserializer<market_descriptions>>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISingleTypeMapperFactory<market_descriptions, EntityList<MarketDescriptionDTO>>, MarketDescriptionsMapperFactory>(new ContainerControlledLifetimeManager());
-            container.RegisterType <IDataProvider<EntityList<MarketDescriptionDTO>>, DataProvider<market_descriptions, EntityList<MarketDescriptionDTO>>>(
+            container.RegisterType<IDataProvider<EntityList<MarketDescriptionDTO>>, DataProvider<market_descriptions, EntityList<MarketDescriptionDTO>>>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
                     config.ApiBaseUri + "/v1/descriptions/{0}/markets.xml?include_mappings=true",
@@ -604,19 +610,25 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
             RegisterSessionMessageProcessor(container);
 
-            container.RegisterType<IFeedMessageProcessor>(
-                new HierarchicalLifetimeManager(),
-                new InjectionFactory(c => new CompositeMessageProcessor(c.ResolveAll<IFeedMessageProcessor>())));
+            container.RegisterFactory<IFeedMessageProcessor>(c =>
+               new CompositeMessageProcessor(c.ResolveAll<IFeedMessageProcessor>()), new HierarchicalLifetimeManager());
+
+            /* container.RegisterType<IFeedMessageProcessor>(
+                 new HierarchicalLifetimeManager(),
+                 new InjectionFactory(c => new CompositeMessageProcessor(c.ResolveAll<IFeedMessageProcessor>())));*/
         }
 
         private static void RegisterSessionMessageProcessor(IUnityContainer container)
         {
             Contract.Requires(container != null);
 
-            container.RegisterType<IFeedMessageProcessor>(
-                "SessionMessageManager",
-                new HierarchicalLifetimeManager(),
-                new InjectionFactory(c => c.Resolve<IFeedRecoveryManager>().CreateSessionMessageManager()));
+            container.RegisterFactory<IFeedMessageProcessor>("SessionMessageManager", c =>
+                 c.Resolve<IFeedRecoveryManager>().CreateSessionMessageManager(), new HierarchicalLifetimeManager());
+
+            /*  container.RegisterType<IFeedMessageProcessor>(
+                  "SessionMessageManager",
+                  ,
+                  new InjectionFactory(c => ));*/
         }
 
         private static void RegisterCacheMessageProcessor(IUnityContainer container)
@@ -665,7 +677,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     new ResolvedParameter<ICacheManager>(),
                     new ResolvedParameter<IFeedMessageHandler>()));
 
-            container.RegisterType<ISportEventStatusCache>(new HierarchicalLifetimeManager());
+            // container.RegisterType<ISportEventStatusCache>(new HierarchicalLifetimeManager());
 
             container.RegisterType<CacheMessageProcessor>(
                 new HierarchicalLifetimeManager(),
@@ -676,14 +688,13 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         {
             Contract.Requires(container != null);
 
+            var sportMemCache = new MemoryCache("sportEventCache");
             container.RegisterInstance(
-                "SportEventCache_Cache",
-                new MemoryCache("sportEventCache"),
-                new ContainerControlledLifetimeManager());
+                "SportEventCache_Cache", sportMemCache, new ContainerControlledLifetimeManager());
 
+            var fixtureCache = new MemoryCache("sportEventFixtureTimestampCache");
             container.RegisterInstance(
-                "SportEventCache_FixtureTimestampCache",
-                new MemoryCache("sportEventFixtureTimestampCache"),
+                "SportEventCache_FixtureTimestampCache", fixtureCache,
                 new ContainerControlledLifetimeManager());
 
             container.RegisterType<ITimer, SdkTimer>(
@@ -891,18 +902,19 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
 
         private static void RegisterSdkStatisticsWriter(IUnityContainer container, IOddsFeedConfigurationInternal config)
         {
-            var statusProviders = new List<IHealthStatusProvider>
-            {
-                container.Resolve<LogHttpDataFetcher>(),
-                container.Resolve<SportEventCache>(),
-                container.Resolve<SportDataCache>(),
-                container.Resolve<InvariantMarketDescriptionCache>("InvariantMarketDescriptionsCache"),
-                container.Resolve<VariantMarketDescriptionCache>("VariantMarketDescriptionCache"),
-                container.Resolve<VariantDescriptionListCache>("VariantDescriptionListCache"),
-                container.Resolve<ProfileCache>(),
-                container.Resolve<LocalizedNamedValueCache>("MatchStatusCache"),
-                container.Resolve<SportEventStatusCache>()
-            };
+            //todo: FIX STATISTICS
+            /* var statusProviders = new List<IHealthStatusProvider>
+               {
+                   container.Resolve<LogHttpDataFetcher>(),
+                   container.Resolve<SportEventCache>(),
+                   container.Resolve<SportDataCache>(),
+                   container.Resolve<InvariantMarketDescriptionCache>("InvariantMarketDescriptionsCache"),
+                   container.Resolve<VariantMarketDescriptionCache>("VariantMarketDescriptionCache"),
+                   container.Resolve<VariantDescriptionListCache>("VariantDescriptionListCache"),
+                   container.Resolve<ProfileCache>(),
+                   container.Resolve<LocalizedNamedValueCache>("MatchStatusCache"),
+                   container.Resolve<SportEventStatusCache>()
+               };*/
 
             container.RegisterType<MetricsReporter, MetricsReporter>(new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(
@@ -911,14 +923,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
                     true));
             var metricReporter = container.Resolve<MetricsReporter>();
 
-            Metric.Config.WithAllCounters().WithReporting(rep => rep.WithReport(metricReporter, TimeSpan.FromSeconds(config.StatisticsTimeout)));
+            Metric.Config.WithReporting(rep => rep.WithReport(metricReporter, TimeSpan.FromSeconds(config.StatisticsTimeout)));
 
             container.RegisterInstance(metricReporter, new ContainerControlledLifetimeManager());
 
-            foreach (var sp in statusProviders)
-            {
-                sp.RegisterHealthCheck();
-            }
+            /* foreach (var sp in statusProviders)
+              {
+                  sp.RegisterHealthCheck();
+              }*/
         }
 
         private static void RegisterFeedRecoveryManager(IUnityContainer container, IOddsFeedConfigurationInternal config)

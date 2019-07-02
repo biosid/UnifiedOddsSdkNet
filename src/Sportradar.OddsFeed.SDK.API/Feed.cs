@@ -9,7 +9,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Common.Logging;
-using Microsoft.Practices.Unity;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using Sportradar.OddsFeed.SDK.API.EventArguments;
@@ -22,6 +21,10 @@ using Sportradar.OddsFeed.SDK.Entities;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST;
 using Sportradar.OddsFeed.SDK.Messages;
+using Unity;
+using Unity.Extension;
+using Unity.Lifetime;
+using Unity.Resolution;
 
 namespace Sportradar.OddsFeed.SDK.API
 {
@@ -38,7 +41,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// A <see cref="IUnityContainer"/> used to resolve
         /// </summary>
-        protected readonly IUnityContainer UnityContainer;
+        protected readonly IUnityContainer CurrentUnityContainer;
 
         /// <summary>
         /// Value indicating whether the instance has been disposed
@@ -96,126 +99,56 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <summary>
         /// Gets a <see cref="IEventRecoveryRequestIssuer"/> instance used to issue recovery requests to the feed
         /// </summary>
-        public IEventRecoveryRequestIssuer EventRecoveryRequestIssuer {
-            get
-            {
-                InitFeed();
-                return UnityContainer.Resolve<IEventRecoveryRequestIssuer>();
-            }
-        }
+        public IEventRecoveryRequestIssuer EventRecoveryRequestIssuer { get; }
 
         /// <summary>
         /// Gets a <see cref="ISportDataProvider" /> instance used to retrieve sport related data from the feed
         /// </summary>
         /// <value>The sport data provider</value>
-        public ISportDataProvider SportDataProvider {
-            get
-            {
-                InitFeed();
-                return UnityContainer.Resolve<ISportDataProvider>();
-            }
-        }
+        public ISportDataProvider SportDataProvider { get; }
 
         /// <summary>
         /// Gets a <see cref="IProducerManager" /> instance used to retrieve producer related data
         /// </summary>
         /// <value>The producer manager</value>
-        public IProducerManager ProducerManager
-        {
-            get
-            {
-                InitFeed();
-                try
-                {
-                    var producerManager = UnityContainer.Resolve<IProducerManager>();
-                    if (InternalConfig.Environment == SdkEnvironment.Replay)
-                    {
-                        ((ProducerManager) ProducerManager).SetIgnoreRecovery(0);
-                    }
-                    return producerManager;
-                }
-                catch (Exception e)
-                {
-                    Log.Error("Error getting available producers.", e);
-                    throw;
-                }
-            }
-        }
+        public IProducerManager ProducerManager { get; }
 
         /// <summary>
         /// Gets a <see cref="IBookingManager" /> instance used to perform various booking calendar operations
         /// </summary>
         /// <value>The booking manager</value>
-        public IBookingManager BookingManager
-        {
-            get
-            {
-                InitFeed();
-                return UnityContainer.Resolve<IBookingManager>();
-            }
-        }
+        public IBookingManager BookingManager { get; }
 
         /// <summary>
         /// Gets the<see cref= "ICashOutProbabilitiesProvider" /> instance used to retrieve cash out probabilities for betting markets
         /// </summary>
-        public ICashOutProbabilitiesProvider CashOutProbabilitiesProvider
-        {
-            get
-            {
-                InitFeed();
-                return UnityContainer.Resolve<ICashOutProbabilitiesProvider>();
-            }
-        }
+        public ICashOutProbabilitiesProvider CashOutProbabilitiesProvider { get; }
 
         /// <summary>
         /// Gets a <see cref="IBookmakerDetails"/> instance used to get info about bookmaker and token used
         /// </summary>
-        public IBookmakerDetails BookmakerDetails
-        {
-            get
-            {
-                InitFeed();
-                return InternalConfig.BookmakerDetails;
-            }
-        }
+        public IBookmakerDetails BookmakerDetails { get; }
 
         /// <summary>
         /// Gets a <see cref="IMarketDescriptionManager"/> instance used to get info about available markets, and to get translations for markets and outcomes including outrights
         /// </summary>
-        public IMarketDescriptionManager MarketDescriptionManager
-        {
-            get
-            {
-                InitFeed();
-                return UnityContainer.Resolve<IMarketDescriptionManager>();
-            }
-        }
+        public IMarketDescriptionManager MarketDescriptionManager { get; }
 
         /// <summary>
         /// Gets a <see cref="ICustomBetManager" /> instance used to perform various custom bet operations
         /// </summary>
         /// <value>The custom bet manager</value>
-        public ICustomBetManager CustomBetManager
-        {
-            get
-            {
-                InitFeed();
-                return UnityContainer.Resolve<ICustomBetManager>();
-            }
-        }
+        public ICustomBetManager CustomBetManager { get; }
 
         /// <summary>
         /// A <see cref="IFeedRecoveryManager"/> for managing recoveries and producer statuses in sessions
         /// </summary>
-        private IFeedRecoveryManager _feedRecoveryManager;
+        private readonly IFeedRecoveryManager _feedRecoveryManager;
 
         /// <summary>
         /// A <see cref="ConnectionValidator"/> used to detect potential connectivity issues
         /// </summary>
-        private ConnectionValidator _connectionValidator;
-
-        private bool _feedInitialized;
-        private readonly object _lockInitialized = new object();
+        private readonly ConnectionValidator _connectionValidator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Feed"/> class
@@ -228,39 +161,41 @@ namespace Sportradar.OddsFeed.SDK.API
 
             LogInit();
 
-            _feedInitialized = false;
-
-            UnityContainer = new UnityContainer();
-            UnityContainer.RegisterBaseTypes(config);
-            InternalConfig = UnityContainer.Resolve<IOddsFeedConfigurationInternal>();
-            if (isReplay || InternalConfig.Environment == SdkEnvironment.Replay)
+            var container = new UnityContainer();
+            container.EnableDebugDiagnostic();
+            container.RegisterBaseTypes(config);
+            var internalConfig = container.Resolve<IOddsFeedConfigurationInternal>();
+            if (isReplay || internalConfig.Environment == SdkEnvironment.Replay)
             {
-                InternalConfig.EnableReplayServer();
+                internalConfig.EnableReplayServer();
             }
-        }
+            internalConfig.Load(); // loads bookmaker_details
+            container.RegisterTypes(this);
+            container.RegisterAdditionalTypes();
+            CurrentUnityContainer = container;
 
-        private void InitFeed()
-        {
-            if (_feedInitialized)
+            EventRecoveryRequestIssuer = CurrentUnityContainer.Resolve<IEventRecoveryRequestIssuer>();
+            SportDataProvider = CurrentUnityContainer.Resolve<ISportDataProvider>();
+            CashOutProbabilitiesProvider = CurrentUnityContainer.Resolve<ICashOutProbabilitiesProvider>();
+            _feedRecoveryManager = CurrentUnityContainer.Resolve<IFeedRecoveryManager>();
+            _connectionValidator = CurrentUnityContainer.Resolve<ConnectionValidator>();
+            InternalConfig = CurrentUnityContainer.Resolve<IOddsFeedConfigurationInternal>();
+            BookingManager = CurrentUnityContainer.Resolve<IBookingManager>();
+            MarketDescriptionManager = CurrentUnityContainer.Resolve<IMarketDescriptionManager>();
+            BookmakerDetails = InternalConfig.BookmakerDetails;
+            CustomBetManager = CurrentUnityContainer.Resolve<ICustomBetManager>();
+            try
             {
-                return;
-            }
-
-            lock (_lockInitialized)
-            {
-                if (_feedInitialized)
+                ProducerManager = CurrentUnityContainer.Resolve<IProducerManager>();
+                if (isReplay || internalConfig.Environment == SdkEnvironment.Replay)
                 {
-                    return;
+                    ((ProducerManager)ProducerManager).SetIgnoreRecovery(0);
                 }
-
-                InternalConfig.Load(); // loads bookmaker_details
-                UnityContainer.RegisterTypes(this);
-                UnityContainer.RegisterAdditionalTypes();
-
-                _feedRecoveryManager = UnityContainer.Resolve<IFeedRecoveryManager>();
-                _connectionValidator = UnityContainer.Resolve<ConnectionValidator>();
-
-                _feedInitialized = true;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Error getting available producers.", e);
+                throw;
             }
         }
 
@@ -281,7 +216,7 @@ namespace Sportradar.OddsFeed.SDK.API
         private void OnConnectionShutdown(object sender, ShutdownEventArgs shutdownEventArgs)
         {
             _feedRecoveryManager.ConnectionShutdown();
-            ((IGlobalEventDispatcher) this).DispatchDisconnected();
+            ((IGlobalEventDispatcher)this).DispatchDisconnected();
         }
 
         /// <summary>
@@ -302,7 +237,7 @@ namespace Sportradar.OddsFeed.SDK.API
         /// <param name="e">The <see cref="ProducerStatusChangeEventArgs"/> instance containing the event data</param>
         private void MarkProducerAsUp(object sender, ProducerStatusChangeEventArgs e)
         {
-            ((IGlobalEventDispatcher) this).DispatchProducerUp(e.GetProducerStatusChange());
+            ((IGlobalEventDispatcher)this).DispatchProducerUp(e.GetProducerStatusChange());
         }
 
         private void OnCloseFeed(object sender, FeedCloseEventArgs e)
@@ -367,7 +302,7 @@ namespace Sportradar.OddsFeed.SDK.API
                 throw new InvalidOperationException("Cannot create session associated with already opened feed");
             }
 
-            var childContainer = UnityContainer.CreateChildContainer();
+            var childContainer = CurrentUnityContainer.CreateChildContainer();
             Func<OddsFeedSession, IEnumerable<string>> func = GetSessionRoutingKeys;
             var session = (OddsFeedSession) childContainer.Resolve<IOddsFeedSession>(new ParameterOverride("messageInterest", msgInterest), new ParameterOverride("getRoutingKeys", func));
             Sessions.Add(session);
@@ -519,7 +454,7 @@ namespace Sportradar.OddsFeed.SDK.API
             {
                 try
                 {
-                    UnityContainer.Dispose();
+                    CurrentUnityContainer.Dispose();
                 }
                 catch (Exception ex)
                 {
@@ -547,8 +482,6 @@ namespace Sportradar.OddsFeed.SDK.API
         /// </exception>
         public void Open()
         {
-            InitFeed();
-
             if (_isDisposed)
             {
                 throw new ObjectDisposedException(ToString());
@@ -571,7 +504,7 @@ namespace Sportradar.OddsFeed.SDK.API
                     session.Open();
                 }
 
-                _connection = UnityContainer.Resolve<IConnectionFactory>().CreateConnection();
+                _connection = CurrentUnityContainer.Resolve<IConnectionFactory>().CreateConnection();
                 _connection.ConnectionShutdown += OnConnectionShutdown;
                 _feedRecoveryManager.ProducerUp += MarkProducerAsUp;
                 _feedRecoveryManager.ProducerDown += MarkProducerAsDown;
@@ -582,44 +515,39 @@ namespace Sportradar.OddsFeed.SDK.API
             }
             catch (CommunicationException ex)
             {
-                Interlocked.CompareExchange(ref _opened, 0, 1);
-
                 // this should really almost never happen
                 var result = _connectionValidator.ValidateConnection();
                 if (result == ConnectionValidationResult.Success)
                 {
-                    throw new CommunicationException("Connection to the RESTful API failed, Probable Reason={Invalid or expired token}",
-                                                     $"{InternalConfig.ApiBaseUri}:443",
-                                                     ex.InnerException);
+                    throw new CommunicationException(
+                        "Connection to the RESTful API failed, Probable Reason={Invalid or expired token}",
+                        $"{InternalConfig.ApiBaseUri}:443",
+                        ex.InnerException);
                 }
 
                 var publicIp = _connectionValidator.GetPublicIp();
-                throw new CommunicationException($"Connection to the RESTful API failed. Probable Reason={result.Message}, Public IP={publicIp}",
-                                                 $"{InternalConfig.ApiBaseUri}:443",
-                                                 ex);
+                throw new CommunicationException(
+                    $"Connection to the RESTful API failed. Probable Reason={result.Message}, Public IP={publicIp}",
+                    $"{InternalConfig.ApiBaseUri}:443",
+                    ex);
             }
             catch (BrokerUnreachableException ex)
             {
-                Interlocked.CompareExchange(ref _opened, 0, 1);
-
                 // this should really almost never happen
                 var result = _connectionValidator.ValidateConnection();
                 if (result == ConnectionValidationResult.Success)
                 {
-                    throw new CommunicationException("Connection to the message broker failed, Probable Reason={Invalid or expired token}",
-                                                     $"{InternalConfig.Host}:{InternalConfig.Port}",
-                                                     ex.InnerException);
+                    throw new CommunicationException(
+                        "Connection to the message broker failed, Probable Reason={Invalid or expired token}",
+                        $"{InternalConfig.Host}:{InternalConfig.Port}",
+                        ex.InnerException);
                 }
 
                 var publicIp = _connectionValidator.GetPublicIp();
-                throw new CommunicationException($"Connection to the message broker failed. Probable Reason={result.Message}, Public IP={publicIp}",
-                                                 $"{InternalConfig.Host}:{InternalConfig.Port}",
-                                                 ex);
-            }
-            catch (Exception)
-            {
-                Interlocked.CompareExchange(ref _opened, 0, 1);
-                throw;
+                throw new CommunicationException(
+                    $"Connection to the message broker failed. Probable Reason={result.Message}, Public IP={publicIp}",
+                    $"{InternalConfig.Host}:{InternalConfig.Port}",
+                    ex);
             }
         }
 

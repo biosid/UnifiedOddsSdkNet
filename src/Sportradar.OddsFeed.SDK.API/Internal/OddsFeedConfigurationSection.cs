@@ -1,18 +1,18 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Sportradar.OddsFeed.SDK.Common;
+using Sportradar.OddsFeed.SDK.Common.Internal;
 using System;
 using System.Configuration;
 using System.Diagnostics.Contracts;
-using Sportradar.OddsFeed.SDK.Common;
-using Sportradar.OddsFeed.SDK.Common.Internal;
 
 namespace Sportradar.OddsFeed.SDK.API.Internal
 {
     /// <summary>
     /// Represents Odds Feed SDK <see cref="ConfigurationSection"/> read from app.config file
     /// </summary>
-    internal class OddsFeedConfigurationSection : ConfigurationSection, IOddsFeedConfigurationSection
+    public class OddsFeedConfigurationSection : ConfigurationSection, IOddsFeedConfigurationSection
     {
         /// <summary>
         /// The name of the section element in the app.config file
@@ -23,14 +23,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets the access token
         /// </summary>
         [ConfigurationProperty("accessToken", IsRequired = true)]
-        public string AccessToken => (string) base["accessToken"];
+        public string AccessToken => (string)base["accessToken"];
 
         /// <summary>
         /// Gets a value specifying maximum allowed feed inactivity window
         /// </summary>
-        [ConfigurationProperty("inactivitySeconds", IsRequired = false, DefaultValue=20)]
+        [ConfigurationProperty("inactivitySeconds", IsRequired = false, DefaultValue = 20)]
         [IntegerValidator(MinValue = SdkInfo.MinInactivitySeconds, MaxValue = SdkInfo.MaxInactivitySeconds, ExcludeRange = false)]
-        public int InactivitySeconds => (int) base["inactivitySeconds"];
+        public int InactivitySeconds => (int)base["inactivitySeconds"];
 
         /// <summary>
         /// Gets the URL of the messaging broker
@@ -41,8 +41,8 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// <summary>
         /// Gets the name of the virtual host configured on the messaging broker
         /// </summary>
-        [ConfigurationProperty("virtualHost", IsRequired=false, DefaultValue = null)]
-        public string VirtualHost => (string) base["virtualHost"];
+        [ConfigurationProperty("virtualHost", IsRequired = false, DefaultValue = null)]
+        public string VirtualHost => (string)base["virtualHost"];
 
         /// <summary>
         /// Gets the port used to connect to the messaging broker
@@ -66,14 +66,14 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets the URL of the API host
         /// </summary>
         [ConfigurationProperty("apiHost", IsRequired = false, DefaultValue = null)]
-        public string ApiHost => (string) base["apiHost"];
+        public string ApiHost => (string)base["apiHost"];
 
         /// <summary>
         /// Gets a value indicating whether a secure connection to the messaging broker should be used
         /// </summary>
         [ConfigurationProperty("useSSL", IsRequired = false, DefaultValue = true)]
         // ReSharper disable once InconsistentNaming
-        public bool UseSSL => (bool) base["useSSL"];
+        public bool UseSSL => (bool)base["useSSL"];
 
         /// <summary>
         /// Gets a value indicating whether a secure connection to the Sports API should be used
@@ -125,7 +125,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// </summary>
         [ConfigurationProperty("useStagingEnvironment", IsRequired = false, DefaultValue = false)]
         [Obsolete("Use configuration property useIntegrationEnvironment")]
-        public bool UseStagingEnvironment => (bool) base["useStagingEnvironment"];
+        public bool UseStagingEnvironment => (bool)base["useStagingEnvironment"];
 
         /// <summary>
         /// Gets a value indicating whether the unified feed integration environment should be used
@@ -137,7 +137,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets a <see cref="Common.ExceptionHandlingStrategy"/> enum member specifying how to handle exceptions thrown to outside callers
         /// </summary>
         [ConfigurationProperty("exceptionHandlingStrategy", IsRequired = false, DefaultValue = ExceptionHandlingStrategy.CATCH)]
-        public ExceptionHandlingStrategy ExceptionHandlingStrategy => (ExceptionHandlingStrategy) base["exceptionHandlingStrategy"];
+        public ExceptionHandlingStrategy ExceptionHandlingStrategy => (ExceptionHandlingStrategy)base["exceptionHandlingStrategy"];
 
         /// <summary>
         /// Gets the comma delimited list of ids of disabled producers
@@ -162,7 +162,7 @@ namespace Sportradar.OddsFeed.SDK.API.Internal
         /// Gets the indication whether the after age should be adjusted before executing recovery request
         /// </summary>
         [ConfigurationProperty("adjustAfterAge", IsRequired = false, DefaultValue = false)]
-        public bool AdjustAfterAge => (bool) base["adjustAfterAge"];
+        public bool AdjustAfterAge => (bool)base["adjustAfterAge"];
 
         ///// <summary>
         ///// Gets a <see cref="SdkEnvironment"/> enum member specifying the environment sdk connects to

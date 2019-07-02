@@ -1,14 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
 using Sportradar.OddsFeed.SDK.Common.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping;
 using Sportradar.OddsFeed.SDK.Messages.REST;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
@@ -58,7 +58,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             Contract.Requires(deserializer != null);
             Contract.Requires(mapperFactory != null);
 
-            _uriFormat = bookmakerDetailsUriFormat;
+            _uriFormat = bookmakerDetailsUriFormat ?? "{0}/v1/users/whoami.xml";
             _fetcher = fetcher;
             _deserializer = deserializer;
             _mapperFactory = mapperFactory;

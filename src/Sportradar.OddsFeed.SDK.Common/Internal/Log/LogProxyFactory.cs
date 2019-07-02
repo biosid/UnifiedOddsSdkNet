@@ -21,9 +21,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         /// <returns>T.</returns>
         public static T Create<T>(object[] args, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true)
         {
-            var tmp = (T) Activator.CreateInstance(typeof(T), args);
+            var tmp = (T)Activator.CreateInstance(typeof(T), args);
             var logProxy = new LogProxy<T>(tmp, loggerType, canOverrideLoggerType);
-            return (T) logProxy.GetTransparentProxy();
+            // return LogProxy<T>.Create();
+            //todo: FIX LogProxy<T>.Create()
+            return tmp;
         }
 
         /// <summary>
@@ -37,9 +39,11 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         /// <returns>T.</returns>
         public static T Create<T>(object[] args, Predicate<MethodInfo> filter, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true)
         {
-            var tmp = (T) Activator.CreateInstance(typeof(T), args);
-            var logProxy = new LogProxy<T>(tmp, loggerType, canOverrideLoggerType) {Filter = filter};
-            return (T) logProxy.GetTransparentProxy();
+            var tmp = (T)Activator.CreateInstance(typeof(T), args);
+            var logProxy = new LogProxy<T>(tmp, loggerType, canOverrideLoggerType) { Filter = filter };
+            //todo: FIX LogProxy<T>.Create()
+            // return LogProxy<T>.Create();
+            return tmp;
         }
 
 
@@ -56,7 +60,9 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         {
             var tmp = (T)Activator.CreateInstance(typeof(T), args);
             var logProxy = new LogProxy<T>(tmp, loggerType, canOverrideLoggerType) { Filter = filter };
-            return (T)logProxy.GetTransparentProxy();
+            //todo: FIX LogProxy<T>.Create()
+            //return LogProxy<T>.Create();
+            return tmp;
         }
     }
 }

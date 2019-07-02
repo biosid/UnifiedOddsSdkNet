@@ -4,13 +4,13 @@
 
 using System;
 using Common.Logging;
-using Microsoft.Practices.Unity;
 using Sportradar.OddsFeed.SDK.API.Internal;
 using Sportradar.OddsFeed.SDK.Common;
 using Sportradar.OddsFeed.SDK.Common.Exceptions;
 using Sportradar.OddsFeed.SDK.Entities.Internal;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal;
 using Sportradar.OddsFeed.SDK.Messages.EventArguments;
+using Unity;
 
 namespace Sportradar.OddsFeed.SDK.API.Extended
 {
@@ -51,13 +51,13 @@ namespace Sportradar.OddsFeed.SDK.API.Extended
         public FeedExt(IOddsFeedConfiguration config)
             : base(config)
         {
-            _dataRouterManager = UnityContainer.Resolve<IDataRouterManager>();
+            _dataRouterManager = CurrentUnityContainer.Resolve<IDataRouterManager>();
             if (_dataRouterManager != null)
             {
                 _dataRouterManager.RawApiDataReceived += OnRawApiDataReceived;
             }
 
-            _feedMessageReceiver = UnityContainer.Resolve<IMessageReceiver>();
+            _feedMessageReceiver = CurrentUnityContainer.Resolve<IMessageReceiver>();
             if (_feedMessageReceiver != null)
             {
                 _feedMessageReceiver.RawFeedMessageReceived += OnRawFeedMessageReceived;

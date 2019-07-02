@@ -1,7 +1,6 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Sportradar.OddsFeed.SDK.API.Internal;
@@ -16,6 +15,11 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames;
 using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 using Sportradar.OddsFeed.SDK.Test.Shared;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
+using Unity.Resolution;
+
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
 namespace Sportradar.OddsFeed.SDK.API.Test
@@ -65,8 +69,8 @@ namespace Sportradar.OddsFeed.SDK.API.Test
 
             container.RegisterAdditionalTypes();
 
-            _childContainer1 = container.CreateChildContainer();
-            _childContainer2 = container.CreateChildContainer();
+            _childContainer1 = ((IUnityContainer) container).CreateChildContainer();
+            _childContainer2 = ((IUnityContainer) container).CreateChildContainer();
         }
 
         [TestMethod]

@@ -1,17 +1,12 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+using Common.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.Remoting.Proxies;
-using System.Threading.Tasks;
-using Common.Logging;
 
 namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
 {
@@ -19,7 +14,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
     /// A log proxy used to log input and output parameters of a method
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class LogProxy<T> : RealProxy
+    public class LogProxy<T> : DispatchProxy
     {
         private Predicate<MethodInfo> _filter;
         private readonly LoggerType _defaultLoggerType;
@@ -30,7 +25,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         private struct LogProxyPerm
         {
             public bool LogEnabled;
-            public IMethodMessage MethodCall;
+            // public IMethodMessage MethodCall;
             public MethodInfo MethodInfo;
             public object Result;
             public ILog Logger;
@@ -46,7 +41,6 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
         /// <param name="loggerType">A <see cref="LoggerType"/> to be used within the proxy</param>
         /// <param name="canOverrideLoggerType">A value indicating if the <see cref="LoggerType"/> can be overridden with <see cref="LogAttribute"/> on a method or class</param>
         public LogProxy(T decorated, LoggerType loggerType = LoggerType.Execution, bool canOverrideLoggerType = true)
-            : base(typeof(T))
         {
             _decorated = decorated;
             _defaultLoggerType = loggerType;
@@ -74,11 +68,38 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
             }
         }
 
+
+        public static T Create()
+        {
+            //todo: FIX DISPATH PROXY
+            object proxy = Create<T, LogProxy<T>>();
+            return (T)proxy;
+        }
+
+
         /// <summary>When overridden in a derived class, invokes the method that is specified in the provided <see cref="T:System.Runtime.Remoting.Messaging.IMessage" /> on the remote object that is represented by the current instance.</summary>
         /// <returns>The message returned by the invoked method, containing the return value and any out or ref parameters.</returns>
         /// <param name="msg">A <see cref="T:System.Runtime.Remoting.Messaging.IMessage" /> that contains a <see cref="T:System.Collections.IDictionary" /> of information about the method call. </param>
-        public override IMessage Invoke(IMessage msg)
+        protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
+            var logger = SdkLoggerFactory.GetLogger(targetMethod.ReflectedType, SdkLoggerFactory.SdkLogRepositoryName, _defaultLoggerType);
+            try
+            {
+
+                logger.Info($"Starting executing '{targetMethod.Name}' ...");
+
+                var result = targetMethod.Invoke(_decorated, args);
+
+                logger.Info($"Ending executing '{targetMethod.Name}' ...");
+                return result;
+            }
+            catch (Exception ex) when (ex is TargetInvocationException)
+            {
+                logger.Error($"Exception during executing '{targetMethod.Name}': {Environment.NewLine}", ex);
+                throw ex.InnerException ?? ex;
+            }
+
+            /*
             var logEnabled = false;
 
             var methodCall = msg as IMethodCallMessage;
@@ -156,7 +177,7 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                                {
                                    LogEnabled = logEnabled,
                                    Logger = logger,
-                                   MethodCall = methodCall,
+                                   //MethodCall = methodCall,
                                    MethodInfo = methodInfo,
                                    Result = result,
                                    Watch = watch
@@ -181,93 +202,96 @@ namespace Sportradar.OddsFeed.SDK.Common.Internal.Log
                     logger.Error($"Exception during executing '{methodCall.MethodName}': {Environment.NewLine}", e);
                 }
                 return new ReturnMessage(e, methodCall);
-            }
+            }*/
         }
 
-        private void TaskExecutionFinished(Task task)
+        /*
+private void TaskExecutionFinished(Task task)
+{
+    LogProxyPerm perm;
+    if (!_proxyPerms.TryGetValue(task.Id, out perm))
+    {
+        Debug.WriteLine($"No perm for task. Id: {task.Id}");
+        return;
+    }
+    var underlyingResultType = "Task->" + perm.Result.GetType().GetProperty("Result")?.PropertyType.Name;
+
+    if (task.IsFaulted)
+    {
+        var exceptionMsg = "EXCEPTION: ";
+        if (task.Exception != null)
         {
-            LogProxyPerm perm;
-            if (!_proxyPerms.TryGetValue(task.Id, out perm))
+            if (task.Exception.InnerExceptions != null)
             {
-                Debug.WriteLine($"No perm for task. Id: {task.Id}");
-                return;
+                exceptionMsg += task.Exception.InnerExceptions[0].ToString();
             }
-            var underlyingResultType = "Task->" + perm.Result.GetType().GetProperty("Result")?.PropertyType.Name;
-
-            if (task.IsFaulted)
+            else
             {
-                var exceptionMsg = "EXCEPTION: ";
-                if (task.Exception != null)
-                {
-                    if (task.Exception.InnerExceptions != null)
-                    {
-                        exceptionMsg += task.Exception.InnerExceptions[0].ToString();
-                    }
-                    else
-                    {
-                        exceptionMsg += task.Exception.ToString();
-                    }
-                }
-                FinishExecution(logEnabled: perm.LogEnabled,
-                                methodCall: perm.MethodCall,
-                                methodInfo: perm.MethodInfo,
-                                resultTypeName: underlyingResultType,
-                                result: exceptionMsg,
-                                logger: perm.Logger,
-                                watch: perm.Watch,
-                                taskId: $"TaskId:{task.Id}, ");
-                return;
+                exceptionMsg += task.Exception.ToString();
             }
-            var value = perm.Result.GetType().GetProperty("Result")?.GetValue(task);
-
-            FinishExecution(logEnabled: perm.LogEnabled,
-                            methodCall: perm.MethodCall,
-                            methodInfo: perm.MethodInfo,
-                            resultTypeName: underlyingResultType,
-                            result: value,
-                            logger: perm.Logger,
-                            watch: perm.Watch,
-                            taskId: $"TaskId:{task.Id}, ");
-            _proxyPerms.Remove(task.Id);
         }
+        FinishExecution(logEnabled: perm.LogEnabled,
+                      //  methodCall: perm.MethodCall,
+                        methodInfo: perm.MethodInfo,
+                        resultTypeName: underlyingResultType,
+                        result: exceptionMsg,
+                        logger: perm.Logger,
+                        watch: perm.Watch,
+                        taskId: $"TaskId:{task.Id}, ");
+        return;
+    }
+    var value = perm.Result.GetType().GetProperty("Result")?.GetValue(task);
 
-        private static void FinishExecution(bool logEnabled,
-                                            IMethodMessage methodCall,
-                                            MethodInfo methodInfo,
-                                            string resultTypeName,
-                                            object result,
-                                            ILog logger,
-                                            Stopwatch watch,
-                                            string taskId = null)
+    FinishExecution(logEnabled: perm.LogEnabled,
+                  //  methodCall: perm.MethodCall,
+                    methodInfo: perm.MethodInfo,
+                    resultTypeName: underlyingResultType,
+                    result: value,
+                    logger: perm.Logger,
+                    watch: perm.Watch,
+                    taskId: $"TaskId:{task.Id}, ");
+    _proxyPerms.Remove(task.Id);
+}
+
+private static void FinishExecution(bool logEnabled,
+                                  //  IMethodMessage methodCall,
+                                    MethodInfo methodInfo,
+                                    string resultTypeName,
+                                    object result,
+                                    ILog logger,
+                                    Stopwatch watch,
+                                    string taskId = null)
+{
+    watch.Stop();
+
+    if (logEnabled)
+    {
+        logger.Info($"{taskId}Finished executing '{methodCall.MethodName}'. Time: {watch.ElapsedMilliseconds} ms.");
+    }
+
+    if (logEnabled && !string.Equals(methodInfo.ReturnType.FullName, "System.Void"))
+    {
+        var responseMessage = result as HttpResponseMessage;
+        if (responseMessage != null)
         {
-            watch.Stop();
-
-            if (logEnabled)
-            {
-                logger.Info($"{taskId}Finished executing '{methodCall.MethodName}'. Time: {watch.ElapsedMilliseconds} ms.");
-            }
-
-            if (logEnabled && !string.Equals(methodInfo.ReturnType.FullName, "System.Void"))
-            {
-                var responseMessage = result as HttpResponseMessage;
-                if (responseMessage != null)
-                {
-                    logger.Debug($"{taskId}{methodCall.MethodName} result: {resultTypeName}={WriteHttpResponseMessage(responseMessage)}");
-                }
-                else
-                {
-                    logger.Debug($"{taskId}{methodCall.MethodName} result: {resultTypeName}={result};");
-                }
-            }
+            logger.Debug($"{taskId}{methodCall.MethodName} result: {resultTypeName}={WriteHttpResponseMessage(responseMessage)}");
         }
-
-        private static string WriteHttpResponseMessage(HttpResponseMessage message)
+        else
         {
-            if (message == null)
-            {
-                return null;
-            }
-            return $"StatusCode: {message.StatusCode}, ReasonPhrase: '{message.ReasonPhrase}', Version: {message.Version}, Content: {message.Content}";
+            logger.Debug($"{taskId}{methodCall.MethodName} result: {resultTypeName}={result};");
         }
+    }
+}
+
+private static string WriteHttpResponseMessage(HttpResponseMessage message)
+{
+    if (message == null)
+    {
+        return null;
+    }
+    return $"StatusCode: {message.StatusCode}, ReasonPhrase: '{message.ReasonPhrase}', Version: {message.Version}, Content: {message.Content}";
+}
+
+*/
     }
 }

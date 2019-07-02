@@ -22,8 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Test
 
         private static void PrintLogManagerStatus()
         {
-            Console.WriteLine($"Number of loggers: {LogManager.GetCurrentLoggers().Length}");
-            foreach (var l in LogManager.GetCurrentLoggers())
+            Console.WriteLine($"Number of loggers: {LogManager.GetCurrentLoggers(SdkCommon.TestData.SdkTestLogRepositoryName).Length}");
+            foreach (var l in LogManager.GetCurrentLoggers(SdkCommon.TestData.SdkTestLogRepositoryName))
             {
                 Console.WriteLine($"\tLogger: {l.Logger.Name}");
                 foreach (var a in l.Logger.Repository.GetAppenders())

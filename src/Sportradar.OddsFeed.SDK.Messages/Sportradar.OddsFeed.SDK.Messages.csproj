@@ -1,26 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{44421776-15E6-4A08-8F4E-25D08AC05618}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sportradar.OddsFeed.SDK.Messages</RootNamespace>
-    <AssemblyName>Sportradar.OddsFeed.SDK.Messages</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
     <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <AssemblyTitle>Sportradar.OddsFeed.SDK.Messages</AssemblyTitle>
+    <Company>Sportradar AG</Company>
+    <Product>Odds Feed SDK</Product>
+    <Description>Odds Feed SDK Messages</Description>
+    <Copyright>Copyright © Sportradar AG 2016</Copyright>
+    <AssemblyVersion>1.22.0.0</AssemblyVersion>
+    <FileVersion>1.22.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
@@ -64,61 +60,17 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Debug\Sportradar.OddsFeed.SDK.Messages.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  <PropertyGroup>
+    <PostBuildEvent />
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Contracts\ProducerManagerContract.cs" />
-    <Compile Include="EventArguments\RawApiDataEventArgs.cs" />
-    <Compile Include="EventArguments\RawFeedMessageEventArgs.cs" />
-    <Compile Include="Feed\FeedMarket.cs" />
-    <Compile Include="Feed\FeedMessage.cs" />
-    <Compile Include="Feed\FeedMessages.cs" />
-    <Compile Include="Feed\PropertyUsage.cs" />
-    <Compile Include="Internal\OverrideXmlNamespaceAttribute.cs" />
-    <Compile Include="Internal\ProducerExtensions.cs" />
-    <Compile Include="REST\MarketDescriptionMessages.cs" />
-    <Compile Include="REST\RestMessages.cs" />
-    <Compile Include="REST\RestMessage.cs" />
-    <Compile Include="Internal\RESTMessageBuilder.cs" />
-    <Compile Include="REST\CashoutMessages.cs" />
-    <Compile Include="IRecoveryInfo.cs" />
-    <Compile Include="IProducerV1.cs" />
-    <Compile Include="IProducer.cs" />
-    <Compile Include="IProducerManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceTypeGroup.cs" />
-    <Compile Include="URN.cs" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="Internal\FeedMessagesDiagram.cd" />
     <None Include="Internal\MarketDescriptionMessagesDiagram.cd" />
     <None Include="Internal\RestMessagesDiagram.cd" />
     <None Include="Internal\SportEventStatusDiagram.cd" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <Compile Remove="Internal\ProductExtensions.cs" />
+  </ItemGroup>
 </Project>
