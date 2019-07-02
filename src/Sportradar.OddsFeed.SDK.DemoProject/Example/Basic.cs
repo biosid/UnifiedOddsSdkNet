@@ -28,7 +28,8 @@ namespace Sportradar.OddsFeed.SDK.DemoProject.Example
             Console.WriteLine("Running the OddsFeed SDK Basic example");
 
             Console.WriteLine("Retrieving configuration from application configuration file");
-            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration().LoadFromConfigFile().Build();
+            var configuration = Feed.GetConfigurationBuilder().SetAccessTokenFromConfigFile().SelectIntegration()
+                .LoadFromConfigFile().Build();
             //you can also create the IOddsFeedConfiguration instance by providing required values
             //var configuration = Feed.CreateConfiguration("myAccessToken", new[] {"en"});
 

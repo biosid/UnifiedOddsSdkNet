@@ -11,21 +11,18 @@
     <AssemblyTitle>Sportradar.OddsFeed.SDK</AssemblyTitle>
     <Company>Sportradar AG</Company>
     <Product>Odds Feed SDK</Product>
-    <Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed.</Description>
+    <Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.Net Core 2.1 Addition)</Description>
     <Copyright>Copyright © Sportradar AG 2016</Copyright>
-    <Version>1.22.0.0</Version>
-    <AssemblyVersion>1.22.0.0</AssemblyVersion>
-    <FileVersion>1.22.0.0</FileVersion>
+    <Version>1.22.1.2</Version>
+    <AssemblyVersion>1.22.1.1</AssemblyVersion>
+    <FileVersion>1.22.1.1</FileVersion>
     <Authors>Sportradar AG</Authors>
-    <PackageId>Sportradar.OddsFeed.SDK</PackageId>
+    <PackageId>Sportradar.OddsFeed.SDK-SoftPro-Fork</PackageId>
     <PackageLicenseUrl>http://sdk.sportradar.com</PackageLicenseUrl>
     <PackageProjectUrl>http://sdk.sportradar.com/</PackageProjectUrl>
     <PackageReleaseNotes>Release 1.22.0.0</PackageReleaseNotes>
     <PackageTags>SportRadar OddsFeed UnifiedFeed SDK</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PostBuildEvent>BuildEventMerge.bat</PostBuildEvent>
-    <PostBuildEvent>BuildEventMerge.bat</PostBuildEvent>
-    <PostBuildEvent>BuildEventMerge.bat</PostBuildEvent>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
@@ -73,7 +70,10 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>BuildEventMerge.bat</PostBuildEvent>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
@@ -92,16 +92,8 @@
     <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Messages\Sportradar.OddsFeed.SDK.Messages.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BuildEventMerge.bat">
+    <None Update="BuildEventMerge.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DoNotInternalize.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Readme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>

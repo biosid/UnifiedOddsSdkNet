@@ -63,6 +63,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent />
+    <PackageId>Sportradar.OddsFeed.SDK.Messages-SoftPro-Fork</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Internal\FeedMessagesDiagram.cd" />

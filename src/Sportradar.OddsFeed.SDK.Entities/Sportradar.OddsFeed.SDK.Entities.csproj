@@ -16,6 +16,8 @@
     <Copyright>Copyright © Sportradar AG 2016</Copyright>
     <AssemblyVersion>1.22.0.0</AssemblyVersion>
     <FileVersion>1.22.0.0</FileVersion>
+    <PackageId>Sportradar.OddsFeed.SDK.Entities-SoftPro-Fork</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
