@@ -17,6 +17,7 @@
     <FileVersion>1.22.0.0</FileVersion>
     <PackageId>Sportradar.OddsFeed.SDK.Entities.REST-SoftPro-Fork</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -64,6 +65,7 @@
     <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Metrics-SoftPro-Fork" Version="1.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
@@ -113,11 +115,6 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Metrics">
-      <HintPath>..\..\libs\Metrics\netstandard2.0\Metrics.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="RestEntities.cd" />

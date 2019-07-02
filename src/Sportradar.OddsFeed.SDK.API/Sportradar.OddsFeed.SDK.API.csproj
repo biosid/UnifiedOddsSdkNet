@@ -18,6 +18,7 @@
     <FileVersion>1.22.0.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Sportradar.OddsFeed.SDK.API-SoftPro-Fork</PackageId>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>DEBUG;TRACE;CONTRACTS_FULL</DefineConstants>
@@ -67,6 +68,7 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ItemGroup>
+    <PackageReference Include="Metrics-SoftPro-Fork" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
   </ItemGroup>
@@ -81,11 +83,6 @@
     <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
     <PackageReference Include="Unity" Version="5.11.1" />
     <PackageReference Include="Unity.Configuration" Version="5.11.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Metrics">
-      <HintPath>..\..\libs\Metrics\netstandard2.0\Metrics.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="APIDiagram.cd" />

@@ -18,6 +18,7 @@
     <PackageId>Sportradar.OddsFeed.SDK.Common-SoftPro-Fork</PackageId>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
@@ -65,6 +66,7 @@
     <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Metrics-SoftPro-Fork" Version="1.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
@@ -76,10 +78,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sportradar.OddsFeed.SDK.Messages\Sportradar.OddsFeed.SDK.Messages.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Metrics">
-      <HintPath>..\..\libs\Metrics\netstandard2.0\Metrics.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
