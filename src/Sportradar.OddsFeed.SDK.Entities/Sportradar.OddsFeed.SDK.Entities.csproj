@@ -18,7 +18,7 @@
     <FileVersion>1.22.0.0</FileVersion>
     <PackageId>Sportradar.OddsFeed.SDK.Entities-SoftPro-Fork</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
