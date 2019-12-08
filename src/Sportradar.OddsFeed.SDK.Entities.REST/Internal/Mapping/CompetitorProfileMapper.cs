@@ -1,6 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Diagnostics.Contracts;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -8,20 +9,21 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}"/> implementation used to map <see cref="competitorProfileEndpoint"/> instances to <see cref="CompetitorProfileDTO"/> instances
+    ///     A <see cref="ISingleTypeMapper{T}" /> implementation used to map <see cref="competitorProfileEndpoint" /> instances
+    ///     to <see cref="CompetitorProfileDTO" /> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapper{CompetitorProfileDTO}" />
     internal class CompetitorProfileMapper : ISingleTypeMapper<CompetitorProfileDTO>
     {
         /// <summary>
-        /// A <see cref="competitorProfileEndpoint"/> instance containing competitor profile data
+        ///     A <see cref="competitorProfileEndpoint" /> instance containing competitor profile data
         /// </summary>
         private readonly competitorProfileEndpoint _data;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompetitorProfileMapper"/> class.
+        ///     Initializes a new instance of the <see cref="CompetitorProfileMapper" /> class.
         /// </summary>
-        /// <param name="data">A <see cref="competitorProfileEndpoint"/> instance containing competitor profile data</param>
+        /// <param name="data">A <see cref="competitorProfileEndpoint" /> instance containing competitor profile data</param>
         internal CompetitorProfileMapper(competitorProfileEndpoint data)
         {
             Contract.Requires(data != null);
@@ -30,9 +32,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="CompetitorProfileDTO"/> instance
+        ///     Maps it's data to <see cref="CompetitorProfileDTO" /> instance
         /// </summary>
-        /// <returns>The created <see cref="CompetitorProfileDTO"/> instance </returns>
+        /// <returns>The created <see cref="CompetitorProfileDTO" /> instance </returns>
         public CompetitorProfileDTO Map()
         {
             return new CompetitorProfileDTO(_data);

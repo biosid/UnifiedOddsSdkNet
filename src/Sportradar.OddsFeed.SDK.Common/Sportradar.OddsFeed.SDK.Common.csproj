@@ -66,7 +66,7 @@
     <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Metrics-SoftPro-Fork" Version="1.0.0" />
+    <PackageReference Include="Metrics-SoftPro-Fork" Version="1.1.1" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>

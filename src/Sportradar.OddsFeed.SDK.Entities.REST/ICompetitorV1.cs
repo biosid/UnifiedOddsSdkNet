@@ -5,12 +5,12 @@
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
-    /// Represents a team competing in a sport event
+    ///     Represents a team competing in a sport event
     /// </summary>
     public interface ICompetitorV1 : ICompetitor
     {
         /// <summary>
-        /// Gets the gender
+        ///     Gets the gender
         /// </summary>
         /// <value>The gender</value>
         string Gender { get; }

@@ -1,25 +1,26 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
     /// <summary>
-    /// Represents a streaming channel
+    ///     Represents a streaming channel
     /// </summary>
     internal class StreamingChannel : EntityPrinter, IStreamingChannel
     {
         /// <summary>
-        /// The <see cref="Id"/> property backing field
+        ///     The <see cref="Id" /> property backing field
         /// </summary>
         private readonly int _id;
 
         /// <summary>
-        /// The <see cref="Name"/> property backing field
+        ///     The <see cref="Name" /> property backing field
         /// </summary>
         private readonly string _name;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamingChannel"/> class.
+        ///     Initializes a new instance of the <see cref="StreamingChannel" /> class.
         /// </summary>
         /// <param name="id">a value uniquely identifying the current streaming channel</param>
         /// <param name="name">the name of the streaming channel represented by the current instance</param>
@@ -30,12 +31,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Gets a value uniquely identifying the current streaming channel
+        ///     Gets a value uniquely identifying the current streaming channel
         /// </summary>
         public int Id => _id;
 
         /// <summary>
-        /// Gets the name of the streaming channel represented by the current instance
+        ///     Gets the name of the streaming channel represented by the current instance
         /// </summary>
         public string Name => _name;
 

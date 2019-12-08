@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,17 +16,17 @@ using Sportradar.OddsFeed.SDK.Messages.EventArguments;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
     /// <summary>
-    /// Defines a contract for classes implementing getting information from UF Sports API
+    ///     Defines a contract for classes implementing getting information from UF Sports API
     /// </summary>
     public interface IDataRouterManager
     {
         /// <summary>
-        /// Occurs when data from Sports API arrives
+        ///     Occurs when data from Sports API arrives
         /// </summary>
         event EventHandler<RawApiDataEventArgs> RawApiDataReceived;
 
         /// <summary>
-        /// Gets the <see cref="SportEventSummaryDTO"/> or its derived type from the summary endpoint
+        ///     Gets the <see cref="SportEventSummaryDTO" /> or its derived type from the summary endpoint
         /// </summary>
         /// <param name="id">The id of the sport event to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
@@ -33,7 +34,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetSportEventSummaryAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the <see cref="FixtureDTO"/> from the fixture endpoint
+        ///     Gets the <see cref="FixtureDTO" /> from the fixture endpoint
         /// </summary>
         /// <param name="id">The id of the sport event to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
@@ -42,33 +43,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetSportEventFixtureAsync(URN id, CultureInfo culture, bool useCachedProvider, ISportEventCI requester);
 
         /// <summary>
-        /// Gets all tournaments for sport endpoint
+        ///     Gets all tournaments for sport endpoint
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
         Task GetAllTournamentsForAllSportAsync(CultureInfo culture);
 
         /// <summary>
-        /// Gets all categories for sport endpoint
+        ///     Gets all categories for sport endpoint
         /// </summary>
         /// <param name="id">The id of the sport to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
         Task GetSportCategoriesAsync(URN id, CultureInfo culture);
 
         /// <summary>
-        /// Gets all available sports endpoint
+        ///     Gets all available sports endpoint
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
         Task GetAllSportsAsync(CultureInfo culture);
 
         /// <summary>
-        /// Gets the currently live sport events
+        ///     Gets the currently live sport events
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>The list of the sport event ids with the sportId each belongs to</returns>
         Task<IEnumerable<Tuple<URN, URN>>> GetLiveSportEventsAsync(CultureInfo culture);
 
         /// <summary>
-        /// Gets the sport events for specific date
+        ///     Gets the sport events for specific date
         /// </summary>
         /// <param name="date">The date</param>
         /// <param name="culture">The culture</param>
@@ -76,16 +77,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task<IEnumerable<Tuple<URN, URN>>> GetSportEventsForDateAsync(DateTime date, CultureInfo culture);
 
         /// <summary>
-        /// Gets the sport events for specific tournament
+        ///     Gets the sport events for specific tournament
         /// </summary>
         /// <param name="id">The id of the tournament</param>
         /// <param name="culture">The culture to be fetched</param>
         /// <param name="requester">The cache item which invoked request</param>
         /// <returns>The list of ids of the sport events with the sportId belonging to specified tournament</returns>
-        Task<IEnumerable<Tuple<URN, URN>>> GetSportEventsForTournamentAsync(URN id, CultureInfo culture, ISportEventCI requester);
+        Task<IEnumerable<Tuple<URN, URN>>> GetSportEventsForTournamentAsync(URN id, CultureInfo culture,
+            ISportEventCI requester);
 
         /// <summary>
-        /// Gets the player profile endpoint
+        ///     Gets the player profile endpoint
         /// </summary>
         /// <param name="id">The id of the player</param>
         /// <param name="culture">The culture to be fetched</param>
@@ -93,7 +95,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetPlayerProfileAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the competitor endpoint
+        ///     Gets the competitor endpoint
         /// </summary>
         /// <param name="id">The id of the competitor</param>
         /// <param name="culture">The culture to be fetched</param>
@@ -101,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetCompetitorAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the seasons for tournament
+        ///     Gets the seasons for tournament
         /// </summary>
         /// <param name="id">The id of the tournament</param>
         /// <param name="culture">The culture to be fetched</param>
@@ -110,7 +112,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task<IEnumerable<URN>> GetSeasonsForTournamentAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the information about ongoing sport event (timeline)
+        ///     Gets the information about ongoing sport event (timeline)
         /// </summary>
         /// <param name="id">The id of the sport event</param>
         /// <param name="culture">The culture to be fetched</param>
@@ -118,13 +120,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetInformationAboutOngoingEventAsync(URN id, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the market descriptions (static list of market descriptions)
+        ///     Gets the market descriptions (static list of market descriptions)
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
         Task GetMarketDescriptionsAsync(CultureInfo culture);
 
         /// <summary>
-        /// Gets the variant market description (dynamic - single - variant market description)
+        ///     Gets the variant market description (dynamic - single - variant market description)
         /// </summary>
         /// <param name="id">The id of the market</param>
         /// <param name="variant">The variant URN</param>
@@ -132,13 +134,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetVariantMarketDescriptionAsync(int id, string variant, CultureInfo culture);
 
         /// <summary>
-        /// Gets the variant descriptions (static list of variant descriptions)
+        ///     Gets the variant descriptions (static list of variant descriptions)
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
         Task GetVariantDescriptionsAsync(CultureInfo culture);
 
         /// <summary>
-        /// Gets the <see cref="DrawDTO"/> from lottery draw summary endpoint
+        ///     Gets the <see cref="DrawDTO" /> from lottery draw summary endpoint
         /// </summary>
         /// <param name="drawId">The id of the draw to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
@@ -146,7 +148,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetDrawSummaryAsync(URN drawId, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the <see cref="DrawDTO"/> from the lottery draw fixture endpoint
+        ///     Gets the <see cref="DrawDTO" /> from the lottery draw fixture endpoint
         /// </summary>
         /// <param name="drawId">The id of the draw to be fetched</param>
         /// <param name="culture">The language to be fetched</param>
@@ -154,7 +156,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetDrawFixtureAsync(URN drawId, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the lottery draw schedule
+        ///     Gets the lottery draw schedule
         /// </summary>
         /// <param name="lotteryId">The id of the lottery</param>
         /// <param name="culture">The culture to be fetched</param>
@@ -163,28 +165,31 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         Task GetLotteryScheduleAsync(URN lotteryId, CultureInfo culture, ISportEventCI requester);
 
         /// <summary>
-        /// Gets the seasons for tournament
+        ///     Gets the seasons for tournament
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
         /// <returns>The list of ids of the seasons for specified tournament</returns>
         Task<IEnumerable<URN>> GetAllLotteriesAsync(CultureInfo culture);
 
         /// <summary>
-        /// Gets the available selections for event
+        ///     Gets the available selections for event
         /// </summary>
         /// <param name="id">The id of the event</param>
         /// <returns>The available selections for event</returns>
         Task<IAvailableSelections> GetAvailableSelectionsAsync(URN id);
 
         /// <summary>
-        /// Gets the probability calculation for the specified selections
+        ///     Gets the probability calculation for the specified selections
         /// </summary>
-        /// <param name="selections">The <see cref="IEnumerable{ISelection}"/> containing selections for which the probability should be calculated</param>
+        /// <param name="selections">
+        ///     The <see cref="IEnumerable{ISelection}" /> containing selections for which the probability
+        ///     should be calculated
+        /// </param>
         /// <returns>The probability calculation for the specified selections</returns>
         Task<ICalculation> CalculateProbability(IEnumerable<ISelection> selections);
 
         /// <summary>
-        /// Gets the list of all fixtures that have changed in the last 24 hours
+        ///     Gets the list of all fixtures that have changed in the last 24 hours
         /// </summary>
         /// <param name="culture">The culture to be fetched</param>
         /// <returns>The list of all fixtures that have changed in the last 24 hours</returns>

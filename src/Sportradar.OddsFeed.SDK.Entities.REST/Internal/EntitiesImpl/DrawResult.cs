@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -10,24 +11,38 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
     /// <summary>
-    /// Class DrawResult
+    ///     Class DrawResult
     /// </summary>
     /// <seealso cref="EntityPrinter" />
     /// <seealso cref="IDrawResult" />
     internal class DrawResult : EntityPrinter, IDrawResult
     {
         /// <summary>
-        /// Gets the value of the draw
+        ///     Initializes a new instance of the <see cref="DrawResult" /> class
+        /// </summary>
+        /// <param name="item">The item</param>
+        public DrawResult(DrawResultCI item)
+        {
+            Contract.Requires(item != null);
+
+            Value = item.Value;
+            Names = item.Names as IReadOnlyDictionary<CultureInfo, string>;
+        }
+
+        /// <summary>
+        ///     Gets the value of the draw
         /// </summary>
         /// <value>The value</value>
         public int? Value { get; }
+
         /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}" /> containing translated names
+        ///     Gets a <see cref="IReadOnlyDictionary{TKey,TValue}" /> containing translated names
         /// </summary>
         /// <value>The names</value>
         public IReadOnlyDictionary<CultureInfo, string> Names { get; }
+
         /// <summary>
-        /// Gets the name in specified culture language
+        ///     Gets the name in specified culture language
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>The name in specified language</returns>
@@ -40,28 +55,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DrawResult"/> class
+        ///     Constructs and returns a <see cref="string" /> containing the id of the current instance
         /// </summary>
-        /// <param name="item">The item</param>
-        public DrawResult(DrawResultCI item)
-        {
-            Contract.Requires(item != null);
-
-            Value = item.Value;
-            Names = item.Names as IReadOnlyDictionary<CultureInfo, string>;
-        }
-
-        /// <summary>
-        /// Constructs and returns a <see cref="string"/> containing the id of the current instance
-        /// </summary>
-        /// <returns>A <see cref="string"/> containing the id of the current instance</returns>
+        /// <returns>A <see cref="string" /> containing the id of the current instance</returns>
         protected override string PrintI()
         {
             return $"Value={Value}";
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing compacted representation of the current instance
+        ///     Constructs and returns a <see cref="string" /> containing compacted representation of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing compacted representation of the current instance</returns>
         protected override string PrintC()
@@ -76,7 +79,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and return a <see cref="string" /> containing details of the current instance
+        ///     Constructs and return a <see cref="string" /> containing details of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing details of the current instance</returns>
         protected override string PrintF()
@@ -88,7 +91,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing a JSON representation of the current instance
+        ///     Constructs and returns a <see cref="string" /> containing a JSON representation of the current instance
         /// </summary>
         /// <returns>a <see cref="string" /> containing a JSON representation of the current instance</returns>
         protected override string PrintJ()

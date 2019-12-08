@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -11,73 +12,25 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
     /// <summary>
-    /// Defines a cache item for round
+    ///     Defines a cache item for round
     /// </summary>
     public class RoundCI
     {
         /// <summary>
-        /// A <see cref="IDictionary{CultureInfo,String}"/> containing round names in different languages
+        ///     A <see cref="IDictionary{TKey,TValue}" /> containing round names in different languages
         /// </summary>
         private readonly IDictionary<CultureInfo, string> _names;
 
         /// <summary>
-        /// A <see cref="IDictionary{CultureInfo,String}"/> containing phase or group long name in different languages
+        ///     A <see cref="IDictionary{CultureInfo,String}" /> containing phase or group long name in different languages
         /// </summary>
         private readonly IDictionary<CultureInfo, string> _phaseOrGroupLongName;
 
         /// <summary>
-        /// Type of the round
+        ///     Initializes a new instance of the <see cref="RoundCI" /> class
         /// </summary>
-        public string Type { get; private set; }
-
-        /// <summary>
-        /// Gets the name of the group associated with the current round.
-        /// </summary>
-        public string Group { get; private set; }
-
-        /// <summary>
-        /// Gets the id of the group associated with the current round.
-        /// </summary>
-        public URN GroupId { get; private set; }
-
-        /// <summary>
-        /// Gets the id of the other match
-        /// </summary>
-        public string OtherMatchId { get; private set; }
-
-        /// <summary>
-        /// Gets a value specifying the round number or a null reference if round number is not defined
-        /// </summary>
-        public int? Number { get; private set; }
-
-        /// <summary>
-        /// Gets a value specifying the number of matches in the current cup round or a null reference
-        /// if number of matches is not applicable to current <see cref="IRound" /> instance
-        /// </summary>
-        public int? CupRoundMatches { get; private set; }
-
-        /// <summary>
-        /// Gets a value specifying the number of the match in the current cup round or a null reference
-        /// if match number is not applicable to current <see cref="IRound" /> instance
-        /// </summary>
-        public int? CupRoundMatchNumber { get; private set; }
-
-        /// <summary>
-        /// Gets the betradar identifier
-        /// </summary>
-        public int? BetradarId { get; private set; }
-
-        /// <summary>
-        /// Gets the phase
-        /// </summary>
-        /// <value>The phase</value>
-        public string Phase { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoundCI"/> class
-        /// </summary>
-        /// <param name="dto">The <see cref="RoundDTO"/> used to create new instance</param>
-        /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
+        /// <param name="dto">The <see cref="RoundDTO" /> used to create new instance</param>
+        /// <param name="culture">The culture of the input <see cref="RoundDTO" /></param>
         internal RoundCI(RoundDTO dto, CultureInfo culture)
         {
             Contract.Requires(dto != null);
@@ -91,10 +44,58 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
-        /// Merges the specified <see cref="RoundDTO"/> into instance
+        ///     Type of the round
         /// </summary>
-        /// <param name="dto">The <see cref="RoundDTO"/> used fro merging</param>
-        /// <param name="culture">The culture of the input <see cref="RoundDTO"/></param>
+        public string Type { get; private set; }
+
+        /// <summary>
+        ///     Gets the name of the group associated with the current round.
+        /// </summary>
+        public string Group { get; private set; }
+
+        /// <summary>
+        ///     Gets the id of the group associated with the current round.
+        /// </summary>
+        public URN GroupId { get; private set; }
+
+        /// <summary>
+        ///     Gets the id of the other match
+        /// </summary>
+        public string OtherMatchId { get; private set; }
+
+        /// <summary>
+        ///     Gets a value specifying the round number or a null reference if round number is not defined
+        /// </summary>
+        public int? Number { get; private set; }
+
+        /// <summary>
+        ///     Gets a value specifying the number of matches in the current cup round or a null reference
+        ///     if number of matches is not applicable to current <see cref="IRound" /> instance
+        /// </summary>
+        public int? CupRoundMatches { get; private set; }
+
+        /// <summary>
+        ///     Gets a value specifying the number of the match in the current cup round or a null reference
+        ///     if match number is not applicable to current <see cref="IRound" /> instance
+        /// </summary>
+        public int? CupRoundMatchNumber { get; private set; }
+
+        /// <summary>
+        ///     Gets the betradar identifier
+        /// </summary>
+        public int? BetradarId { get; private set; }
+
+        /// <summary>
+        ///     Gets the phase
+        /// </summary>
+        /// <value>The phase</value>
+        public string Phase { get; private set; }
+
+        /// <summary>
+        ///     Merges the specified <see cref="RoundDTO" /> into instance
+        /// </summary>
+        /// <param name="dto">The <see cref="RoundDTO" /> used fro merging</param>
+        /// <param name="culture">The culture of the input <see cref="RoundDTO" /></param>
         internal void Merge(RoundDTO dto, CultureInfo culture)
         {
             Contract.Requires(dto != null);
@@ -113,7 +114,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
-        /// Gets the name for specific locale
+        ///     Gets the name for specific locale
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>Return the Name if exists, or null</returns>
@@ -127,7 +128,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
-        /// Gets the phase or group long name for specific locale
+        ///     Gets the phase or group long name for specific locale
         /// </summary>
         /// <param name="culture">The culture</param>
         /// <returns>Return the phase or group long name if exists, or null</returns>
@@ -141,9 +142,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         }
 
         /// <summary>
-        /// Determines whether the current instance has translations for the specified languages
+        ///     Determines whether the current instance has translations for the specified languages
         /// </summary>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the required languages</param>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the required languages</param>
         /// <returns>True if the current instance contains data in the required locals. Otherwise false.</returns>
         public virtual bool HasTranslationsFor(IEnumerable<CultureInfo> cultures)
         {

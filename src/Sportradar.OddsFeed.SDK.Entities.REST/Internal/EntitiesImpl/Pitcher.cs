@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI;
 using Sportradar.OddsFeed.SDK.Messages;
@@ -8,37 +9,15 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
     /// <summary>
-    /// Provides information about pitcher
+    ///     Provides information about pitcher
     /// </summary>
     /// <seealso cref="IPitcher" />
     internal class Pitcher : EntityPrinter, IPitcher
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> used to uniquely identify the current <see cref="IPitcher"/> instance
+        ///     Initializes a new instance of the <see cref="Pitcher" /> class
         /// </summary>
-        public URN Id { get; }
-
-        /// <summary>
-        /// Gets the name of the pitcher represented by the current <see cref="IPitcher"/> instance
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets the hand with which player pitches
-        /// </summary>
-        /// <value>The hand with which player pitches</value>
-        public PlayerHand Hand { get; }
-
-        /// <summary>
-        /// Gets the indicator if the competitor is Home or Away
-        /// </summary>
-        /// <value>The indicator if the competitor is Home or Away</value>
-        public HomeAway Competitor { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Pitcher"/> class
-        /// </summary>
-        /// <param name="cacheItem">A <see cref="PitcherCI"/> used to create new instance</param>
+        /// <param name="cacheItem">A <see cref="PitcherCI" /> used to create new instance</param>
         internal Pitcher(PitcherCI cacheItem)
         {
             Id = cacheItem.Id;
@@ -48,7 +27,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing the id of the current instance
+        ///     Gets a <see cref="URN" /> used to uniquely identify the current <see cref="IPitcher" /> instance
+        /// </summary>
+        public URN Id { get; }
+
+        /// <summary>
+        ///     Gets the name of the pitcher represented by the current <see cref="IPitcher" /> instance
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        ///     Gets the hand with which player pitches
+        /// </summary>
+        /// <value>The hand with which player pitches</value>
+        public PlayerHand Hand { get; }
+
+        /// <summary>
+        ///     Gets the indicator if the competitor is Home or Away
+        /// </summary>
+        /// <value>The indicator if the competitor is Home or Away</value>
+        public HomeAway Competitor { get; }
+
+        /// <summary>
+        ///     Constructs and returns a <see cref="string" /> containing the id of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing the id of the current instance</returns>
         protected override string PrintI()
@@ -57,7 +58,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing compacted representation of the current instance
+        ///     Constructs and returns a <see cref="string" /> containing compacted representation of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing compacted representation of the current instance</returns>
         protected override string PrintC()
@@ -66,7 +67,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and return a <see cref="string" /> containing details of the current instance
+        ///     Constructs and return a <see cref="string" /> containing details of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing details of the current instance</returns>
         protected override string PrintF()
@@ -75,7 +76,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing a JSON representation of the current instance
+        ///     Constructs and returns a <see cref="string" /> containing a JSON representation of the current instance
         /// </summary>
         /// <returns>a <see cref="string" /> containing a JSON representation of the current instance</returns>
         protected override string PrintJ()

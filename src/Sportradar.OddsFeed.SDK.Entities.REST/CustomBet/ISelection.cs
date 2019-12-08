@@ -7,27 +7,27 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
 {
     /// <summary>
-    /// Provides an requested selection
+    ///     Provides an requested selection
     /// </summary>
     public interface ISelection
     {
         /// <summary>
-        /// Gets the event id.
+        ///     Gets the event id.
         /// </summary>
         URN EventId { get; }
 
         /// <summary>
-        /// Gets the market id.
+        ///     Gets the market id.
         /// </summary>
         int MarketId { get; }
 
         /// <summary>
-        /// Gets the specifiers.
+        ///     Gets the specifiers.
         /// </summary>
         string Specifiers { get; }
 
         /// <summary>
-        /// Gets the outcome id.
+        ///     Gets the outcome id.
         /// </summary>
         string OutcomeId { get; }
     }

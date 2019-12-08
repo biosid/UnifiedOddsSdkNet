@@ -12,20 +12,10 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
 {
     /// <summary>
-    /// Defines a data-transfer-object for available selections for the event
+    ///     Defines a data-transfer-object for available selections for the event
     /// </summary>
     public class AvailableSelectionsDTO
     {
-        /// <summary>
-        /// Gets the <see cref="URN"/> of the event
-        /// </summary>
-        public URN Event { get; }
-
-        /// <summary>
-        /// Gets the list of markets for this event
-        /// </summary>
-        public IEnumerable<MarketDTO> Markets { get; }
-
         internal AvailableSelectionsDTO(AvailableSelectionsType availableSelections)
         {
             if (availableSelections == null)
@@ -37,5 +27,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
                 ? markets.Select(m => new MarketDTO(m)).ToList().AsReadOnly()
                 : new ReadOnlyCollection<MarketDTO>(new List<MarketDTO>());
         }
+
+        /// <summary>
+        ///     Gets the <see cref="URN" /> of the event
+        /// </summary>
+        public URN Event { get; }
+
+        /// <summary>
+        ///     Gets the list of markets for this event
+        /// </summary>
+        public IEnumerable<MarketDTO> Markets { get; }
     }
 }

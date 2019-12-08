@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Sportradar.OddsFeed.SDK.Entities.REST.Enums;
@@ -11,14 +12,11 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     /// <summary>
-    /// A data-transfer-object representation for sport event status statistics. The status can be receiver through messages or fetched from the API
+    ///     A data-transfer-object representation for sport event status statistics. The status can be receiver through
+    ///     messages or fetched from the API
     /// </summary>
     public class SportEventStatisticsDTO
     {
-        public IEnumerable<TeamStatisticsDTO> TotalStatisticsDTOs { get; }
-
-        public IEnumerable<PeriodStatisticsDTO> PeriodStatisticsDTOs { get; }
-
         public SportEventStatisticsDTO(statisticsType result)
         {
             Contract.Requires(result != null);
@@ -51,9 +49,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             if (statistics.totals != null)
             {
                 foreach (var total in statistics.totals)
-                {
                     teamStats.Add(new TeamStatisticsDTO(total, homeAwayCompetitors));
-                }
                 TotalStatisticsDTOs = teamStats;
             }
 
@@ -61,11 +57,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             {
                 var periodStats = new List<PeriodStatisticsDTO>();
                 foreach (var period in statistics.periods)
-                {
                     periodStats.Add(new PeriodStatisticsDTO(period, homeAwayCompetitors));
-                }
                 PeriodStatisticsDTOs = periodStats;
             }
         }
+
+        public IEnumerable<TeamStatisticsDTO> TotalStatisticsDTOs { get; }
+
+        public IEnumerable<PeriodStatisticsDTO> PeriodStatisticsDTOs { get; }
     }
 }

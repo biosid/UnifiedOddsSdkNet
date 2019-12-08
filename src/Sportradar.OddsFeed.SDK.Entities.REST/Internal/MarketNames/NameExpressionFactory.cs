@@ -1,6 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -11,30 +12,33 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Profiles;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
 {
     /// <summary>
-    /// Factory used to build <see cref="INameExpression"/> instances
+    ///     Factory used to build <see cref="INameExpression" /> instances
     /// </summary>
     internal class NameExpressionFactory : INameExpressionFactory
     {
         /// <summary>
-        /// A regex pattern used to detect '{$competitor1} expression operands
+        ///     A regex pattern used to detect '{$competitor1} expression operands
         /// </summary>
         private const string SequencedCompetitorOperandRegexPatter = @"\Acompetitor[12]";
 
         /// <summary>
-        /// A <see cref="IOperandFactory"/> used to build <see cref="IOperand"/> instances required by name expressions
+        ///     A <see cref="IOperandFactory" /> used to build <see cref="IOperand" /> instances required by name expressions
         /// </summary>
         private readonly IOperandFactory _operandFactory;
 
         /// <summary>
-        /// A <see cref="IProfileCache"/> used to fetch profiles
+        ///     A <see cref="IProfileCache" /> used to fetch profiles
         /// </summary>
         private readonly IProfileCache _profileCache;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NameExpressionFactory"/> class
+        ///     Initializes a new instance of the <see cref="NameExpressionFactory" /> class
         /// </summary>
-        /// <param name="operandFactory">A <see cref="IOperandFactory"/> used to build <see cref="IOperand"/> instances required by name expressions</param>
-        /// <param name="profileCache">A <see cref="IProfileCache"/> used to fetch profiles</param>
+        /// <param name="operandFactory">
+        ///     A <see cref="IOperandFactory" /> used to build <see cref="IOperand" /> instances required
+        ///     by name expressions
+        /// </param>
+        /// <param name="profileCache">A <see cref="IProfileCache" /> used to fetch profiles</param>
         public NameExpressionFactory(IOperandFactory operandFactory, IProfileCache profileCache)
         {
             Contract.Requires(operandFactory != null);
@@ -45,69 +49,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
         }
 
         /// <summary>
-        /// Lists the object invariants as required by code contracts
-        /// </summary>
-        [ContractInvariantMethod]
-        private void ObjectInvariant()
-        {
-            Contract.Invariant(_operandFactory != null);
-            Contract.Invariant(_profileCache != null);
-        }
-
-        /// <summary>
-        /// Ensures that the provided <see cref="IReadOnlyDictionary{String, String}"/> is not a null reference or empty dictionary
-        /// </summary>
-        /// <param name="specifiers">The <see cref="IReadOnlyDictionary{String, String}"/> to be checked.</param>
-        private static void EnsureSpecifiersNotNullOrEmpty(IReadOnlyDictionary<string, string> specifiers)
-        {
-            if (specifiers == null || !specifiers.Any())
-            {
-                throw new ArgumentException("value cannot be a null reference or an empty dictionary", nameof(specifiers));
-            }
-        }
-
-        /// <summary>
-        /// Builds and returns a <see cref="INameExpression"/> specified by the passed <code>operand</code>
-        /// </summary>
-        /// <param name="operand">The operand of the name expression</param>
-        /// <param name="sportEvent">The <see cref="ISportEvent"/> instance associated with the target</param>
-        /// <returns></returns>
-        private INameExpression BuildEntityNameExpression(string operand, ISportEvent sportEvent)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(operand));
-            Contract.Requires(sportEvent != null);
-
-            // expression {$competitor(1-2)} indicates we need to get the name of the competitor from the sport event
-            if (Regex.IsMatch(operand, SequencedCompetitorOperandRegexPatter))
-            {
-                return new EntityNameExpression(operand, sportEvent);
-            }
-            if(operand.Equals("event", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return new EntityNameExpression(operand, sportEvent);
-            }
-
-            throw new ArgumentException($"operand:{operand} is not a valid operand for $ operator. Valid operators are: 'competitor1', 'competitor2', 'event'", nameof(operand));
-        }
-
-        /// <summary>
-        /// Builds and returns a <see cref="INameExpression" /> instance which can be used to generate name from the provided expression
+        ///     Builds and returns a <see cref="INameExpression" /> instance which can be used to generate name from the provided
+        ///     expression
         /// </summary>
         /// <param name="sportEvent">A <see cref="ISportEvent" /> instance representing associated sport @event</param>
-        /// <param name="specifiers">A <see cref="IReadOnlyDictionary{String, String}" /> representing specifiers of the associated market</param>
+        /// <param name="specifiers">
+        ///     A <see cref="IReadOnlyDictionary{String, String}" /> representing specifiers of the associated
+        ///     market
+        /// </param>
         /// <param name="operator">A <see cref="string" /> specifying the operator for which to build the expression</param>
         /// <param name="operand">An operand for the built expression</param>
         /// <returns>The constructed <see cref="INameExpression" /> instance</returns>
-        public INameExpression BuildExpression(ISportEvent sportEvent, IReadOnlyDictionary<string, string> specifiers, string @operator, string operand)
+        public INameExpression BuildExpression(ISportEvent sportEvent, IReadOnlyDictionary<string, string> specifiers,
+            string @operator, string operand)
         {
-            if (sportEvent == null)
-            {
-                throw new ArgumentNullException(nameof(sportEvent));
-            }
-            if (string.IsNullOrEmpty(operand))
-            {
-                throw new ArgumentNullException(nameof(operand));
-            }
+            if (sportEvent == null) throw new ArgumentNullException(nameof(sportEvent));
+            if (string.IsNullOrEmpty(operand)) throw new ArgumentNullException(nameof(operand));
 
             if (@operator == null)
             {
@@ -144,13 +101,60 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.MarketNames
                 {
                     EnsureSpecifiersNotNullOrEmpty(specifiers);
                     Contract.Assert(specifiers != null && specifiers.Any());
-                    return new PlayerProfileExpression(_profileCache, _operandFactory.BuildOperand(specifiers, operand));
+                    return new PlayerProfileExpression(_profileCache,
+                        _operandFactory.BuildOperand(specifiers, operand));
                 }
                 default:
                 {
-                    throw new ArgumentException($"Operator {@operator} is not supported. Supported operators are: {string.Join(",", NameExpressionHelper.DefinedOperators)}", nameof(@operator));
+                    throw new ArgumentException(
+                        $"Operator {@operator} is not supported. Supported operators are: {string.Join(",", NameExpressionHelper.DefinedOperators)}",
+                        nameof(@operator));
                 }
             }
+        }
+
+        /// <summary>
+        ///     Lists the object invariants as required by code contracts
+        /// </summary>
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(_operandFactory != null);
+            Contract.Invariant(_profileCache != null);
+        }
+
+        /// <summary>
+        ///     Ensures that the provided <see cref="IReadOnlyDictionary{String, String}" /> is not a null reference or empty
+        ///     dictionary
+        /// </summary>
+        /// <param name="specifiers">The <see cref="IReadOnlyDictionary{String, String}" /> to be checked.</param>
+        private static void EnsureSpecifiersNotNullOrEmpty(IReadOnlyDictionary<string, string> specifiers)
+        {
+            if (specifiers == null || !specifiers.Any())
+                throw new ArgumentException("value cannot be a null reference or an empty dictionary",
+                    nameof(specifiers));
+        }
+
+        /// <summary>
+        ///     Builds and returns a <see cref="INameExpression" /> specified by the passed <code>operand</code>
+        /// </summary>
+        /// <param name="operand">The operand of the name expression</param>
+        /// <param name="sportEvent">The <see cref="ISportEvent" /> instance associated with the target</param>
+        /// <returns></returns>
+        private INameExpression BuildEntityNameExpression(string operand, ISportEvent sportEvent)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(operand));
+            Contract.Requires(sportEvent != null);
+
+            // expression {$competitor(1-2)} indicates we need to get the name of the competitor from the sport event
+            if (Regex.IsMatch(operand, SequencedCompetitorOperandRegexPatter))
+                return new EntityNameExpression(operand, sportEvent);
+            if (operand.Equals("event", StringComparison.InvariantCultureIgnoreCase))
+                return new EntityNameExpression(operand, sportEvent);
+
+            throw new ArgumentException(
+                $"operand:{operand} is not a valid operand for $ operator. Valid operators are: 'competitor1', 'competitor2', 'event'",
+                nameof(operand));
         }
     }
 }

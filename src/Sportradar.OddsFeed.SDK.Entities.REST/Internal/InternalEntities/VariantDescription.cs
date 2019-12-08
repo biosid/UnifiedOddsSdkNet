@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
@@ -14,14 +15,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
 {
     internal class VariantDescription : IVariantDescription
     {
-        public string Id { get; }
-
-        public IEnumerable<IOutcomeDescription> Outcomes { get; }
-
-        public IEnumerable<IMarketMappingData> Mappings { get; internal set; }
-
-        internal VariantDescriptionCacheItem VariantDescriptionCacheItem { get; }
-
         internal VariantDescription(VariantDescriptionCacheItem cacheItem, IEnumerable<CultureInfo> cultures)
         {
             Contract.Requires(cacheItem != null);
@@ -32,13 +25,22 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.InternalEntities
             Id = cacheItem.Id;
             Outcomes = cacheItem.Outcomes == null
                 ? null
-                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes.Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureList)).ToList());
+                : new ReadOnlyCollection<IOutcomeDescription>(cacheItem.Outcomes
+                    .Select(o => (IOutcomeDescription) new OutcomeDescription(o, cultureList)).ToList());
             Mappings = cacheItem.Mappings == null
                 ? null
-                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings.Select(m => (IMarketMappingData) new MarketMapping(m)).ToList());
+                : new ReadOnlyCollection<IMarketMappingData>(cacheItem.Mappings
+                    .Select(m => (IMarketMappingData) new MarketMapping(m)).ToList());
 
             VariantDescriptionCacheItem = cacheItem;
         }
+
+        internal VariantDescriptionCacheItem VariantDescriptionCacheItem { get; }
+        public string Id { get; }
+
+        public IEnumerable<IOutcomeDescription> Outcomes { get; }
+
+        public IEnumerable<IMarketMappingData> Mappings { get; internal set; }
 
         public void SetMappings(ReadOnlyCollection<IMarketMappingData> mappings)
         {

@@ -5,17 +5,17 @@
 namespace Sportradar.OddsFeed.SDK.Entities.REST.CustomBet
 {
     /// <summary>
-    /// Provides a probability calculation
+    ///     Provides a probability calculation
     /// </summary>
     public interface ICalculation
     {
         /// <summary>
-        /// Gets the odds
+        ///     Gets the odds
         /// </summary>
         double Odds { get; }
 
         /// <summary>
-        /// Gets the probability
+        ///     Gets the probability
         /// </summary>
         double Probability { get; }
     }

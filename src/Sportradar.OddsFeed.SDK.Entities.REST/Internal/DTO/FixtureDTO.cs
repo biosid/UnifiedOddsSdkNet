@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,39 +14,13 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     /// <summary>
-    /// A data-transfer-object representing a fixture
+    ///     A data-transfer-object representing a fixture
     /// </summary>
     public class FixtureDTO : MatchDTO
     {
-        internal DateTime? StartTime { get; }
-
-        internal bool StartTimeConfirmed { get; }
-
-        internal bool? StartTimeTBD { get; }
-
-        internal DateTime? NextLiveTime { get; }
-
-        internal IReadOnlyDictionary<string, string> ExtraInfo { get; }
-
-        internal CoverageInfoDTO CoverageInfo { get; }
-
-        internal IEnumerable<TvChannelDTO> TvChannels { get; }
-
-        internal ProductInfoDTO ProductInfo { get; }
-
         //internal VenueDTO Venue { get; }
 
         internal readonly IDictionary<string, string> ReferenceIds;
-
-        internal DelayedInfoDTO DelayedInfo { get; }
-
-        internal IEnumerable<ScheduledStartTimeChangeDTO> ScheduledStartTimeChanges { get; }
-
-        /// <summary>
-        /// When sport event is postponed this field indicates with which event it is replaced
-        /// </summary>
-        /// <value>The <see cref="URN"/> this event is replaced by</value>
-        internal URN ReplacedBy { get; }
 
         internal FixtureDTO(fixture fixture)
             : base(fixture)
@@ -55,10 +30,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             StartTime = fixture.start_timeSpecified
                 ? (DateTime?) fixture.start_time
                 : null;
-            if (!string.IsNullOrEmpty(fixture.next_live_time))
-            {
-                NextLiveTime = SdkInfo.ParseDate(fixture.next_live_time);
-            }
+            if (!string.IsNullOrEmpty(fixture.next_live_time)) NextLiveTime = SdkInfo.ParseDate(fixture.next_live_time);
             StartTimeConfirmed = fixture.start_time_confirmedSpecified && fixture.start_time_confirmed;
             StartTimeTBD = fixture.start_time_tbdSpecified
                 ? (bool?) fixture.start_time_tbd
@@ -84,14 +56,36 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             DelayedInfo = fixture.delayed_info == null
                 ? null
                 : new DelayedInfoDTO(fixture.delayed_info.id, fixture.delayed_info.description);
-            if (!string.IsNullOrEmpty(fixture.replaced_by))
-            {
-                ReplacedBy = URN.Parse(fixture.replaced_by);
-            }
+            if (!string.IsNullOrEmpty(fixture.replaced_by)) ReplacedBy = URN.Parse(fixture.replaced_by);
             if (fixture.scheduled_start_time_changes != null && fixture.scheduled_start_time_changes.Any())
-            {
-                ScheduledStartTimeChanges = fixture.scheduled_start_time_changes.Select(s => new ScheduledStartTimeChangeDTO(s));
-            }
+                ScheduledStartTimeChanges =
+                    fixture.scheduled_start_time_changes.Select(s => new ScheduledStartTimeChangeDTO(s));
         }
+
+        internal DateTime? StartTime { get; }
+
+        internal bool StartTimeConfirmed { get; }
+
+        internal bool? StartTimeTBD { get; }
+
+        internal DateTime? NextLiveTime { get; }
+
+        internal IReadOnlyDictionary<string, string> ExtraInfo { get; }
+
+        internal CoverageInfoDTO CoverageInfo { get; }
+
+        internal IEnumerable<TvChannelDTO> TvChannels { get; }
+
+        internal ProductInfoDTO ProductInfo { get; }
+
+        internal DelayedInfoDTO DelayedInfo { get; }
+
+        internal IEnumerable<ScheduledStartTimeChangeDTO> ScheduledStartTimeChanges { get; }
+
+        /// <summary>
+        ///     When sport event is postponed this field indicates with which event it is replaced
+        /// </summary>
+        /// <value>The <see cref="URN" /> this event is replaced by</value>
+        internal URN ReplacedBy { get; }
     }
 }

@@ -1,31 +1,36 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
 {
     /// <summary>
-    /// Enumeration of possible draw statuses
+    ///     Enumeration of possible draw statuses
     /// </summary>
     public enum DrawStatus
     {
         /// <summary>
-        /// The open
+        ///     The open
         /// </summary>
         Open,
+
         /// <summary>
-        /// The closed
+        ///     The closed
         /// </summary>
         Closed,
+
         /// <summary>
-        /// The finished
+        ///     The finished
         /// </summary>
         Finished,
+
         /// <summary>
-        /// The cancelled
+        ///     The cancelled
         /// </summary>
         Cancelled,
+
         /// <summary>
-        /// The unknown
+        ///     The unknown
         /// </summary>
         Unknown
     }

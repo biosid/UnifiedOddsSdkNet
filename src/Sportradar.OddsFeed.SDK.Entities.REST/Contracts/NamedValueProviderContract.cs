@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Diagnostics.Contracts;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
@@ -8,7 +9,7 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Contracts
 {
     [ContractClassFor(typeof(INamedValuesProvider))]
-    abstract class NamedValueProviderContract : INamedValuesProvider
+    internal abstract class NamedValueProviderContract : INamedValuesProvider
     {
         public INamedValueCache VoidReasons
         {

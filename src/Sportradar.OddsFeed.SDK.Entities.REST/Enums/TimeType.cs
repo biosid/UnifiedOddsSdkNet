@@ -1,25 +1,26 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Enums
 {
     /// <summary>
-    /// Enumeration of possible time types
+    ///     Enumeration of possible time types
     /// </summary>
     public enum TimeType
     {
         /// <summary>
-        /// The interval
+        ///     The interval
         /// </summary>
         Interval,
 
         /// <summary>
-        /// The fixed
+        ///     The fixed
         /// </summary>
         Fixed,
 
         /// <summary>
-        /// The unknown
+        ///     The unknown
         /// </summary>
         Unknown
     }

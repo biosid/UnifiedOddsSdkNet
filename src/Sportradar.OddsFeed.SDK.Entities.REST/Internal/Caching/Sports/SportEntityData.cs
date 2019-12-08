@@ -1,6 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -10,25 +11,15 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
 {
     /// <summary>
-    /// Contains sport related entity (sport, category, tournament) data
+    ///     Contains sport related entity (sport, category, tournament) data
     /// </summary>
     public abstract class SportEntityData
     {
         /// <summary>
-        /// Gets <see cref="URN"/> specifying the id of the associated entity.
+        ///     Initializes a new instance of the <see cref="SportEntityData" /> class.
         /// </summary>
-        public URN Id { get; }
-
-        /// <summary>
-        /// Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated entity name
-        /// </summary>
-        public IReadOnlyDictionary<CultureInfo, string> Names { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SportEntityData"/> class.
-        /// </summary>
-        /// <param name="id">a <see cref="URN"/> specifying the id of the associated entity</param>
-        /// <param name="names">a <see cref="IReadOnlyDictionary{CultureInfo, String}"/> containing translated entity name</param>
+        /// <param name="id">a <see cref="URN" /> specifying the id of the associated entity</param>
+        /// <param name="names">a <see cref="IReadOnlyDictionary{TKey,TValue}" /> containing translated entity name</param>
         protected SportEntityData(URN id, IReadOnlyDictionary<CultureInfo, string> names)
         {
             Contract.Requires(id != null);
@@ -40,7 +31,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         }
 
         /// <summary>
-        /// Defined field invariants needed by code contracts
+        ///     Gets <see cref="URN" /> specifying the id of the associated entity.
+        /// </summary>
+        public URN Id { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="IReadOnlyDictionary{CultureInfo, String}" /> containing translated entity name
+        /// </summary>
+        public IReadOnlyDictionary<CultureInfo, string> Names { get; }
+
+        /// <summary>
+        ///     Defined field invariants needed by code contracts
         /// </summary>
         [ContractInvariantMethod]
         private void ObjectInvariant()

@@ -8,20 +8,10 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
 {
     /// <summary>
-    /// Defines a data-transfer-object for probability calculations
+    ///     Defines a data-transfer-object for probability calculations
     /// </summary>
     public class CalculationDTO
     {
-        /// <summary>
-        /// Gets the odds
-        /// </summary>
-        public double Odds { get; }
-
-        /// <summary>
-        /// Gets the probability
-        /// </summary>
-        public double Probability { get; }
-
         internal CalculationDTO(CalculationResponseType calculation)
         {
             if (calculation == null)
@@ -30,5 +20,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet
             Odds = calculation.calculation.odds;
             Probability = calculation.calculation.probability;
         }
+
+        /// <summary>
+        ///     Gets the odds
+        /// </summary>
+        public double Odds { get; }
+
+        /// <summary>
+        ///     Gets the probability
+        /// </summary>
+        public double Probability { get; }
     }
 }

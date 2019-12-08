@@ -8,17 +8,17 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
-    /// Defines a contract implemented by classes representing fixture change
+    ///     Defines a contract implemented by classes representing fixture change
     /// </summary>
     public interface IFixtureChange : IEntityPrinter
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> specifying the sport event
+        ///     Gets the <see cref="URN" /> specifying the sport event
         /// </summary>
         URN SportEventId { get; }
 
         /// <summary>
-        /// Gets the <see cref="DateTime"/> specifying the last update time
+        ///     Gets the <see cref="DateTime" /> specifying the last update time
         /// </summary>
         DateTime UpdateTime { get; }
     }

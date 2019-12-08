@@ -1,59 +1,71 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums
 {
     /// <summary>
-    /// The enumeration of possible cache item types
+    ///     The enumeration of possible cache item types
     /// </summary>
     internal enum CacheItemType
     {
         /// <summary>
-        /// All
+        ///     All
         /// </summary>
         All,
+
         /// <summary>
-        /// The category
+        ///     The category
         /// </summary>
         Category,
+
         /// <summary>
-        /// The competitor
+        ///     The competitor
         /// </summary>
         Competitor,
+
         /// <summary>
-        /// The lottery
+        ///     The lottery
         /// </summary>
         Lottery,
+
         /// <summary>
-        /// The lottery draw
+        ///     The lottery draw
         /// </summary>
         LotteryDraw,
+
         /// <summary>
-        /// The market description
+        ///     The market description
         /// </summary>
         MarketDescription,
+
         /// <summary>
-        /// The player
+        ///     The player
         /// </summary>
         Player,
+
         /// <summary>
-        /// The sport
+        ///     The sport
         /// </summary>
         Sport,
+
         /// <summary>
-        /// The sport event
+        ///     The sport event
         /// </summary>
         SportEvent,
+
         /// <summary>
-        /// The sport event status
+        ///     The sport event status
         /// </summary>
         SportEventStatus,
+
         /// <summary>
-        /// The tournament
+        ///     The tournament
         /// </summary>
         Tournament,
+
         /// <summary>
-        /// The variant description
+        ///     The variant description
         /// </summary>
         VariantDescription
     }

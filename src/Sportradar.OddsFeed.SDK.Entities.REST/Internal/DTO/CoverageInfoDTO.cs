@@ -1,6 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
@@ -12,14 +13,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     public class CoverageInfoDTO
     {
-        internal string Level { get; }
-
-        internal bool IsLive { get; }
-
-        internal IEnumerable<string> Includes { get; }
-
-        internal CoveredFrom? CoveredFrom { get; }
-
         internal CoverageInfoDTO(coverageInfo coverageInfo)
         {
             Contract.Requires(coverageInfo != null);
@@ -34,5 +27,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             RestMapperHelper.TryGetCoveredFrom(coverageInfo.covered_from, out coveredFrom);
             CoveredFrom = coveredFrom;
         }
+
+        internal string Level { get; }
+
+        internal bool IsLive { get; }
+
+        internal IEnumerable<string> Includes { get; }
+
+        internal CoveredFrom? CoveredFrom { get; }
     }
 }

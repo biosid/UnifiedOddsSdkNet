@@ -1,119 +1,146 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Enums
 {
     /// <summary>
-    /// The enumeration of types of data-transfer-object obtained via REST requests
+    ///     The enumeration of types of data-transfer-object obtained via REST requests
     /// </summary>
     internal enum DtoType
     {
         /// <summary>
-        /// The booking status
+        ///     The booking status
         /// </summary>
         BookingStatus,
+
         /// <summary>
-        /// The category
+        ///     The category
         /// </summary>
         Category,
+
         /// <summary>
-        /// The competitor
+        ///     The competitor
         /// </summary>
         Competitor,
+
         /// <summary>
-        /// The competitor profile
+        ///     The competitor profile
         /// </summary>
         CompetitorProfile,
+
         /// <summary>
-        /// The fixture
+        ///     The fixture
         /// </summary>
         Fixture,
+
         /// <summary>
-        /// The lottery
+        ///     The lottery
         /// </summary>
         Lottery,
+
         /// <summary>
-        /// The lottery draw
+        ///     The lottery draw
         /// </summary>
         LotteryDraw,
+
         /// <summary>
-        /// The lottery list
+        ///     The lottery list
         /// </summary>
         LotteryList,
+
         /// <summary>
-        /// The market description (used for variant market description provider)
+        ///     The market description (used for variant market description provider)
         /// </summary>
         MarketDescription,
+
         /// <summary>
-        /// The market descriptions list
+        ///     The market descriptions list
         /// </summary>
         MarketDescriptionList,
+
         /// <summary>
-        /// The match summary
+        ///     The match summary
         /// </summary>
         MatchSummary,
+
         /// <summary>
-        /// The match timeline
+        ///     The match timeline
         /// </summary>
         MatchTimeline,
+
         /// <summary>
-        /// The player profile
+        ///     The player profile
         /// </summary>
         PlayerProfile,
+
         /// <summary>
-        /// The race summary
+        ///     The race summary
         /// </summary>
         RaceSummary, // also covers Stages, but REST object is called race_summary
+
         /// <summary>
-        /// The sport
+        ///     The sport
         /// </summary>
         Sport,
+
         /// <summary>
-        /// The sport list
+        ///     The sport list
         /// </summary>
         SportList,
+
         /// <summary>
-        /// The sport event status
+        ///     The sport event status
         /// </summary>
         SportEventStatus,
+
         /// <summary>
-        /// The sport event summary
+        ///     The sport event summary
         /// </summary>
         SportEventSummary,
+
         /// <summary>
-        /// The sport event summary list
+        ///     The sport event summary list
         /// </summary>
         SportEventSummaryList,
+
         /// <summary>
-        /// The tournament
+        ///     The tournament
         /// </summary>
         Tournament,
+
         /// <summary>
-        /// The tournament information
+        ///     The tournament information
         /// </summary>
         TournamentInfo,
+
         /// <summary>
-        /// The tournament seasons
+        ///     The tournament seasons
         /// </summary>
         TournamentSeasons,
+
         /// <summary>
-        /// The variant description
+        ///     The variant description
         /// </summary>
         VariantDescription,
+
         /// <summary>
-        /// The variant description list
+        ///     The variant description list
         /// </summary>
         VariantDescriptionList,
+
         /// <summary>
-        /// The sport categories
+        ///     The sport categories
         /// </summary>
         SportCategories,
+
         /// <summary>
-        /// The simple team profile
+        ///     The simple team profile
         /// </summary>
         SimpleTeamProfile,
+
         /// <summary>
-        /// The available selections for the event
+        ///     The available selections for the event
         /// </summary>
         AvailableSelections
     }

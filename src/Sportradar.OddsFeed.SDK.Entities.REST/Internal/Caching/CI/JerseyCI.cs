@@ -1,16 +1,35 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Diagnostics.Contracts;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
     /// <summary>
-    /// An implementation of Jersey cache item
+    ///     An implementation of Jersey cache item
     /// </summary>
     public class JerseyCI
     {
+        public JerseyCI(JerseyDTO item)
+        {
+            Contract.Requires(item != null);
+
+            BaseColor = item.BaseColor;
+            Number = item.Number;
+            SleeveColor = item.SleeveColor;
+            Type = item.Type;
+            HorizontalStripes = item.HorizontalStripes;
+            Split = item.Split;
+            Squares = item.Squares;
+            Stripes = item.Stripes;
+            StripesColor = item.StripesColor;
+            SplitColor = item.SplitColor;
+            ShirtType = item.ShirtType;
+            SleeveDetail = item.SleeveDetail;
+        }
+
         public string BaseColor { get; }
 
         public string Number { get; }
@@ -34,23 +53,5 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
         public string ShirtType { get; }
 
         public string SleeveDetail { get; }
-
-        public JerseyCI(JerseyDTO item)
-        {
-            Contract.Requires(item != null);
-
-            BaseColor = item.BaseColor;
-            Number = item.Number;
-            SleeveColor = item.SleeveColor;
-            Type = item.Type;
-            HorizontalStripes = item.HorizontalStripes;
-            Split = item.Split;
-            Squares = item.Squares;
-            Stripes = item.Stripes;
-            StripesColor = item.StripesColor;
-            SplitColor = item.SplitColor;
-            ShirtType = item.ShirtType;
-            SleeveDetail = item.SleeveDetail;
-        }
     }
 }

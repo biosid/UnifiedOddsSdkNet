@@ -11,33 +11,33 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
 {
     /// <summary>
-    /// Maps <see cref="fixtureChangesEndpoint"/> instances to <see cref="IEnumerable{FixtureChangeDTO}" /> instance
+    ///     Maps <see cref="fixtureChangesEndpoint" /> instances to <see cref="IEnumerable{T}" /> instance
     /// </summary>
     internal class FixtureChangesMapper : ISingleTypeMapper<IEnumerable<FixtureChangeDTO>>
     {
         /// <summary>
-        /// A <see cref="fixtureChangesEndpoint"/> instance containing fixture changes
+        ///     A <see cref="fixtureChangesEndpoint" /> instance containing fixture changes
         /// </summary>
         private readonly fixtureChangesEndpoint _data;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FixtureChangesMapper"/> class
+        ///     Initializes a new instance of the <see cref="FixtureChangesMapper" /> class
         /// </summary>
-        /// <param name="data">>A <see cref="fixtureChangesEndpoint"/> instance containing fixture changes</param>
+        /// <param name="data">>A <see cref="fixtureChangesEndpoint" /> instance containing fixture changes</param>
         internal FixtureChangesMapper(fixtureChangesEndpoint data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
             if (data.fixture_change == null)
-                throw  new ArgumentNullException(nameof(data.fixture_change));
+                throw new ArgumentNullException(nameof(data.fixture_change));
 
             _data = data;
         }
 
         /// <summary>
-        /// Maps it's data to <see cref="IEnumerable{FixtureChangeDTO}"/> instance
+        ///     Maps it's data to <see cref="IEnumerable{FixtureChangeDTO}" /> instance
         /// </summary>
-        /// <returns>Constructed <see cref="IEnumerable{FixtureChangeDTO}"/> instance</returns>
+        /// <returns>Constructed <see cref="IEnumerable{FixtureChangeDTO}" /> instance</returns>
         public IEnumerable<FixtureChangeDTO> Map()
         {
             return _data.fixture_change.Select(f => new FixtureChangeDTO(f)).ToList();

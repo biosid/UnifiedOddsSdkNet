@@ -8,8 +8,6 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     public class EventPlayerAssistDTO : SportEntityDTO
     {
-        public string Type { get; }
-
         internal EventPlayerAssistDTO(string id, string name, string type)
             : base(id, name)
         {
@@ -21,5 +19,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         {
             Type = eventPlayerAssist.type;
         }
+
+        public string Type { get; }
     }
 }

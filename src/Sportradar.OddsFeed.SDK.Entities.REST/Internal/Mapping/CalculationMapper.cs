@@ -9,20 +9,21 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
 {
     /// <summary>
-    /// A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="CalculationResponseType" /> instances to <see cref="CalculationDTO" /> instances
+    ///     A <see cref="ISingleTypeMapper{T}" /> used to map <see cref="CalculationResponseType" /> instances to
+    ///     <see cref="CalculationDTO" /> instances
     /// </summary>
     /// <seealso cref="ISingleTypeMapper{CalculationDTO}" />
     internal class CalculationMapper : ISingleTypeMapper<CalculationDTO>
     {
         /// <summary>
-        /// A <see cref="CalculationResponseType"/> containing sport event data
+        ///     A <see cref="CalculationResponseType" /> containing sport event data
         /// </summary>
         private readonly CalculationResponseType _data;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CalculationMapper"/> class.
+        ///     Initializes a new instance of the <see cref="CalculationMapper" /> class.
         /// </summary>
-        /// <param name="data">A <see cref="CalculationResponseType"/> containing available selections</param>
+        /// <param name="data">A <see cref="CalculationResponseType" /> containing available selections</param>
         internal CalculationMapper(CalculationResponseType data)
         {
             if (data == null)
@@ -32,7 +33,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
         }
 
         /// <summary>
-        /// Maps it's data to instance of <see cref="CalculationDTO" />
+        ///     Maps it's data to instance of <see cref="CalculationDTO" />
         /// </summary>
         /// <returns>The created <see cref="CalculationDTO" /> instance</returns>
         public CalculationDTO Map()

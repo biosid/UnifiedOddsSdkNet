@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,81 +11,14 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     /// <summary>
-    /// A data-access-object containing tournament information (when fetching summary or fixture)
+    ///     A data-access-object containing tournament information (when fetching summary or fixture)
     /// </summary>
     public class TournamentInfoDTO : SportEventSummaryDTO
     {
         /// <summary>
-        /// Gets the tournament coverage
+        ///     Initializes a new instance of the <see cref="TournamentInfoDTO" /> class
         /// </summary>
-        /// <value>The tournament coverage</value>
-        public TournamentCoverageDTO TournamentCoverage { get; }
-
-        /// <summary>
-        /// Gets the category
-        /// </summary>
-        /// <value>The category</value>
-        public CategorySummaryDTO Category { get; private set; }
-
-        /// <summary>
-        /// Gets the sport
-        /// </summary>
-        /// <value>The sport</value>
-        public SportEntityDTO Sport { get; }
-
-        /// <summary>
-        /// Gets the competitors
-        /// </summary>
-        /// <value>The competitors</value>
-        public IEnumerable<CompetitorDTO> Competitors { get; }
-
-        /// <summary>
-        /// Gets a <see cref="SeasonDTO"/> representing the current season of the tournament
-        /// </summary>
-        public CurrentSeasonInfoDTO CurrentSeason { get; private set; }
-
-        /// <summary>
-        /// Gets a <see cref="SeasonDTO"/> representing the season of the tournament
-        /// </summary>
-        public CurrentSeasonInfoDTO Season { get; private set; }
-
-        /// <summary>
-        /// Gets the season coverage
-        /// </summary>
-        /// <value>The season coverage</value>
-        public SeasonCoverageDTO SeasonCoverage { get; }
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{GroupDTO}"/> representing tournament groups
-        /// </summary>
-        public IEnumerable<GroupDTO> Groups { get; }
-
-        /// <summary>
-        /// Gets the list of all <see cref="CompetitionDTO"/> that belongs to the season schedule
-        /// </summary>
-        /// <returns>The list of all <see cref="CompetitionDTO"/> that belongs to the season schedule</returns>
-        public IEnumerable<CompetitionDTO> Schedule { get; }
-
-        /// <summary>
-        /// Gets a <see cref="RoundDTO"/> representing current tournament round
-        /// </summary>
-        public RoundDTO CurrentRound { get; }
-
-        /// <summary>
-        /// Gets a <see cref="string"/> representation of the current season year
-        /// </summary>
-        public string Year { get; }
-
-        /// <summary>
-        /// Gets the tournament information for the season
-        /// </summary>
-        /// <value>The tournament information for the season</value>
-        public TournamentInfoDTO TournamentInfo { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentInfoDTO"/> class
-        /// </summary>
-        /// <param name="sportEvent">A <see cref="sportEvent"/> containing basic tournament info</param>
+        /// <param name="sportEvent">A <see cref="sportEvent" /> containing basic tournament info</param>
         internal TournamentInfoDTO(sportEvent sportEvent)
             : base(sportEvent)
         {
@@ -100,7 +34,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 
             Competitors = sportEvent.competitors == null
                 ? null
-                : new ReadOnlyCollection<CompetitorDTO>(sportEvent.competitors.Select(c => new CompetitorDTO(c)).ToList());
+                : new ReadOnlyCollection<CompetitorDTO>(sportEvent.competitors.Select(c => new CompetitorDTO(c))
+                    .ToList());
 
             CurrentSeason = null;
 
@@ -128,13 +63,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentInfoDTO"/> class
+        ///     Initializes a new instance of the <see cref="TournamentInfoDTO" /> class
         /// </summary>
-        /// <param name="tournament">A <see cref="sportEvent"/> containing basic tournament info</param>
+        /// <param name="tournament">A <see cref="sportEvent" /> containing basic tournament info</param>
         internal TournamentInfoDTO(tournament tournament)
             : base(new sportEvent
             {
-
                 id = tournament.id,
                 name = tournament.name,
                 scheduledSpecified = IsTournamentScheduleSpecified(tournament, true),
@@ -174,18 +108,19 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentInfoDTO"/> class
+        ///     Initializes a new instance of the <see cref="TournamentInfoDTO" /> class
         /// </summary>
-        /// <param name="tournament">A <see cref="tournament"/> containing detailed tournament info</param>
+        /// <param name="tournament">A <see cref="tournament" /> containing detailed tournament info</param>
         internal TournamentInfoDTO(tournamentInfoEndpoint tournament)
             : base(new sportEvent
             {
-
                 id = tournament.tournament.id,
                 name = tournament.tournament.name,
-                scheduledSpecified = IsTournamentScheduleSpecified(tournament.tournament, true) || tournament.tournament.current_season != null,
+                scheduledSpecified = IsTournamentScheduleSpecified(tournament.tournament, true) ||
+                                     tournament.tournament.current_season != null,
                 scheduled = GetExtendedTournamentSchedule(tournament.tournament, true),
-                scheduled_endSpecified = IsTournamentScheduleSpecified(tournament.tournament, false) || tournament.tournament.current_season != null,
+                scheduled_endSpecified = IsTournamentScheduleSpecified(tournament.tournament, false) ||
+                                         tournament.tournament.current_season != null,
                 scheduled_end = GetExtendedTournamentSchedule(tournament.tournament, false),
                 tournament = tournament.tournament
             })
@@ -203,10 +138,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 : new SportEntityDTO(tournament.tournament.sport.id, tournament.tournament.sport.name);
 
             Competitors = tournament.competitors != null
-                ? new ReadOnlyCollection<CompetitorDTO>(tournament.competitors.Select(c => new CompetitorDTO(c)).ToList())
+                ? new ReadOnlyCollection<CompetitorDTO>(tournament.competitors.Select(c => new CompetitorDTO(c))
+                    .ToList())
                 : tournament.tournament?.competitors == null // used for stage events
                     ? null
-                    : new ReadOnlyCollection<CompetitorDTO>(tournament.tournament.competitors.Select(c => new CompetitorDTO(c)).ToList());
+                    : new ReadOnlyCollection<CompetitorDTO>(tournament.tournament.competitors
+                        .Select(c => new CompetitorDTO(c)).ToList());
 
             CurrentSeason = tournament.tournament.current_season == null
                 ? null
@@ -242,15 +179,18 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 {
                     id = tournament.tournament.id,
                     name = tournament.tournament.name,
-                    scheduledSpecified = IsTournamentScheduleSpecified(tournament.tournament, true) || tournament.tournament.current_season != null,
+                    scheduledSpecified = IsTournamentScheduleSpecified(tournament.tournament, true) ||
+                                         tournament.tournament.current_season != null,
                     scheduled = GetExtendedTournamentSchedule(tournament.tournament, true),
-                    scheduled_endSpecified = IsTournamentScheduleSpecified(tournament.tournament, false) || tournament.tournament.current_season != null,
+                    scheduled_endSpecified = IsTournamentScheduleSpecified(tournament.tournament, false) ||
+                                             tournament.tournament.current_season != null,
                     scheduled_end = GetExtendedTournamentSchedule(tournament.tournament, false),
                     tournament = tournament.tournament
                 };
                 TournamentInfo = new TournamentInfoDTO(sportEvent)
                 {
-                    Category = new CategorySummaryDTO(tournament.tournament.category.id, tournament.tournament.category.name, tournament.tournament.category.country_code),
+                    Category = new CategorySummaryDTO(tournament.tournament.category.id,
+                        tournament.tournament.category.name, tournament.tournament.category.country_code),
                     CurrentSeason = tournament.tournament.current_season == null
                         ? null
                         : new CurrentSeasonInfoDTO(tournament.tournament.current_season)
@@ -259,9 +199,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentDTO"/> class
+        ///     Initializes a new instance of the <see cref="TournamentDTO" /> class
         /// </summary>
-        /// <param name="tournament">A <see cref="TournamentDTO"/> containing basic tournament info</param>
+        /// <param name="tournament">A <see cref="TournamentDTO" /> containing basic tournament info</param>
         internal TournamentInfoDTO(TournamentDTO tournament)
             : base(new sportEvent
             {
@@ -314,9 +254,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentDTO"/> class
+        ///     Initializes a new instance of the <see cref="TournamentDTO" /> class
         /// </summary>
-        /// <param name="season">A <see cref="SeasonDTO"/> containing basic tournament info</param>
+        /// <param name="season">A <see cref="SeasonDTO" /> containing basic tournament info</param>
         internal TournamentInfoDTO(SeasonDTO season)
             : base(new sportEvent
             {
@@ -356,32 +296,33 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentInfoDTO"/> class
+        ///     Initializes a new instance of the <see cref="TournamentInfoDTO" /> class
         /// </summary>
         /// <param name="fixture">The fixture</param>
         public TournamentInfoDTO(FixtureDTO fixture)
-        : base(new sportEvent
-        {
-            id = fixture.Id.ToString(),
-            name = fixture.Name,
-            scheduledSpecified = fixture.Scheduled.HasValue,
-            scheduled = fixture.Scheduled.GetValueOrDefault(DateTime.MinValue),
-            scheduled_endSpecified = fixture.ScheduledEnd.HasValue,
-            scheduled_end = fixture.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
-            tournament = new tournament
+            : base(new sportEvent
             {
-                id = fixture.Tournament?.Id.ToString(),
-                sport = new sport
+                id = fixture.Id.ToString(),
+                name = fixture.Name,
+                scheduledSpecified = fixture.Scheduled.HasValue,
+                scheduled = fixture.Scheduled.GetValueOrDefault(DateTime.MinValue),
+                scheduled_endSpecified = fixture.ScheduledEnd.HasValue,
+                scheduled_end = fixture.ScheduledEnd.GetValueOrDefault(DateTime.MinValue),
+                tournament = new tournament
                 {
-                    id = fixture.Tournament?.Sport.Id.ToString(),
-                    name = fixture.Tournament?.Sport.Name
+                    id = fixture.Tournament?.Id.ToString(),
+                    sport = new sport
+                    {
+                        id = fixture.Tournament?.Sport.Id.ToString(),
+                        name = fixture.Tournament?.Sport.Name
+                    }
                 }
-            }
-        })
+            })
         {
             TournamentCoverage = fixture.CoverageInfo == null
                 ? null
-                : new TournamentCoverageDTO(new tournamentLiveCoverageInfo { live_coverage = fixture.CoverageInfo.IsLive.ToString().ToLower() });
+                : new TournamentCoverageDTO(new tournamentLiveCoverageInfo
+                    {live_coverage = fixture.CoverageInfo.IsLive.ToString().ToLower()});
 
             Category = fixture.Tournament?.Category;
 
@@ -409,9 +350,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentInfo"/> class
+        ///     Initializes a new instance of the <see cref="TournamentInfo" /> class
         /// </summary>
-        /// <param name="tournament">A <see cref="TournamentInfoDTO"/> containing basic tournament info</param>
+        /// <param name="tournament">A <see cref="TournamentInfoDTO" /> containing basic tournament info</param>
         /// <param name="overwriteSeason">Overwrite tournament base data with season info</param>
         /// <param name="overwriteCurrentSeason">Overwrite tournament base data with current season info</param>
         internal TournamentInfoDTO(TournamentInfoDTO tournament, bool overwriteSeason, bool overwriteCurrentSeason)
@@ -487,25 +428,90 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             TournamentInfo = tournament.TournamentInfo;
         }
 
+        /// <summary>
+        ///     Gets the tournament coverage
+        /// </summary>
+        /// <value>The tournament coverage</value>
+        public TournamentCoverageDTO TournamentCoverage { get; }
+
+        /// <summary>
+        ///     Gets the category
+        /// </summary>
+        /// <value>The category</value>
+        public CategorySummaryDTO Category { get; private set; }
+
+        /// <summary>
+        ///     Gets the sport
+        /// </summary>
+        /// <value>The sport</value>
+        public SportEntityDTO Sport { get; }
+
+        /// <summary>
+        ///     Gets the competitors
+        /// </summary>
+        /// <value>The competitors</value>
+        public IEnumerable<CompetitorDTO> Competitors { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="SeasonDTO" /> representing the current season of the tournament
+        /// </summary>
+        public CurrentSeasonInfoDTO CurrentSeason { get; private set; }
+
+        /// <summary>
+        ///     Gets a <see cref="SeasonDTO" /> representing the season of the tournament
+        /// </summary>
+        public CurrentSeasonInfoDTO Season { get; }
+
+        /// <summary>
+        ///     Gets the season coverage
+        /// </summary>
+        /// <value>The season coverage</value>
+        public SeasonCoverageDTO SeasonCoverage { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="IEnumerable{GroupDTO}" /> representing tournament groups
+        /// </summary>
+        public IEnumerable<GroupDTO> Groups { get; }
+
+        /// <summary>
+        ///     Gets the list of all <see cref="CompetitionDTO" /> that belongs to the season schedule
+        /// </summary>
+        /// <returns>The list of all <see cref="CompetitionDTO" /> that belongs to the season schedule</returns>
+        public IEnumerable<CompetitionDTO> Schedule { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="RoundDTO" /> representing current tournament round
+        /// </summary>
+        public RoundDTO CurrentRound { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="string" /> representation of the current season year
+        /// </summary>
+        public string Year { get; }
+
+        /// <summary>
+        ///     Gets the tournament information for the season
+        /// </summary>
+        /// <value>The tournament information for the season</value>
+        public TournamentInfoDTO TournamentInfo { get; }
+
         private static bool IsTournamentScheduleSpecified(tournament tournament, bool useStartTime)
         {
             if (useStartTime)
-            {
-                return tournament.scheduledSpecified || tournament.tournament_length != null && tournament.tournament_length.start_dateSpecified;
-            }
-            return tournament.scheduled_endSpecified || tournament.tournament_length != null && tournament.tournament_length.end_dateSpecified;
+                return tournament.scheduledSpecified || tournament.tournament_length != null &&
+                       tournament.tournament_length.start_dateSpecified;
+            return tournament.scheduled_endSpecified ||
+                   tournament.tournament_length != null && tournament.tournament_length.end_dateSpecified;
         }
 
         private static DateTime GetTournamentSchedule(tournament tournament, bool useStartTime)
         {
             if (useStartTime)
-            {
                 return tournament.scheduledSpecified
                     ? tournament.scheduled
                     : tournament.tournament_length != null && tournament.tournament_length.start_dateSpecified
                         ? tournament.tournament_length.start_date
                         : tournament.scheduled;
-            }
 
             return tournament.scheduled_endSpecified
                 ? tournament.scheduled_end
@@ -517,13 +523,11 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         private static DateTime GetExtendedTournamentSchedule(tournamentExtended tournament, bool useStartTime)
         {
             if (useStartTime)
-            {
                 return IsTournamentScheduleSpecified(tournament, true)
                     ? GetTournamentSchedule(tournament, true)
                     : tournament.current_season != null
                         ? tournament.current_season.start_date
                         : tournament.scheduled;
-            }
 
             return IsTournamentScheduleSpecified(tournament, false)
                 ? GetTournamentSchedule(tournament, false)

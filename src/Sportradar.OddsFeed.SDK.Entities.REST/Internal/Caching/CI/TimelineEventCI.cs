@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -12,29 +13,30 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
 {
     /// <summary>
-    /// A cache item for basic event (used in match timeline) (on REST and DTO is called basicEvent); this has different name to be similar to java version
+    ///     A cache item for basic event (used in match timeline) (on REST and DTO is called basicEvent); this has different
+    ///     name to be similar to java version
     /// </summary>
     public class TimelineEventCI
     {
-        public int Id;
-        public decimal? HomeScore;
+        public IEnumerable<EventPlayerAssistCI> Assists;
         public decimal? AwayScore;
+        public CacheItem GoalScorer;
+        public decimal? HomeScore;
+        public int Id;
+        public string MatchClock;
+        public int? MatchStatusCode;
         public int? MatchTime;
         public string Period;
         public string PeriodName;
+        public CacheItem Player;
         public string Points;
         public string StoppageTime;
         public HomeAway? Team;
+        public DateTime Time;
         public string Type;
         public string Value;
         public int? X;
         public int? Y;
-        public DateTime Time;
-        public IEnumerable<EventPlayerAssistCI> Assists;
-        public CacheItem GoalScorer;
-        public CacheItem Player;
-        public int? MatchStatusCode;
-        public string MatchClock;
 
         internal TimelineEventCI(BasicEventDTO dto, CultureInfo culture)
         {
@@ -81,31 +83,27 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI
                             newAssists.Add(new EventPlayerAssistCI(assist, culture));
                         }
                     }
+
                     Assists = newAssists;
                 }
             }
+
             if (dto.GoalScorer != null)
             {
                 if (GoalScorer == null)
-                {
                     GoalScorer = new CacheItem(dto.GoalScorer.Id, dto.GoalScorer.Name, culture);
-                }
                 else
-                {
                     GoalScorer.Merge(dto.GoalScorer, culture);
-                }
             }
+
             if (dto.Player != null)
             {
                 if (Player == null)
-                {
                     Player = new CacheItem(dto.Player.Id, dto.Player.Name, culture);
-                }
                 else
-                {
                     Player.Merge(dto.Player, culture);
-                }
             }
+
             MatchStatusCode = dto.MatchStatusCode;
             MatchClock = dto.MatchClock;
         }

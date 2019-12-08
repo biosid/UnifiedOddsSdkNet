@@ -1,40 +1,17 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Diagnostics.Contracts;
 using Sportradar.OddsFeed.SDK.Messages.REST;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     /// <summary>
-    /// A data-transfer-object for jersey
+    ///     A data-transfer-object for jersey
     /// </summary>
     public class JerseyDTO
     {
-        public string BaseColor { get; }
-
-        public string Number { get; }
-
-        public string SleeveColor { get; }
-
-        public string Type { get; }
-
-        public bool? HorizontalStripes { get; }
-
-        public bool? Split { get; }
-
-        public bool? Squares { get; }
-
-        public bool? Stripes { get; }
-
-        public string StripesColor { get; }
-
-        public string SplitColor { get; }
-
-        public string ShirtType { get; }
-
-        public string SleeveDetail { get; }
-        
         public JerseyDTO(jersey item)
         {
             Contract.Requires(item != null);
@@ -60,5 +37,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
             ShirtType = item.shirt_type;
             SleeveDetail = item.sleeve_detail;
         }
+
+        public string BaseColor { get; }
+
+        public string Number { get; }
+
+        public string SleeveColor { get; }
+
+        public string Type { get; }
+
+        public bool? HorizontalStripes { get; }
+
+        public bool? Split { get; }
+
+        public bool? Squares { get; }
+
+        public bool? Stripes { get; }
+
+        public string StripesColor { get; }
+
+        public string SplitColor { get; }
+
+        public string ShirtType { get; }
+
+        public string SleeveDetail { get; }
     }
 }

@@ -1,6 +1,7 @@
 /*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -10,26 +11,16 @@ using Sportradar.OddsFeed.SDK.Messages;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
 {
     /// <summary>
-    /// Base class for cached representation of the sport hierarchy entity (sport, category, tournament)
+    ///     Base class for cached representation of the sport hierarchy entity (sport, category, tournament)
     /// </summary>
     public class CacheItem
     {
         /// <summary>
-        /// Gets a <see cref="URN"/> representing id of the related entity
+        ///     Initializes a new instance of the <see cref="CacheItem" /> class.
         /// </summary>
-        public URN Id { get;}
-
-        /// <summary>
-        /// Gets a <see cref="IDictionary{CultureInfo, String}"/> containing translated name of the item
-        /// </summary>
-        public IDictionary<CultureInfo, string> Name { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CacheItem"/> class.
-        /// </summary>
-        /// <param name="id">A <see cref="URN"/> representing the id of the item</param>
+        /// <param name="id">A <see cref="URN" /> representing the id of the item</param>
         /// <param name="name">The name of the item</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the language of the provided data</param>
+        /// <param name="culture">A <see cref="CultureInfo" /> specifying the language of the provided data</param>
         protected CacheItem(URN id, string name, CultureInfo culture)
         {
             Contract.Requires(id != null);
@@ -41,7 +32,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         }
 
         /// <summary>
-        /// Defined field invariants needed by code contracts
+        ///     Gets a <see cref="URN" /> representing id of the related entity
+        /// </summary>
+        public URN Id { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="IDictionary{TKey,TValue}" /> containing translated name of the item
+        /// </summary>
+        public IDictionary<CultureInfo, string> Name { get; }
+
+        /// <summary>
+        ///     Defined field invariants needed by code contracts
         /// </summary>
         [ContractInvariantMethod]
         private void ObjectInvariant()
@@ -52,10 +53,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         }
 
         /// <summary>
-        /// Merges the information from the provided <see cref="CacheItem"/> to data held by current instance
+        ///     Merges the information from the provided <see cref="CacheItem" /> to data held by current instance
         /// </summary>
-        /// <param name="item">A <see cref="CacheItem"/> containing the data to be merged to current instance</param>
-        /// <param name="culture">A <see cref="CultureInfo"/> specifying the culture of data in the passed <see cref="CacheItem"/></param>
+        /// <param name="item">A <see cref="CacheItem" /> containing the data to be merged to current instance</param>
+        /// <param name="culture">
+        ///     A <see cref="CultureInfo" /> specifying the culture of data in the passed
+        ///     <see cref="CacheItem" />
+        /// </param>
         public virtual void Merge(CacheItem item, CultureInfo culture)
         {
             Contract.Requires(culture != null);
@@ -69,16 +73,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
                 return;
             }
 
-            foreach (var k in item.Name.Keys)
-            {
-                Name[culture] = item.Name[k];
-            }
+            foreach (var k in item.Name.Keys) Name[culture] = item.Name[k];
         }
 
         /// <summary>
-        /// Determines whether the current instance has translations for the specified languages
+        ///     Determines whether the current instance has translations for the specified languages
         /// </summary>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}"/> specifying the required languages</param>
+        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the required languages</param>
         /// <returns>True if the current instance contains data in the required locals. Otherwise false.</returns>
         public virtual bool HasTranslationsFor(IEnumerable<CultureInfo> cultures)
         {
@@ -86,7 +87,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Sports
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()

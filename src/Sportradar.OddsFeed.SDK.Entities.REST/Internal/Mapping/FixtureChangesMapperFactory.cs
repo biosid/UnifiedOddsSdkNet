@@ -9,14 +9,18 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Mapping
 {
     /// <summary>
-    /// Creates mapper for fixture changes
+    ///     Creates mapper for fixture changes
     /// </summary>
-    public class FixtureChangesMapperFactory : ISingleTypeMapperFactory<fixtureChangesEndpoint, IEnumerable<FixtureChangeDTO>>
+    public class
+        FixtureChangesMapperFactory : ISingleTypeMapperFactory<fixtureChangesEndpoint, IEnumerable<FixtureChangeDTO>>
     {
         /// <summary>
-        /// Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance for fixture changes
+        ///     Creates and returns a <see cref="ISingleTypeMapper{T}" /> instance for fixture changes
         /// </summary>
-        /// <param name="data">A <see cref="fixtureChangesEndpoint" /> instance which the created <see cref="ISingleTypeMapper{T}" /> will map</param>
+        /// <param name="data">
+        ///     A <see cref="fixtureChangesEndpoint" /> instance which the created
+        ///     <see cref="ISingleTypeMapper{T}" /> will map
+        /// </param>
         /// <returns>New <see cref="ISingleTypeMapper{T}" /> instance</returns>
         public ISingleTypeMapper<IEnumerable<FixtureChangeDTO>> CreateMapper(fixtureChangesEndpoint data)
         {

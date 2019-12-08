@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,144 +17,156 @@ using CacheItem = Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.CI.Cach
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
 {
     /// <summary>
-    /// Class MatchCI
+    ///     Class MatchCI
     /// </summary>
     /// <seealso cref="CompetitionCI" />
     /// <seealso cref="IMatchCI" />
     public class MatchCI : CompetitionCI, IMatchCI
     {
         /// <summary>
-        /// The season
-        /// </summary>
-        private CacheItem _season;
-        /// <summary>
-        /// The tournament round
-        /// </summary>
-        private RoundCI _tournamentRound;
-        /// <summary>
-        /// The tournament identifier
-        /// </summary>
-        private URN _tournamentId;
-        /// <summary>
-        /// The fixture
-        /// </summary>
-        private IFixture _fixture;
-        /// <summary>
-        /// The event timeline
-        /// </summary>
-        private EventTimelineCI _eventTimeline;
-        /// <summary>
-        /// The delayed info
+        ///     The delayed info
         /// </summary>
         private DelayedInfoCI _delayedInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MatchCI"/> class
+        ///     The event timeline
+        /// </summary>
+        private EventTimelineCI _eventTimeline;
+
+        /// <summary>
+        ///     The fixture
+        /// </summary>
+        private IFixture _fixture;
+
+        /// <summary>
+        ///     The season
+        /// </summary>
+        private CacheItem _season;
+
+        /// <summary>
+        ///     The tournament identifier
+        /// </summary>
+        private URN _tournamentId;
+
+        /// <summary>
+        ///     The tournament round
+        /// </summary>
+        private RoundCI _tournamentRound;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MatchCI" /> class
         /// </summary>
         /// <param name="id">A <see cref="URN" /> specifying the id of the sport event associated with the current instance</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager" /> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">A <see cref="ISemaphorePool" /> instance used to obtain sync objects</param>
-        /// <param name="defaultCulture">A <see cref="CultureInfo" /> specifying the language used when fetching info which is not translatable (e.g. Scheduled, ..)</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="defaultCulture">
+        ///     A <see cref="CultureInfo" /> specifying the language used when fetching info which is not
+        ///     translatable (e.g. Scheduled, ..)
+        /// </param>
+        /// <param name="fixtureTimestampCache">
+        ///     A <see cref="System.Runtime.Caching.MemoryCache" /> used to cache the sport events
+        ///     fixture timestamps
+        /// </param>
         public MatchCI(URN id,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo defaultCulture,
-                       MemoryCache fixtureTimestampCache)
+            IDataRouterManager dataRouterManager,
+            ISemaphorePool semaphorePool,
+            CultureInfo defaultCulture,
+            MemoryCache fixtureTimestampCache)
             : base(id, dataRouterManager, semaphorePool, defaultCulture, fixtureTimestampCache)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MatchCI"/> class
+        ///     Initializes a new instance of the <see cref="MatchCI" /> class
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager" /> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache" /> used to cache the sport events fixture timestamps</param>
         public MatchCI(MatchDTO eventSummary,
-                       IDataRouterManager dataRouterManager,
-                       ISemaphorePool semaphorePool,
-                       CultureInfo currentCulture,
-                       CultureInfo defaultCulture,
-                       MemoryCache fixtureTimestampCache)
-            : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
+            IDataRouterManager dataRouterManager,
+            ISemaphorePool semaphorePool,
+            CultureInfo currentCulture,
+            CultureInfo defaultCulture,
+            MemoryCache fixtureTimestampCache)
+            : base(eventSummary, dataRouterManager, semaphorePool, currentCulture, defaultCulture,
+                fixtureTimestampCache)
         {
             Merge(eventSummary, currentCulture, true);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MatchCI"/> class
+        ///     Initializes a new instance of the <see cref="MatchCI" /> class
         /// </summary>
         /// <param name="fixture">The fixture data</param>
-        /// <param name="dataRouterManager">The <see cref="IDataRouterManager"/> used to obtain summary and fixture</param>
+        /// <param name="dataRouterManager">The <see cref="IDataRouterManager" /> used to obtain summary and fixture</param>
         /// <param name="semaphorePool">The semaphore pool</param>
         /// <param name="currentCulture">The current culture</param>
         /// <param name="defaultCulture">The default culture</param>
-        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache"/> used to cache the sport events fixture timestamps</param>
+        /// <param name="fixtureTimestampCache">A <see cref="MemoryCache" /> used to cache the sport events fixture timestamps</param>
         public MatchCI(FixtureDTO fixture,
-                        IDataRouterManager dataRouterManager,
-                        ISemaphorePool semaphorePool,
-                        CultureInfo currentCulture,
-                        CultureInfo defaultCulture,
-                        MemoryCache fixtureTimestampCache)
+            IDataRouterManager dataRouterManager,
+            ISemaphorePool semaphorePool,
+            CultureInfo currentCulture,
+            CultureInfo defaultCulture,
+            MemoryCache fixtureTimestampCache)
             : base(fixture, dataRouterManager, semaphorePool, currentCulture, defaultCulture, fixtureTimestampCache)
         {
             Merge(fixture, currentCulture, true);
         }
 
         /// <summary>
-        /// Get season as an asynchronous operation
+        ///     Get season as an asynchronous operation
         /// </summary>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
+        /// <param name="cultures">
+        ///     A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned
+        ///     instance should be translated
+        /// </param>
         /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
         public async Task<CacheItem> GetSeasonAsync(IEnumerable<CultureInfo> cultures)
         {
             var wantedCultures = cultures as CultureInfo[] ?? cultures.ToArray();
-            if (_season != null && _season.HasTranslationsFor(wantedCultures))
-            {
-                return _season;
-            }
+            if (_season != null && _season.HasTranslationsFor(wantedCultures)) return _season;
             await FetchMissingSummary(wantedCultures, false).ConfigureAwait(false);
             return _season;
         }
 
         /// <summary>
-        /// Get tournament round as an asynchronous operation
+        ///     Get tournament round as an asynchronous operation
         /// </summary>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
+        /// <param name="cultures">
+        ///     A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned
+        ///     instance should be translated
+        /// </param>
         /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
         public async Task<RoundCI> GetTournamentRoundAsync(IEnumerable<CultureInfo> cultures)
         {
             var cultureInfos = cultures as CultureInfo[] ?? cultures.ToArray();
-            if (_tournamentRound != null && _tournamentRound.HasTranslationsFor(cultureInfos))
-            {
-                return _tournamentRound;
-            }
+            if (_tournamentRound != null && _tournamentRound.HasTranslationsFor(cultureInfos)) return _tournamentRound;
             await FetchMissingSummary(cultureInfos, false).ConfigureAwait(false);
             return _tournamentRound;
         }
 
         /// <summary>
-        /// Get tournament identifier as an asynchronous operation
+        ///     Get tournament identifier as an asynchronous operation
         /// </summary>
         /// <returns>A <see cref="Task{URN}" /> representing the asynchronous operation</returns>
         public async Task<URN> GetTournamentIdAsync()
         {
-            if (_tournamentId != null)
-            {
-                return _tournamentId;
-            }
-            await FetchMissingSummary(new List<CultureInfo> { DefaultCulture }, false).ConfigureAwait(false);
+            if (_tournamentId != null) return _tournamentId;
+            await FetchMissingSummary(new List<CultureInfo> {DefaultCulture}, false).ConfigureAwait(false);
             return _tournamentId;
         }
 
         /// <summary>
-        /// Get fixture as an asynchronous operation
+        ///     Get fixture as an asynchronous operation
         /// </summary>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
+        /// <param name="cultures">
+        ///     A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned
+        ///     instance should be translated
+        /// </param>
         /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
         /// <remarks>A Fixture is a sport event that has been arranged for a particular time and place</remarks>
         public async Task<IFixture> GetFixtureAsync(IEnumerable<CultureInfo> cultures)
@@ -163,9 +176,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
-        /// Gets the associated event timeline
+        ///     Gets the associated event timeline
         /// </summary>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
+        /// <param name="cultures">
+        ///     A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned
+        ///     instance should be translated
+        /// </param>
         /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
         /// <exception cref="System.NotImplementedException"></exception>
         /// <remarks>The timeline is cached only after the event status indicates that the event has finished</remarks>
@@ -178,7 +194,8 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             }
             else
             {
-                wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, _eventTimeline.FetchedCultureInfos).ToList();
+                wantedCultures = LanguageHelper.GetMissingCultures(wantedCultures, _eventTimeline.FetchedCultureInfos)
+                    .ToList();
             }
 
             var tasks = wantedCultures.Select(s => DataRouterManager.GetInformationAboutOngoingEventAsync(Id, s, this));
@@ -187,9 +204,12 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
-        /// Asynchronously gets <see cref="DelayedInfoCI" /> instance providing delayed info
+        ///     Asynchronously gets <see cref="DelayedInfoCI" /> instance providing delayed info
         /// </summary>
-        /// <param name="cultures">A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned instance should be translated</param>
+        /// <param name="cultures">
+        ///     A <see cref="IEnumerable{CultureInfo}" /> specifying the languages to which the returned
+        ///     instance should be translated
+        /// </param>
         /// <returns>A <see cref="Task{T}" /> representing an async operation</returns>
         /// <exception cref="System.NotImplementedException"></exception>
         public async Task<DelayedInfoCI> GetDelayedInfoAsync(IEnumerable<CultureInfo> cultures)
@@ -199,7 +219,41 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         }
 
         /// <summary>
-        /// Merges the specified event summary
+        ///     Merges the specified fixture
+        /// </summary>
+        /// <param name="fixture">The fixture</param>
+        /// <param name="culture">The culture</param>
+        /// <param name="useLock">Should the lock mechanism be used during merge</param>
+        public new void MergeFixture(FixtureDTO fixture, CultureInfo culture, bool useLock)
+        {
+            if (useLock)
+                lock (MergeLock)
+                {
+                    ActualMergeFixture(fixture, culture);
+                }
+            else
+                ActualMergeFixture(fixture, culture);
+        }
+
+        /// <summary>
+        ///     Merges the specified fixture
+        /// </summary>
+        /// <param name="timelineDTO">The match timeline</param>
+        /// <param name="culture">The culture</param>
+        /// <param name="useLock">Should the lock mechanism be used during merge</param>
+        public void MergeTimeline(MatchTimelineDTO timelineDTO, CultureInfo culture, bool useLock)
+        {
+            if (useLock)
+                lock (MergeLock)
+                {
+                    ActualMergeTimeline(timelineDTO, culture);
+                }
+            else
+                ActualMergeTimeline(timelineDTO, culture);
+        }
+
+        /// <summary>
+        ///     Merges the specified event summary
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
         /// <param name="culture">The culture</param>
@@ -207,20 +261,16 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
         public void Merge(MatchDTO eventSummary, CultureInfo culture, bool useLock)
         {
             if (useLock)
-            {
                 lock (MergeLock)
                 {
                     ActualMerge(eventSummary, culture);
                 }
-            }
             else
-            {
                 ActualMerge(eventSummary, culture);
-            }
         }
 
         /// <summary>
-        /// Merges the specified event summary
+        ///     Merges the specified event summary
         /// </summary>
         /// <param name="eventSummary">The event summary</param>
         /// <param name="culture">The culture</param>
@@ -231,54 +281,24 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             if (eventSummary.Season != null)
             {
                 if (_season == null)
-                {
                     _season = new CacheItem(eventSummary.Season.Id, eventSummary.Season.Name, culture);
-                }
                 else
-                {
                     _season.Merge(eventSummary.Season, culture);
-                }
             }
+
             if (eventSummary.Round != null)
             {
                 if (_tournamentRound == null)
-                {
                     _tournamentRound = new RoundCI(eventSummary.Round, culture);
-                }
                 else
-                {
                     _tournamentRound.Merge(eventSummary.Round, culture);
-                }
             }
-            if (eventSummary.Tournament != null)
-            {
-                _tournamentId = eventSummary.Tournament.Id;
-            }
+
+            if (eventSummary.Tournament != null) _tournamentId = eventSummary.Tournament.Id;
         }
 
         /// <summary>
-        /// Merges the specified fixture
-        /// </summary>
-        /// <param name="fixture">The fixture</param>
-        /// <param name="culture">The culture</param>
-        /// <param name="useLock">Should the lock mechanism be used during merge</param>
-        public new void MergeFixture(FixtureDTO fixture, CultureInfo culture, bool useLock)
-        {
-            if (useLock)
-            {
-                lock (MergeLock)
-                {
-                    ActualMergeFixture(fixture, culture);
-                }
-            }
-            else
-            {
-                ActualMergeFixture(fixture, culture);
-            }
-        }
-
-        /// <summary>
-        /// Merges the specified fixture
+        ///     Merges the specified fixture
         /// </summary>
         /// <param name="fixture">The fixture</param>
         /// <param name="culture">The culture</param>
@@ -291,52 +311,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.Caching.Events
             if (fixture.DelayedInfo != null)
             {
                 if (_delayedInfo == null)
-                {
                     _delayedInfo = new DelayedInfoCI(fixture.DelayedInfo, culture);
-                }
                 else
-                {
                     _delayedInfo.Merge(fixture.DelayedInfo, culture);
-                }
             }
         }
 
         /// <summary>
-        /// Merges the specified fixture
-        /// </summary>
-        /// <param name="timelineDTO">The match timeline</param>
-        /// <param name="culture">The culture</param>
-        /// <param name="useLock">Should the lock mechanism be used during merge</param>
-        public void MergeTimeline(MatchTimelineDTO timelineDTO, CultureInfo culture, bool useLock)
-        {
-            if (useLock)
-            {
-                lock (MergeLock)
-                {
-                    ActualMergeTimeline(timelineDTO, culture);
-                }
-            }
-            else
-            {
-                ActualMergeTimeline(timelineDTO, culture);
-            }
-        }
-
-        /// <summary>
-        /// Merges the specified fixture
+        ///     Merges the specified fixture
         /// </summary>
         /// <param name="timelineDTO">The match timeline</param>
         /// <param name="culture">The culture</param>
         private void ActualMergeTimeline(MatchTimelineDTO timelineDTO, CultureInfo culture)
         {
             if (_eventTimeline == null)
-            {
                 _eventTimeline = new EventTimelineCI(timelineDTO, culture);
-            }
             else
-            {
                 _eventTimeline.Merge(timelineDTO, culture);
-            }
         }
     }
 }

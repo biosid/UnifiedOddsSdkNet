@@ -1,7 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Reflection;
+
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

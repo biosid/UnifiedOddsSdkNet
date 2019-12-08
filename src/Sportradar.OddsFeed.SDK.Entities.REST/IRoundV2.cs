@@ -6,12 +6,12 @@
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
-    /// Defines a contract implemented by classes providing basic tournament round information
+    ///     Defines a contract implemented by classes providing basic tournament round information
     /// </summary>
     public interface IRoundV2 : IRoundV1
     {
         /// <summary>
-        /// Gets the phase of the associated round
+        ///     Gets the phase of the associated round
         /// </summary>
         string Phase { get; }
     }

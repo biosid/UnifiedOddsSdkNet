@@ -5,12 +5,12 @@
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
-    /// Defines a contract implemented by classes representing a competing team
+    ///     Defines a contract implemented by classes representing a competing team
     /// </summary>
     public interface ITeamCompetitorV1 : ITeamCompetitor
     {
         /// <summary>
-        /// Gets the division
+        ///     Gets the division
         /// </summary>
         int? Division { get; }
     }

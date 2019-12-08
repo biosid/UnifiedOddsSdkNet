@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -9,24 +10,14 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     /// <summary>
-    /// A data-transfer-object representation for sport event conditions
+    ///     A data-transfer-object representation for sport event conditions
     /// </summary>
     public class SportEventConditionsDTO
     {
-        internal string Attendance { get; }
-
-        internal string EventMode { get; }
-
-        internal RefereeDTO Referee { get; }
-
-        internal WeatherInfoDTO WeatherInfo { get; }
-
-        internal IEnumerable<PitcherDTO> Pitchers { get; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="SportEventConditionsDTO"/> class
+        ///     Initializes a new instance of the <see cref="SportEventConditionsDTO" /> class
         /// </summary>
-        /// <param name="conditions">The <see cref="sportEventConditions"/> used for creating instance</param>
+        /// <param name="conditions">The <see cref="sportEventConditions" /> used for creating instance</param>
         internal SportEventConditionsDTO(sportEventConditions conditions)
         {
             Contract.Requires(conditions != null);
@@ -43,5 +34,15 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 ? null
                 : conditions.pitchers.Select(s => new PitcherDTO(s));
         }
+
+        internal string Attendance { get; }
+
+        internal string EventMode { get; }
+
+        internal RefereeDTO Referee { get; }
+
+        internal WeatherInfoDTO WeatherInfo { get; }
+
+        internal IEnumerable<PitcherDTO> Pitchers { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -19,7 +20,8 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
 {
     /// <summary>
-    /// A implementation of <see cref="IDataFetcher"/> and <see cref="IDataPoster"/> which uses the HTTP requests to fetch or post the requested data. All request are logged.
+    ///     A implementation of <see cref="IDataFetcher" /> and <see cref="IDataPoster" /> which uses the HTTP requests to
+    ///     fetch or post the requested data. All request are logged.
     /// </summary>
     /// <seealso cref="IDataFetcher" />
     /// <remarks>ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF - the levels are defined in order of increasing priority</remarks>
@@ -30,16 +32,21 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         private readonly ISequenceGenerator _sequenceGenerator;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogHttpDataFetcher"/> class.
+        ///     Initializes a new instance of the <see cref="LogHttpDataFetcher" /> class.
         /// </summary>
-        /// <param name="client">A <see cref="HttpClient"/> used to invoke HTTP requests</param>
+        /// <param name="client">A <see cref="HttpClient" /> used to invoke HTTP requests</param>
         /// <param name="accessToken">A token used when making the http requests</param>
-        /// <param name="sequenceGenerator">A <see cref="ISequenceGenerator"/> used to identify requests</param>
+        /// <param name="sequenceGenerator">A <see cref="ISequenceGenerator" /> used to identify requests</param>
         /// <param name="responseDeserializer">The deserializer for unexpected response</param>
-        /// <param name="connectionFailureLimit">Indicates the limit of consecutive request failures, after which it goes in "blocking mode"</param>
+        /// <param name="connectionFailureLimit">
+        ///     Indicates the limit of consecutive request failures, after which it goes in
+        ///     "blocking mode"
+        /// </param>
         /// <param name="connectionFailureTimeout">indicates the timeout after which comes out of "blocking mode" (in seconds)</param>
-        public LogHttpDataFetcher(HttpClient client, string accessToken, ISequenceGenerator sequenceGenerator, IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5, int connectionFailureTimeout = 15)
-            :base(client, accessToken, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
+        public LogHttpDataFetcher(HttpClient client, string accessToken, ISequenceGenerator sequenceGenerator,
+            IDeserializer<response> responseDeserializer, int connectionFailureLimit = 5,
+            int connectionFailureTimeout = 15)
+            : base(client, accessToken, responseDeserializer, connectionFailureLimit, connectionFailureTimeout)
         {
             Contract.Requires(sequenceGenerator != null);
             Contract.Requires(connectionFailureLimit >= 1);
@@ -49,7 +56,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Asynchronously gets a <see cref="Stream" /> containing data fetched from the provided <see cref="Uri" />
+        ///     Registers the health check which will be periodically triggered
+        /// </summary>
+        public void RegisterHealthCheck()
+        {
+            HealthChecks.RegisterHealthCheck("LogHttpDataFetcher", StartHealthCheck);
+        }
+
+        /// <summary>
+        ///     Starts the health check and returns <see cref="HealthCheckResult" />
+        /// </summary>
+        public HealthCheckResult StartHealthCheck()
+        {
+            return HealthCheckResult.Healthy("LogHttpDataFetcher is operational.");
+        }
+
+        /// <summary>
+        ///     Asynchronously gets a <see cref="Stream" /> containing data fetched from the provided <see cref="Uri" />
         /// </summary>
         /// <param name="uri">The <see cref="Uri" /> of the resource to be fetched</param>
         /// <returns>A <see cref="Task" /> which, when completed will return a <see cref="Stream" /> containing fetched data</returns>
@@ -58,7 +81,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         {
             Metric.Context("FEED").Meter("LogHttpDataFetcher->GetDataAsync", Unit.Requests).Mark();
 
-            var dataId = _sequenceGenerator.GetNext().ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together.
+            var dataId =
+                _sequenceGenerator.GetNext()
+                    .ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together.
             var watch = new Stopwatch();
 
             var logBuilder = new StringBuilder();
@@ -82,6 +107,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                     logBuilder.Append(" Response:").Append(commException.Response?.Replace("\n", string.Empty));
                     RestLog.Error(logBuilder);
                 }
+
                 throw;
             }
 
@@ -106,7 +132,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Gets a <see cref="Stream" /> containing data fetched from the provided <see cref="Uri" />
+        ///     Gets a <see cref="Stream" /> containing data fetched from the provided <see cref="Uri" />
         /// </summary>
         /// <param name="uri">The <see cref="Uri" /> of the resource to be fetched</param>
         /// <returns>A <see cref="Task" /> which, when completed will return a <see cref="Stream" /> containing fetched data</returns>
@@ -115,7 +141,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         {
             Metric.Context("FEED").Meter("LogHttpDataFetcher->GetData", Unit.Requests).Mark();
 
-            var dataId = _sequenceGenerator.GetNext().ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together
+            var dataId =
+                _sequenceGenerator.GetNext()
+                    .ToString("D7"); // because request can take long time, there may be several request at the same time; Id to know what belongs together
             var watch = new Stopwatch();
 
             var logBuilder = new StringBuilder();
@@ -133,12 +161,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
                 watch.Stop();
                 if (ex.GetType() == typeof(CommunicationException))
                 {
-                    var commException = (CommunicationException)ex;
+                    var commException = (CommunicationException) ex;
                     logBuilder.Append(" ResponseCode:").Append(commException.ResponseCode);
                     logBuilder.Append(" Duration:").Append(watch.Elapsed);
                     logBuilder.Append(" Response:").Append(commException.Response?.Replace("\n", string.Empty));
                     RestLog.Error(logBuilder);
                 }
+
                 throw;
             }
 
@@ -163,11 +192,13 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
         }
 
         /// <summary>
-        /// Asynchronously gets a <see cref="Stream"/> containing data fetched from the provided <see cref="Uri"/>
+        ///     Asynchronously gets a <see cref="Stream" /> containing data fetched from the provided <see cref="Uri" />
         /// </summary>
-        /// <param name="uri">The <see cref="Uri"/> of the resource to be fetched</param>
-        /// <param name="content">A <see cref="HttpContent"/> to be posted to the specific <see cref="Uri"/></param>
-        /// <returns>A <see cref="Task"/> which, when successfully completed will return a <see cref="HttpResponseMessage"/></returns>
+        /// <param name="uri">The <see cref="Uri" /> of the resource to be fetched</param>
+        /// <param name="content">A <see cref="HttpContent" /> to be posted to the specific <see cref="Uri" /></param>
+        /// <returns>
+        ///     A <see cref="Task" /> which, when successfully completed will return a <see cref="HttpResponseMessage" />
+        /// </returns>
         /// <exception cref="Sportradar.OddsFeed.SDK.Common.Exceptions.CommunicationException">Failed to execute http post</exception>
         public override async Task<HttpResponseMessage> PostDataAsync(Uri uri, HttpContent content = null)
         {
@@ -193,47 +224,26 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal
             catch (Exception ex)
             {
                 watch.Stop();
-                if (!RestLog.IsInfoEnabled)
-                {
-                    RestLog.Error($"Id:{dataId} Error posting to url: {uri.AbsoluteUri}");
-                }
+                if (!RestLog.IsInfoEnabled) RestLog.Error($"Id:{dataId} Error posting to url: {uri.AbsoluteUri}");
                 RestLog.Error($"Id:{dataId} Posting error at {watch.ElapsedMilliseconds} ms.");
                 if (ex.GetType() != typeof(ObjectDisposedException) && ex.GetType() != typeof(TaskCanceledException))
-                {
                     RestLog.Error(ex);
-                }
                 throw;
             }
 
             watch.Stop();
             if (RestLog.IsDebugEnabled)
             {
-                RestLog.Debug($"Id:{dataId} Posting took {watch.ElapsedMilliseconds} ms. Response code: {(int) response.StatusCode}-{response.ReasonPhrase}.");
+                RestLog.Debug(
+                    $"Id:{dataId} Posting took {watch.ElapsedMilliseconds} ms. Response code: {(int) response.StatusCode}-{response.ReasonPhrase}.");
             }
             else
             {
                 if (watch.ElapsedMilliseconds > 100)
-                {
                     RestLog.Info($"Id:{dataId} Posting took {watch.ElapsedMilliseconds} ms.");
-                }
             }
+
             return response;
-        }
-
-        /// <summary>
-        /// Registers the health check which will be periodically triggered
-        /// </summary>
-        public void RegisterHealthCheck()
-        {
-            HealthChecks.RegisterHealthCheck("LogHttpDataFetcher", new Func<HealthCheckResult>(StartHealthCheck));
-        }
-
-        /// <summary>
-        /// Starts the health check and returns <see cref="HealthCheckResult"/>
-        /// </summary>
-        public HealthCheckResult StartHealthCheck()
-        {
-            return HealthCheckResult.Healthy("LogHttpDataFetcher is operational.");
         }
     }
 }

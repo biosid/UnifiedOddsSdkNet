@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Diagnostics.Contracts;
 using Sportradar.OddsFeed.SDK.Messages.REST;
@@ -10,65 +11,43 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
 {
     /// <summary>
-    /// A data-transfer-object representing player's profile
+    ///     A data-transfer-object representing player's profile
     /// </summary>
     public class PlayerProfileDTO : SportEntityDTO
     {
         /// <summary>
-        /// Gets a value describing the type(e.g. forward, defense, ...) of the player represented by current instance
-        /// </summary>
-        public string Type;
-
-        /// <summary>
-        /// Gets a <see cref="DateTime"/> specifying the date of birth of the player associated with the current instance
+        ///     Gets a <see cref="DateTime" /> specifying the date of birth of the player associated with the current instance
         /// </summary>
         public DateTime? DateOfBirth;
 
         /// <summary>
-        /// Gets the nationality of the player represented by the current instance
-        /// </summary>
-        public string Nationality;
-
-        /// <summary>
-        /// Gets the height in centimeters of the player represented by the current instance or a null reference if height is not known
+        ///     Gets the height in centimeters of the player represented by the current instance or a null reference if height is
+        ///     not known
         /// </summary>
         public int? Height;
 
         /// <summary>
-        /// Gets the weight in kilograms of the player represented by the current instance or a null reference if weight is not known
+        ///     Gets the nationality of the player represented by the current instance
+        /// </summary>
+        public string Nationality;
+
+        /// <summary>
+        ///     Gets a value describing the type(e.g. forward, defense, ...) of the player represented by current instance
+        /// </summary>
+        public string Type;
+
+        /// <summary>
+        ///     Gets the weight in kilograms of the player represented by the current instance or a null reference if weight is not
+        ///     known
         /// </summary>
         public int? Weight;
 
         /// <summary>
-        /// Gets the country code
+        ///     Initializes a new instance of the <see cref="PlayerProfileDTO" /> class
         /// </summary>
-        /// <value>The country code</value>
-        public string CountryCode { get; }
-
-        /// <summary>
-        /// Gets the full name of the player
-        /// </summary>
-        /// <value>The full name</value>
-        public string FullName { get; }
-
-        /// <summary>
-        /// Gets the nickname of the player
-        /// </summary>
-        /// <value>The nickname</value>
-        public string Nickname { get; }
-
-        /// <summary>
-        /// Gets the jersey number
-        /// </summary>
-        /// <value>The jersey number</value>
-        public int? JerseyNumber { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerProfileDTO"/> class
-        /// </summary>
-        /// <param name="record">A <see cref="playerExtended"/> containing information about the player</param>
+        /// <param name="record">A <see cref="playerExtended" /> containing information about the player</param>
         public PlayerProfileDTO(playerExtended record)
-            :base(record.id, record.name)
+            : base(record.id, record.name)
         {
             Contract.Requires(record != null);
 
@@ -90,5 +69,29 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 ? (int?) record.jersey_number
                 : null;
         }
+
+        /// <summary>
+        ///     Gets the country code
+        /// </summary>
+        /// <value>The country code</value>
+        public string CountryCode { get; }
+
+        /// <summary>
+        ///     Gets the full name of the player
+        /// </summary>
+        /// <value>The full name</value>
+        public string FullName { get; }
+
+        /// <summary>
+        ///     Gets the nickname of the player
+        /// </summary>
+        /// <value>The nickname</value>
+        public string Nickname { get; }
+
+        /// <summary>
+        ///     Gets the jersey number
+        /// </summary>
+        /// <value>The jersey number</value>
+        public int? JerseyNumber { get; }
     }
 }

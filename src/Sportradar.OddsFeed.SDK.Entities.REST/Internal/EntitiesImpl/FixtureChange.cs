@@ -3,31 +3,21 @@
 */
 
 using System;
-using Sportradar.OddsFeed.SDK.Messages;
 using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO;
+using Sportradar.OddsFeed.SDK.Messages;
 
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
 {
     /// <summary>
-    /// Provides information about fixture changes
+    ///     Provides information about fixture changes
     /// </summary>
     /// <seealso cref="IFixtureChange" />
     internal class FixtureChange : EntityPrinter, IFixtureChange
     {
         /// <summary>
-        /// Gets the <see cref="URN"/> specifying the sport event
+        ///     Initializes a new instance of the <see cref="FixtureChange" /> class
         /// </summary>
-        public URN SportEventId { get; }
-
-        /// <summary>
-        /// Gets the <see cref="DateTime"/> specifying the last update time
-        /// </summary>
-        public DateTime UpdateTime { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FixtureChange"/> class
-        /// </summary>
-        /// <param name="dto">A <see cref="FixtureChangeDTO"/> used to create new instance</param>
+        /// <param name="dto">A <see cref="FixtureChangeDTO" /> used to create new instance</param>
         internal FixtureChange(FixtureChangeDTO dto)
         {
             SportEventId = dto.SportEventId;
@@ -35,7 +25,17 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing the id of the current instance
+        ///     Gets the <see cref="URN" /> specifying the sport event
+        /// </summary>
+        public URN SportEventId { get; }
+
+        /// <summary>
+        ///     Gets the <see cref="DateTime" /> specifying the last update time
+        /// </summary>
+        public DateTime UpdateTime { get; }
+
+        /// <summary>
+        ///     Constructs and returns a <see cref="string" /> containing the id of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing the id of the current instance</returns>
         protected override string PrintI()
@@ -44,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing compacted representation of the current instance
+        ///     Constructs and returns a <see cref="string" /> containing compacted representation of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing compacted representation of the current instance</returns>
         protected override string PrintC()
@@ -53,7 +53,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and return a <see cref="string" /> containing details of the current instance
+        ///     Constructs and return a <see cref="string" /> containing details of the current instance
         /// </summary>
         /// <returns>A <see cref="string" /> containing details of the current instance</returns>
         protected override string PrintF()
@@ -62,7 +62,7 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl
         }
 
         /// <summary>
-        /// Constructs and returns a <see cref="string" /> containing a JSON representation of the current instance
+        ///     Constructs and returns a <see cref="string" /> containing a JSON representation of the current instance
         /// </summary>
         /// <returns>a <see cref="string" /> containing a JSON representation of the current instance</returns>
         protected override string PrintJ()

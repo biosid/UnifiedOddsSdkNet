@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -12,27 +13,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
     public class BasicTournamentDTO : SportEventSummaryDTO
     {
         /// <summary>
-        /// Gets the tournament coverage
+        ///     Initializes a new instance of the <see cref="BasicTournamentDTO" /> class.
         /// </summary>
-        /// <value>The tournament coverage</value>
-        public TournamentCoverageDTO TournamentCoverage { get; }
-
-        /// <summary>
-        /// Gets the category
-        /// </summary>
-        /// <value>The category</value>
-        public URN Category { get; }
-
-        /// <summary>
-        /// Gets the competitors
-        /// </summary>
-        /// <value>The competitors</value>
-        public IEnumerable<CompetitorDTO> Competitors { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasicTournamentDTO"/> class.
-        /// </summary>
-        /// <param name="sportEvent">The <see cref="sportEvent"/> used for creating instance</param>
+        /// <param name="sportEvent">The <see cref="sportEvent" /> used for creating instance</param>
         internal BasicTournamentDTO(sportEvent sportEvent)
             : base(sportEvent)
         {
@@ -46,21 +29,20 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicTournamentDTO"/> class.
+        ///     Initializes a new instance of the <see cref="BasicTournamentDTO" /> class.
         /// </summary>
-        /// <param name="tournamentInfo">The <see cref="tournament"/> used for creating instance</param>
+        /// <param name="tournamentInfo">The <see cref="tournament" /> used for creating instance</param>
         internal BasicTournamentDTO(tournamentInfoEndpoint tournamentInfo)
             : base(new sportEvent
             {
                 id = tournamentInfo.tournament.id,
                 name = tournamentInfo.tournament.name,
                 scheduled = tournamentInfo.tournament.scheduled,
-                scheduledSpecified =  tournamentInfo.tournament.scheduledSpecified,
-                scheduled_end =  tournamentInfo.tournament.scheduled_end,
+                scheduledSpecified = tournamentInfo.tournament.scheduledSpecified,
+                scheduled_end = tournamentInfo.tournament.scheduled_end,
                 scheduled_endSpecified = tournamentInfo.tournament.scheduled_endSpecified,
                 tournament = tournamentInfo.tournament,
-                type =  null
-
+                type = null
             })
         {
             Contract.Requires(tournamentInfo != null);
@@ -73,9 +55,9 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicTournamentDTO"/> class.
+        ///     Initializes a new instance of the <see cref="BasicTournamentDTO" /> class.
         /// </summary>
-        /// <param name="tournament">The <see cref="tournamentExtended"/> used for creating instance</param>
+        /// <param name="tournament">The <see cref="tournamentExtended" /> used for creating instance</param>
         internal BasicTournamentDTO(tournamentExtended tournament)
             : base(new sportEvent
             {
@@ -97,5 +79,23 @@ namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO
                 : URN.Parse(tournament.category.id);
             Competitors = tournament.competitors.Select(s => new CompetitorDTO(s));
         }
+
+        /// <summary>
+        ///     Gets the tournament coverage
+        /// </summary>
+        /// <value>The tournament coverage</value>
+        public TournamentCoverageDTO TournamentCoverage { get; }
+
+        /// <summary>
+        ///     Gets the category
+        /// </summary>
+        /// <value>The category</value>
+        public URN Category { get; }
+
+        /// <summary>
+        ///     Gets the competitors
+        /// </summary>
+        /// <value>The competitors</value>
+        public IEnumerable<CompetitorDTO> Competitors { get; }
     }
 }

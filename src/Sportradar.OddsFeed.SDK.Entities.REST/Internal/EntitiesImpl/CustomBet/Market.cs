@@ -11,14 +11,14 @@ using Sportradar.OddsFeed.SDK.Entities.REST.Internal.DTO.CustomBet;
 namespace Sportradar.OddsFeed.SDK.Entities.REST.Internal.EntitiesImpl.CustomBet
 {
     /// <summary>
-    /// Implements methods used to access available selections for the market
+    ///     Implements methods used to access available selections for the market
     /// </summary>
     internal class Market : IMarket
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Market"/> class
+        ///     Initializes a new instance of the <see cref="Market" /> class
         /// </summary>
-        /// <param name="market">a <see cref="MarketDTO"/> representing the market</param>
+        /// <param name="market">a <see cref="MarketDTO" /> representing the market</param>
         internal Market(MarketDTO market)
         {
             if (market == null)

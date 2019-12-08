@@ -5,7 +5,7 @@
 namespace Sportradar.OddsFeed.SDK.Entities.REST
 {
     /// <summary>
-    /// Defines a contract implemented by classes representing sport events of match type
+    ///     Defines a contract implemented by classes representing sport events of match type
     /// </summary>
     public interface IMatchV1 : IMatch, ICompetitionV1
     {
