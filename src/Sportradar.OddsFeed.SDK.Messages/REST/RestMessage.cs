@@ -5,13 +5,14 @@
 // ReSharper disable InconsistentNaming
 
 using System.ComponentModel;
+using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 using Sportradar.OddsFeed.SDK.Messages.Internal;
 
 namespace Sportradar.OddsFeed.SDK.Messages.REST
 {
     /// <summary>
-    /// Represents all messages (entities) received from the feed's REST API
+    ///     Represents all messages (entities) received from the feed's REST API
     /// </summary>
     public abstract class RestMessage
     {
@@ -21,67 +22,70 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     public partial class cashout : FeedMessage
     {
         /// <summary>
-        /// The message name
+        ///     The message name
         /// </summary>
         public static readonly string MessageName = typeof(cashout).Name;
 
         /// <summary>
-        /// When overridden in derived class, it gets a value indicating whether the current <see cref="FeedMessage" />
-        /// instance is related to sport event
+        ///     When overridden in derived class, it gets a value indicating whether the current <see cref="FeedMessage" />
+        ///     instance is related to sport event
         /// </summary>
         /// <value><c>true</c> if this instance is event related; otherwise, <c>false</c>.</value>
         public override bool IsEventRelated => true;
 
         /// <summary>
-        /// When overridden in derived class, it gets a value indicating the producer associated with current <see cref="FeedMessage" />
+        ///     When overridden in derived class, it gets a value indicating the producer associated with current
+        ///     <see cref="FeedMessage" />
         /// </summary>
         /// <value>The producer identifier.</value>
         public override int ProducerId => product;
 
         /// <summary>
-        /// Gets a value specified when making a request which generated this message, or null reference if this messages is not resulted with the request
+        ///     Gets a value specified when making a request which generated this message, or null reference if this messages is
+        ///     not resulted with the request
         /// </summary>
         /// <value>The request identifier.</value>
         public override long? RequestId => null;
 
         /// <summary>
-        /// When overridden in derived class, it gets a value specifying the usage requirements of the <see cref="RequestId" /> property
+        ///     When overridden in derived class, it gets a value specifying the usage requirements of the <see cref="RequestId" />
+        ///     property
         /// </summary>
         /// <value>The request identifier usage.</value>
         public override PropertyUsage RequestIdUsage => PropertyUsage.FORBBIDEN;
 
         /// <summary>
-        /// When override in derived class, it gets a value indicating whether current message is state-ful
+        ///     When override in derived class, it gets a value indicating whether current message is state-ful
         /// </summary>
         /// <value><c>true</c> if this instance is stateful; otherwise, <c>false</c>.</value>
         public override bool IsStateful => false;
 
         /// <summary>
-        /// When overridden in derived class it gets the event identifier.
+        ///     When overridden in derived class it gets the event identifier.
         /// </summary>
         /// <value>The event identifier</value>
         public override string EventId => event_id;
 
         /// <summary>
-        /// When overridden in derived class, gets the name of the current message
+        ///     When overridden in derived class, gets the name of the current message
         /// </summary>
         /// <value>The name.</value>
         public override string Name => MessageName;
 
         /// <summary>
-        /// Gets the timestamp of the message
+        ///     Gets the timestamp of the message
         /// </summary>
         /// <value>The timestamp of the message</value>
         public override long GeneratedAt => timestamp;
 
         /// <summary>
-        /// Gets the timestamp of when the message was sent
+        ///     Gets the timestamp of when the message was sent
         /// </summary>
         /// <value>The timestamp of the message</value>
         public override long SentAt { get; set; }
 
         /// <summary>
-        /// Gets the timestamp of when the message was received (picked up) by the sdk
+        ///     Gets the timestamp of when the message was received (picked up) by the sdk
         /// </summary>
         /// <value>The timestamp of the message</value>
         public override long ReceivedAt { get; set; }
@@ -99,7 +103,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     {
     }
 
-    public partial class  matchSummaryEndpoint : RestMessage
+    public partial class matchSummaryEndpoint : RestMessage
     {
     }
 
@@ -130,7 +134,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     public partial class competitorProfileEndpoint : RestMessage
     {
     }
-    
+
     public partial class simpleTeamProfileEndpoint : RestMessage
     {
     }
@@ -192,17 +196,20 @@ namespace Sportradar.OddsFeed.SDK.Messages.REST
     }
 
     // Classes below are only needed in order for the deserializer to work since the original declarations do not specify XmlRoot attribute
-    [System.Xml.Serialization.XmlRoot("simple_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
+    [XmlRoot("simple_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified",
+        IsNullable = false)]
     public partial class simpleTournamentInfoEndpoint
     {
     }
 
-    [System.Xml.Serialization.XmlRoot("standard_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
+    [XmlRoot("standard_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified",
+        IsNullable = false)]
     public partial class standardTournamentInfoEndpoint
     {
     }
 
-    [System.Xml.Serialization.XmlRoot("race_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified", IsNullable = false)]
+    [XmlRoot("race_tournament_info", Namespace = "http://schemas.sportradar.com/sportsapi/v1/unified",
+        IsNullable = false)]
     public partial class raceTournamentInfoEndpoint
     {
     }

@@ -8,12 +8,12 @@ using Sportradar.OddsFeed.SDK.Messages.REST;
 namespace Sportradar.OddsFeed.SDK.Messages.Internal
 {
     /// <summary>
-    /// A helper class providing an easier way of constructing instances which have only default constructor
+    ///     A helper class providing an easier way of constructing instances which have only default constructor
     /// </summary>
     public static class RestMessageBuilder
     {
         /// <summary>
-        /// Builds the coverage record
+        ///     Builds the coverage record
         /// </summary>
         /// <param name="maxCoverageLevel">The maximum coverage level</param>
         /// <param name="minCoverageLevel">The minimum coverage level</param>
@@ -22,7 +22,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         /// <param name="scheduled">The scheduled</param>
         /// <param name="seasonId">The season identifier</param>
         /// <returns>seasonCoverageInfo</returns>
-        public static seasonCoverageInfo BuildCoverageRecord(string maxCoverageLevel, string minCoverageLevel, int? maxCovered, int played, int scheduled, string seasonId)
+        public static seasonCoverageInfo BuildCoverageRecord(string maxCoverageLevel, string minCoverageLevel,
+            int? maxCovered, int played, int scheduled, string seasonId)
         {
             var record = new seasonCoverageInfo
             {
@@ -43,7 +44,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         }
 
         /// <summary>
-        /// Builds the season extended record
+        ///     Builds the season extended record
         /// </summary>
         /// <param name="id">The identifier</param>
         /// <param name="name">The name</param>
@@ -51,7 +52,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         /// <param name="endDate">The end date</param>
         /// <param name="year">The year</param>
         /// <returns>seasonExtended</returns>
-        public static seasonExtended BuildSeasonExtendedRecord(string id, string name, DateTime startDate, DateTime endDate, string year)
+        public static seasonExtended BuildSeasonExtendedRecord(string id, string name, DateTime startDate,
+            DateTime endDate, string year)
         {
             return new seasonExtended
             {
@@ -64,14 +66,15 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         }
 
         /// <summary>
-        /// Builds the bookmaker details
+        ///     Builds the bookmaker details
         /// </summary>
         /// <param name="id">The identifier</param>
         /// <param name="expiresAt">The expires at</param>
         /// <param name="responseCode">The response code</param>
         /// <param name="virtualHost">The virtual host</param>
         /// <returns>bookmaker_details</returns>
-        public static bookmaker_details BuildBookmakerDetails(int? id, DateTime? expiresAt, response_code? responseCode, string virtualHost)
+        public static bookmaker_details BuildBookmakerDetails(int? id, DateTime? expiresAt, response_code? responseCode,
+            string virtualHost)
         {
             var record = new bookmaker_details
             {
@@ -82,14 +85,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
                 virtual_host = virtualHost
             };
 
-            if (responseCode != null)
-            {
-                record.response_code = responseCode.Value;
-            }
-            if (expiresAt != null)
-            {
-                record.expire_at = expiresAt.Value;
-            }
+            if (responseCode != null) record.response_code = responseCode.Value;
+            if (expiresAt != null) record.expire_at = expiresAt.Value;
 
             return record;
         }

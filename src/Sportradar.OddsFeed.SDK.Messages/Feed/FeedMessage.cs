@@ -11,88 +11,84 @@ using Sportradar.OddsFeed.SDK.Messages.Internal;
 namespace Sportradar.OddsFeed.SDK.Messages.Feed
 {
     /// <summary>
-    /// Represents a base class for messages received from the feed
+    ///     Represents a base class for messages received from the feed
     /// </summary>
     public abstract class FeedMessage
     {
         /// <summary>
-        /// Gets or sets a <see cref="URN"/> representing the id of the sport associated with the current <see cref="FeedMessage"/> instance
+        ///     Gets or sets a <see cref="URN" /> representing the id of the sport associated with the current
+        ///     <see cref="FeedMessage" /> instance
         /// </summary>
         [XmlIgnore]
-        public URN SportId
-        {
-            get;
-            set;
-        }
+        public URN SportId { get; set; }
 
         /// <summary>
-        /// When overridden in derived class, it gets a <see cref="URN"/> specifying the id of the associated sport event
+        ///     When overridden in derived class, it gets a <see cref="URN" /> specifying the id of the associated sport event
         /// </summary>
         /// <value>The event urn</value>
         [XmlIgnore]
-        public URN EventURN
-        {
-            get;
-            set;
-        }
+        public URN EventURN { get; set; }
 
         /// <summary>
-        /// When overridden in derived class, gets the name of the current message
+        ///     When overridden in derived class, gets the name of the current message
         /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
-        /// When overridden in derived class, it gets a value indicating the producer associated with current <see cref="FeedMessage"/>
+        ///     When overridden in derived class, it gets a value indicating the producer associated with current
+        ///     <see cref="FeedMessage" />
         /// </summary>
         public abstract int ProducerId { get; }
 
         /// <summary>
-        /// Gets a value specified when making a request which generated this message, or null reference if this messages is not resulted with the request
+        ///     Gets a value specified when making a request which generated this message, or null reference if this messages is
+        ///     not resulted with the request
         /// </summary>
         public abstract long? RequestId { get; }
 
         /// <summary>
-        /// When overridden in derived class, it gets a value specifying the usage requirements of the <see cref="RequestId"/> property
+        ///     When overridden in derived class, it gets a value specifying the usage requirements of the <see cref="RequestId" />
+        ///     property
         /// </summary>
         public abstract PropertyUsage RequestIdUsage { get; }
 
         /// <summary>
-        /// When overridden in derived class, it gets a value indicating whether the current <see cref="FeedMessage"/>
-        /// instance is related to sport event
+        ///     When overridden in derived class, it gets a value indicating whether the current <see cref="FeedMessage" />
+        ///     instance is related to sport event
         /// </summary>
         public abstract bool IsEventRelated { get; }
 
         /// <summary>
-        /// When override in derived class, it gets a value indicating whether current message is state-ful
+        ///     When override in derived class, it gets a value indicating whether current message is state-ful
         /// </summary>
         public abstract bool IsStateful { get; }
 
         /// <summary>
-        /// When overridden in derived class it gets the event identifier.
+        ///     When overridden in derived class it gets the event identifier.
         /// </summary>
         /// <value>The event identifier</value>
         public abstract string EventId { get; }
 
         /// <summary>
-        /// Gets the timestamp of when the message was generated
+        ///     Gets the timestamp of when the message was generated
         /// </summary>
         /// <value>The timestamp of the message</value>
         public abstract long GeneratedAt { get; }
 
         /// <summary>
-        /// Gets the timestamp of when the message was sent
+        ///     Gets the timestamp of when the message was sent
         /// </summary>
         /// <value>The timestamp of the message</value>
         public abstract long SentAt { get; set; }
 
         /// <summary>
-        /// Gets the timestamp of when the message was received (picked up) by the sdk
+        ///     Gets the timestamp of when the message was received (picked up) by the sdk
         /// </summary>
         /// <value>The timestamp of the message</value>
         public abstract long ReceivedAt { get; set; }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance</returns>
         public override string ToString()
@@ -100,17 +96,11 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
             var builder = new StringBuilder();
             builder.Append(Name);
             builder.Append(" ProducerId=").Append(ProducerId);
-            if (!string.IsNullOrEmpty(EventId))
-            {
-                builder.Append(", EventId=").Append(EventId);
-            }
+            if (!string.IsNullOrEmpty(EventId)) builder.Append(", EventId=").Append(EventId);
             builder.Append(", GeneratedAt=").Append(GeneratedAt);
             //builder.Append(", SentAt=").Append(SentAt);
             builder.Append(", ReceivedAt=").Append(ReceivedAt);
-            if (RequestId.HasValue)
-            {
-                builder.Append(", RequestId=").Append(RequestId.Value);
-            }
+            if (RequestId.HasValue) builder.Append(", RequestId=").Append(RequestId.Value);
             return builder.ToString();
         }
     }
@@ -136,9 +126,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "snapshot_complete", IgnoreNamespace = false)]
@@ -162,9 +152,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "odds_change", IgnoreNamespace = false)]
@@ -176,7 +166,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override int ProducerId => product;
 
-        public override long? RequestId => request_idSpecified ? (long?)request_id : null;
+        public override long? RequestId => request_idSpecified ? (long?) request_id : null;
 
         public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
 
@@ -188,9 +178,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "bet_stop", IgnoreNamespace = false)]
@@ -202,7 +192,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override int ProducerId => product;
 
-        public override long? RequestId => request_idSpecified ? (long?)request_id : null;
+        public override long? RequestId => request_idSpecified ? (long?) request_id : null;
 
         public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
 
@@ -214,9 +204,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "bet_settlement", IgnoreNamespace = false)]
@@ -228,7 +218,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override int ProducerId => product;
 
-        public override long? RequestId => request_idSpecified ? (long?)request_id : null;
+        public override long? RequestId => request_idSpecified ? (long?) request_id : null;
 
         public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
 
@@ -240,9 +230,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "rollback_bet_settlement", IgnoreNamespace = false)]
@@ -254,7 +244,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override int ProducerId => product;
 
-        public override long? RequestId => request_idSpecified ? (long?)request_id : null;
+        public override long? RequestId => request_idSpecified ? (long?) request_id : null;
 
         public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
 
@@ -266,9 +256,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "bet_cancel", IgnoreNamespace = false)]
@@ -280,7 +270,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override int ProducerId => product;
 
-        public override long? RequestId => request_idSpecified ? (long?)request_id : null;
+        public override long? RequestId => request_idSpecified ? (long?) request_id : null;
 
         public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
 
@@ -292,9 +282,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "rollback_bet_cancel", IgnoreNamespace = false)]
@@ -306,7 +296,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override int ProducerId => product;
 
-        public override long? RequestId => request_idSpecified ? (long?)request_id : null;
+        public override long? RequestId => request_idSpecified ? (long?) request_id : null;
 
         public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
 
@@ -318,9 +308,9 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 
     [OverrideXmlNamespace(RootElementName = "fixture_change", IgnoreNamespace = false)]
@@ -332,7 +322,7 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override int ProducerId => product;
 
-        public override long? RequestId => request_idSpecified ? (long?)request_id : null;
+        public override long? RequestId => request_idSpecified ? (long?) request_id : null;
 
         public override PropertyUsage RequestIdUsage => PropertyUsage.OPTIONAL;
 
@@ -344,8 +334,8 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
 
         public override long GeneratedAt => timestamp;
 
-        public override long SentAt { get;  set; }
+        public override long SentAt { get; set; }
 
-        public override long ReceivedAt { get;  set; }
+        public override long ReceivedAt { get; set; }
     }
 }

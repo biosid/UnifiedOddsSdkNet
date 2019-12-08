@@ -10,18 +10,19 @@ namespace Sportradar.OddsFeed.SDK.Messages.Feed
     public abstract class FeedMarket
     {
         /// <summary>
-        /// Gets or sets a <see cref="IReadOnlyDictionary{String, String}"/> representing parsed specifiers
+        ///     Gets or sets a <see cref="IReadOnlyDictionary{TKey,TValue}" /> representing parsed specifiers
         /// </summary>
         [XmlIgnore]
         public IReadOnlyDictionary<string, string> Specifiers { get; set; }
 
         /// <summary>
-        /// Gets or sets a indicating whether the validation of the market has failed and should not be mapped to exposed entity
+        ///     Gets or sets a indicating whether the validation of the market has failed and should not be mapped to exposed
+        ///     entity
         /// </summary>
         public bool ValidationFailed { get; set; }
 
         /// <summary>
-        /// Gets the specifiers string
+        ///     Gets the specifiers string
         /// </summary>
         [XmlIgnore]
         public abstract string SpecifierString { get; }

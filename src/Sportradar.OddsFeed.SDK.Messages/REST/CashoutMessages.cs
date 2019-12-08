@@ -17,183 +17,149 @@
 // 
 
 
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
 using Sportradar.OddsFeed.SDK.Messages.Feed;
 
 namespace Sportradar.OddsFeed.SDK.Messages.REST
 {
-
-
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-    public partial class cashout {
-
-        private restSportEventStatus sport_event_statusField;
+    /// <remarks />
+    [GeneratedCode("xsd", "4.6.1055.0")]
+    [Serializable]
+    [DebuggerStepThrough]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true)]
+    [XmlRoot(Namespace = "", IsNullable = false)]
+    public partial class cashout
+    {
+        private string event_idField;
 
         private cashoutOdds oddsField;
 
         private int productField;
 
-        private string event_idField;
-
-        private long timestampField;
-
         private long request_idField;
 
         private bool request_idFieldSpecified;
 
-        /// <remarks/>
-        public restSportEventStatus sport_event_status {
-            get {
-                return this.sport_event_statusField;
-            }
-            set {
-                this.sport_event_statusField = value;
-            }
+        private restSportEventStatus sport_event_statusField;
+
+        private long timestampField;
+
+        /// <remarks />
+        public restSportEventStatus sport_event_status
+        {
+            get => sport_event_statusField;
+            set => sport_event_statusField = value;
         }
 
-        /// <remarks/>
-        public cashoutOdds odds {
-            get {
-                return this.oddsField;
-            }
-            set {
-                this.oddsField = value;
-            }
+        /// <remarks />
+        public cashoutOdds odds
+        {
+            get => oddsField;
+            set => oddsField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int product {
-            get {
-                return this.productField;
-            }
-            set {
-                this.productField = value;
-            }
+        /// <remarks />
+        [XmlAttribute]
+        public int product
+        {
+            get => productField;
+            set => productField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string event_id {
-            get {
-                return this.event_idField;
-            }
-            set {
-                this.event_idField = value;
-            }
+        /// <remarks />
+        [XmlAttribute]
+        public string event_id
+        {
+            get => event_idField;
+            set => event_idField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public long timestamp {
-            get {
-                return this.timestampField;
-            }
-            set {
-                this.timestampField = value;
-            }
+        /// <remarks />
+        [XmlAttribute]
+        public long timestamp
+        {
+            get => timestampField;
+            set => timestampField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public long request_id {
-            get {
-                return this.request_idField;
-            }
-            set {
-                this.request_idField = value;
-            }
+        /// <remarks />
+        [XmlAttribute]
+        public long request_id
+        {
+            get => request_idField;
+            set => request_idField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool request_idSpecified {
-            get {
-                return this.request_idFieldSpecified;
-            }
-            set {
-                this.request_idFieldSpecified = value;
-            }
+        /// <remarks />
+        [XmlIgnore]
+        public bool request_idSpecified
+        {
+            get => request_idFieldSpecified;
+            set => request_idFieldSpecified = value;
         }
     }
 
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class cashoutOdds {
+    /// <remarks />
+    [GeneratedCode("xsd", "4.6.1055.0")]
+    [Serializable]
+    [DebuggerStepThrough]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true)]
+    public class cashoutOdds
+    {
+        private int betstop_reasonField;
 
-        private oddsChangeMarket[] marketField;
+        private bool betstop_reasonFieldSpecified;
 
         private int betting_statusField;
 
         private bool betting_statusFieldSpecified;
 
-        private int betstop_reasonField;
+        private oddsChangeMarket[] marketField;
 
-        private bool betstop_reasonFieldSpecified;
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("market")]
-        public oddsChangeMarket[] market {
-            get {
-                return this.marketField;
-            }
-            set {
-                this.marketField = value;
-            }
+        /// <remarks />
+        [XmlElement("market")]
+        public oddsChangeMarket[] market
+        {
+            get => marketField;
+            set => marketField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int betting_status {
-            get {
-                return this.betting_statusField;
-            }
-            set {
-                this.betting_statusField = value;
-            }
+        /// <remarks />
+        [XmlAttribute]
+        public int betting_status
+        {
+            get => betting_statusField;
+            set => betting_statusField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool betting_statusSpecified {
-            get {
-                return this.betting_statusFieldSpecified;
-            }
-            set {
-                this.betting_statusFieldSpecified = value;
-            }
+        /// <remarks />
+        [XmlIgnore]
+        public bool betting_statusSpecified
+        {
+            get => betting_statusFieldSpecified;
+            set => betting_statusFieldSpecified = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int betstop_reason {
-            get {
-                return this.betstop_reasonField;
-            }
-            set {
-                this.betstop_reasonField = value;
-            }
+        /// <remarks />
+        [XmlAttribute]
+        public int betstop_reason
+        {
+            get => betstop_reasonField;
+            set => betstop_reasonField = value;
         }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool betstop_reasonSpecified {
-            get {
-                return this.betstop_reasonFieldSpecified;
-            }
-            set {
-                this.betstop_reasonFieldSpecified = value;
-            }
+        /// <remarks />
+        [XmlIgnore]
+        public bool betstop_reasonSpecified
+        {
+            get => betstop_reasonFieldSpecified;
+            set => betstop_reasonFieldSpecified = value;
         }
     }
 }

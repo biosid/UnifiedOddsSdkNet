@@ -1,13 +1,14 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Diagnostics.Contracts;
 
 namespace Sportradar.OddsFeed.SDK.Messages.Internal
 {
     /// <summary>
-    /// Class defining extension methods for <see cref="IProducer"/>
+    ///     Class defining extension methods for <see cref="IProducer" />
     /// </summary>
     public static class ProducerExtensions
     {
@@ -24,10 +25,10 @@ namespace Sportradar.OddsFeed.SDK.Messages.Internal
         //}
 
         /// <summary>
-        /// Returns a <see cref="TimeSpan"/> specifying the max age of after param when doing a after timestamp recovery
+        ///     Returns a <see cref="TimeSpan" /> specifying the max age of after param when doing a after timestamp recovery
         /// </summary>
-        /// <param name="producer">The <see cref="IProducer"/> associated with the after timestamp recovery.</param>
-        /// <returns>A <see cref="TimeSpan"/> specifying the max age of after param when doing a after timestamp recovery.</returns>
+        /// <param name="producer">The <see cref="IProducer" /> associated with the after timestamp recovery.</param>
+        /// <returns>A <see cref="TimeSpan" /> specifying the max age of after param when doing a after timestamp recovery.</returns>
         public static TimeSpan MaxAfterAge(this IProducer producer)
         {
             Contract.Ensures(Contract.Result<TimeSpan>() > TimeSpan.Zero);

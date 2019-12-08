@@ -1,10 +1,9 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
-using System.Reflection;
+
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
 
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Test.Shared")]
 [assembly: InternalsVisibleTo("Sportradar.OddsFeed.SDK.Messages.Test")]

@@ -1,6 +1,7 @@
 ﻿/*
 * Copyright (C) Sportradar AG. See LICENSE for full license governing this code
 */
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -9,35 +10,37 @@ using System.Text.RegularExpressions;
 namespace Sportradar.OddsFeed.SDK.Messages
 {
     /// <summary>
-    /// Represents a Uniform Resource Name
+    ///     Represents a Uniform Resource Name
     /// </summary>
     // ReSharper disable once InconsistentNaming
     public class URN
     {
         /// <summary>
-        /// A regex pattern used for parsing of URN strings
-        /// </summary>
-        private static readonly string RegexPattern = $@"\A(?<{PrefixGroupName}>[a-zA-Z]+):(?<{TypeGroupName}>[a-zA-Z_]+):(?<{IdGroupName}>\d+)\z";
-
-        /// <summary>
-        /// The name of the regex group used to store the prefix
+        ///     The name of the regex group used to store the prefix
         /// </summary>
         private const string PrefixGroupName = "prefix";
 
         /// <summary>
-        /// The name of the regex group used to store the type
+        ///     The name of the regex group used to store the type
         /// </summary>
         private const string TypeGroupName = "type";
 
         /// <summary>
-        /// The name of the regex group used to store the id
+        ///     The name of the regex group used to store the id
         /// </summary>
         private const string IdGroupName = "id";
 
         /// <summary>
-        /// Defines supported resource types
+        ///     A regex pattern used for parsing of URN strings
         /// </summary>
-        private static readonly Tuple<string, ResourceTypeGroup>[] Types = {
+        private static readonly string RegexPattern =
+            $@"\A(?<{PrefixGroupName}>[a-zA-Z]+):(?<{TypeGroupName}>[a-zA-Z_]+):(?<{IdGroupName}>\d+)\z";
+
+        /// <summary>
+        ///     Defines supported resource types
+        /// </summary>
+        private static readonly Tuple<string, ResourceTypeGroup>[] Types =
+        {
             new Tuple<string, ResourceTypeGroup>("sport_event", ResourceTypeGroup.MATCH),
             new Tuple<string, ResourceTypeGroup>("race_event", ResourceTypeGroup.STAGE),
             new Tuple<string, ResourceTypeGroup>("season", ResourceTypeGroup.SEASON),
@@ -62,29 +65,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         };
 
         /// <summary>
-        /// Gets the prefix of the current instance.
-        /// </summary>
-        /// <value>The prefix.</value>
-        public string Prefix { get; }
-
-        /// <summary>
-        /// Gets a <see cref="string"/> specifying the type of the resource associated with the current instance
-        /// </summary>
-        public string Type { get; }
-
-        /// <summary>
-        /// Gets a <see cref="ResourceTypeGroup"/> enum member describing the group of the resource
-        /// </summary>
-        /// <seealso cref="ResourceTypeGroup"/>
-        public ResourceTypeGroup TypeGroup { get; }
-
-        /// <summary>
-        /// Gets the numerical part of the identifier associated with the current instance
-        /// </summary>
-        public long Id { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="URN"/> class.
+        ///     Initializes a new instance of the <see cref="URN" /> class.
         /// </summary>
         /// <param name="prefix">The prefix of the URN</param>
         /// <param name="type">The type of the resource associated with the URN</param>
@@ -104,10 +85,32 @@ namespace Sportradar.OddsFeed.SDK.Messages
         }
 
         /// <summary>
-        /// Constructs a <see cref="URN"/> instance by parsing the provided <see cref="string"/>
+        ///     Gets the prefix of the current instance.
         /// </summary>
-        /// <param name="urnString">The <see cref="string"/> representation of the URN</param>
-        /// <returns>A <see cref="URN"/> constructed by parsing the provided string representation</returns>
+        /// <value>The prefix.</value>
+        public string Prefix { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="string" /> specifying the type of the resource associated with the current instance
+        /// </summary>
+        public string Type { get; }
+
+        /// <summary>
+        ///     Gets a <see cref="ResourceTypeGroup" /> enum member describing the group of the resource
+        /// </summary>
+        /// <seealso cref="ResourceTypeGroup" />
+        public ResourceTypeGroup TypeGroup { get; }
+
+        /// <summary>
+        ///     Gets the numerical part of the identifier associated with the current instance
+        /// </summary>
+        public long Id { get; }
+
+        /// <summary>
+        ///     Constructs a <see cref="URN" /> instance by parsing the provided <see cref="string" />
+        /// </summary>
+        /// <param name="urnString">The <see cref="string" /> representation of the URN</param>
+        /// <returns>A <see cref="URN" /> constructed by parsing the provided string representation</returns>
         /// <exception cref="System.FormatException">The format of the provided representation is not correct</exception>
         public static URN Parse(string urnString)
         {
@@ -116,9 +119,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
 
             var match = Regex.Match(urnString, RegexPattern);
             if (!match.Success)
-            {
                 throw new FormatException($"Value '{urnString}' is not a valid string representation of the URN");
-            }
 
             var type = match.Groups[TypeGroupName].Value;
             if (Types.All(t => t.Item1 != type))
@@ -133,10 +134,13 @@ namespace Sportradar.OddsFeed.SDK.Messages
         }
 
         /// <summary>
-        /// Tries to construct a <see cref="URN"/> instance by parsing the provided <see cref="string"/>
+        ///     Tries to construct a <see cref="URN" /> instance by parsing the provided <see cref="string" />
         /// </summary>
-        /// <param name="urnString">The <see cref="string"/> representation of the URN</param>
-        /// <param name="urn">When the method returns it contains the <see cref="URN"/> constructed by parsing the provided string if the parsing was successful, otherwise null</param>
+        /// <param name="urnString">The <see cref="string" /> representation of the URN</param>
+        /// <param name="urn">
+        ///     When the method returns it contains the <see cref="URN" /> constructed by parsing the provided string
+        ///     if the parsing was successful, otherwise null
+        /// </param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool TryParse(string urnString, out URN urn)
         {
@@ -153,11 +157,12 @@ namespace Sportradar.OddsFeed.SDK.Messages
             {
                 urn = null;
             }
+
             return success;
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
@@ -166,33 +171,24 @@ namespace Sportradar.OddsFeed.SDK.Messages
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        ///     Determines whether the specified <see cref="System.Object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
         /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
+            if (obj == null) return false;
 
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
+            if (ReferenceEquals(this, obj)) return true;
 
             var other = obj as URN;
-            if (other == null)
-            {
-                return false;
-            }
+            if (other == null) return false;
 
             return Prefix == other.Prefix && Type == other.Type && Id == other.Id;
         }
 
         /// <summary>
-        /// Returns a hash code for this instance.
+        ///     Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
