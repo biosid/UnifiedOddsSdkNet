@@ -15,7 +15,6 @@ namespace Sportradar.OddsFeed.SDK.Messages
     // ReSharper disable once InconsistentNaming
     public class URN
     {
-        private static Regex RegexMatcher = new Regex(RegexPattern, RegexOptions.Compiled);
         /// <summary>
         ///     The name of the regex group used to store the prefix
         /// </summary>
@@ -118,7 +117,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
             Contract.Requires(!string.IsNullOrEmpty(urnString));
             Contract.Ensures(Contract.Result<URN>() != null);
 
-            var match = RegexMatcher.Match(urnString);
+            var match = Regex.Match(urnString, RegexPattern);
             if (!match.Success)
                 throw new FormatException($"Value '{urnString}' is not a valid string representation of the URN");
 
