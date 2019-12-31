@@ -13,7 +13,7 @@
     <Product>Odds Feed SDK</Product>
     <Description>The SDK simplifying the consumption of Sportradar's Unified Odds feed. (.Net Core 2.1 Addition)</Description>
     <Copyright>Copyright © Sportradar AG 2016</Copyright>
-    <Version>1.23.1.5</Version>
+    <Version>1.23.1.6</Version>
     <AssemblyVersion>1.23.1.1</AssemblyVersion>
     <FileVersion>1.23.1.1</FileVersion>
     <Authors>Sportradar AG</Authors>
