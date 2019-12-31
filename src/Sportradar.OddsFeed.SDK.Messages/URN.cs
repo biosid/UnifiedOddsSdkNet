@@ -15,6 +15,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
     // ReSharper disable once InconsistentNaming
     public class URN
     {
+        private static Regex RegexMatcher = new Regex(RegexPattern, RegexOptions.Compiled);
         /// <summary>
         ///     The name of the regex group used to store the prefix
         /// </summary>
@@ -117,7 +118,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
             Contract.Requires(!string.IsNullOrEmpty(urnString));
             Contract.Ensures(Contract.Result<URN>() != null);
 
-            var match = Regex.Match(urnString, RegexPattern);
+            var match = RegexMatcher.Match(urnString);
             if (!match.Success)
                 throw new FormatException($"Value '{urnString}' is not a valid string representation of the URN");
 
@@ -128,9 +129,9 @@ namespace Sportradar.OddsFeed.SDK.Messages
             }
 
             return new URN(
-                match.Groups[PrefixGroupName].Value,
-                match.Groups[TypeGroupName].Value,
-                long.Parse(match.Groups[IdGroupName].Value));
+                string.Intern(match.Groups[PrefixGroupName].Value),
+                string.Intern(match.Groups[TypeGroupName].Value),
+                long.Parse(string.Intern(match.Groups[IdGroupName].Value)));
         }
 
         /// <summary>
@@ -167,7 +168,7 @@ namespace Sportradar.OddsFeed.SDK.Messages
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
-            return $"{Prefix}:{Type}:{Id}";
+            return string.Intern($"{Prefix}:{Type}:{Id}");
         }
 
         /// <summary>
