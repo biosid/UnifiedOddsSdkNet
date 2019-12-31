@@ -14,11 +14,11 @@
     <Product>Odds Feed SDK</Product>
     <Description>Odds Feed SDK API</Description>
     <Copyright>Copyright © Sportradar AG 2016</Copyright>
-    <AssemblyVersion>1.22.0.0</AssemblyVersion>
-    <FileVersion>1.22.0.0</FileVersion>
+    <AssemblyVersion>1.23.0.0</AssemblyVersion>
+    <FileVersion>1.23.0.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Sportradar.OddsFeed.SDK.API-SoftPro-Fork</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>DEBUG;TRACE;CONTRACTS_FULL</DefineConstants>
